@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <title>List of Projects</title>
+</head>
+<body>
+<h1>List of Projects</h1>
+<table>
+  <thead>
+  <tr>
+    <th>Title</th>
+    <th>Department</th>
+    <th>Deadline</th>
+    <th>Description</th>
+    <th>Status</th>
+    <th>Actions</th>
+  </tr>
+  </thead>
+  <tbody>
+  <tr th:each="project : ${listOfProjects}">
+    <td th:if="${project.isPresent()}" th:text="${project.get().getTitle()}"></td>
+    <td th:if="${project.isPresent()}" th:text="${project.get().getDepartment()}"></td>
+    <td th:if="${project.isPresent()}" th:text="${project.get().getDeadline()}"></td>
+    <td th:if="${project.isPresent()}" th:text="${project.get().getDescription()}"></td>
+    <td th:if="${project.isPresent()}" th:text="${project.get().getStatus()}"></td>
+    <td>
+      <form th:if="${isProfessor} and ${project.isPresent()}" method="post" action="/edit">
+        <input type="hidden" name="projectId" th:value="${project.get().getId()}" />
+        <button type="submit" class="btn btn-danger">Edit</button>
+      </form>
+      <form th:if="${isProfessor} and ${project.isPresent()}" method="post" action="/delete">
+        <input type="hidden" name="projectId" th:value="${project.get().getId()}" />
+        <button type="submit" class="btn btn-danger">Delete</button>
+      </form>
+    </td>
+  </tr>
+  </tbody>
+</table>
+</body>
+</html>

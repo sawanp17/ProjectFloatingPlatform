@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Project Form</title>
+</head>
+<body>
+<h1>Create a New Project</h1>
+<form th:action="@{/create/save}" method="post">
+
+    <label for="title">Title:</label>
+    <input type="text" id="title" name="title" required th:value="${isEdit} ? ${project.getTitle()} : ''"><br><br>
+
+    <label for="department">Department:</label>
+    <select id="department" name="department" required>
+        <option value="CSE" th:selected="${isEdit} and ${project.department == 'CSE'}">CSE</option>
+        <option value="AI" th:selected="${isEdit} and ${project.department == 'AI'}">AI</option>
+        <option value="EE" th:selected="${isEdit} and ${project.department == 'EE'}">EE</option>
+    </select><br><br>
+
+    <label for="deadline">Deadline:</label>
+    <input type="date" id="deadline" name="deadline" required th:value="${isEdit} ? ${project.getDeadline()} : ''"><br><br>
+
+    <label for="description">Description:</label>
+    <textarea id="description" name="description" rows="4" cols="50" required th:text="${isEdit} ? ${project.getDescription()} : ''"></textarea><br><br>
+
+    <label for="preReq">Pre-Requisites:</label>
+    <textarea id="preReq" name="preReq" rows="4" cols="50" required th:text="${isEdit} ? ${project.getPreReq()} : ''"></textarea><br><br>
+
+    <label for="maxLim">Max People Allowed:</label>
+    <input type="number" id="maxLim" name="maxLim" required th:value="${isEdit} ? ${project.getMaxLim()} : 0"><br><br>
+
+    <!-- Add dropdown for the status field -->
+    <label for="status">Status:</label>
+    <select id="status" name="status" required>
+        <option value="FLOATED" th:selected="${isEdit} and ${project.getStatus() == 'FLOATED'}">FLOATED</option>
+        <option value="IN_PROGRESS" th:selected="${isEdit} and ${project.getStatus() == 'IN_PROGRESS'}">IN PROGRESS</option>
+        <option value="COMPLETED" th:selected="${isEdit} and ${project.getStatus() == 'COMPLETED'}">COMPLETED</option>
+    </select><br><br>
+
+    <input type="hidden" name="isEdit" th:value="${isEdit}" />
+    <th:block th:if="${isEdit}">
+        <input type="hidden" name="projectId" th:value="${projectId}" />
+    </th:block>
+    <th:block th:unless="${isEdit}">
+        <input type="hidden" name="projectId" th:value="-1" />
+    </th:block>
+
+    <button type="submit" th:if="${isEdit}">Update Project</button>
+    <button type="submit" th:unless="${isEdit}">Create Project</button>
+</form>
+</body>
+</html>

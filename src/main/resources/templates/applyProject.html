@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <title>List of Projects</title>
+</head>
+<body>
+<h1>List of Projects</h1>
+<table>
+  <thead>
+  <tr>
+    <th>Title</th>
+    <th>Department</th>
+    <th>Deadline</th>
+    <th>Description</th>
+    <th>Status</th>
+    <th>Actions</th>
+  </tr>
+  </thead>
+  <tbody>
+  <tr th:each="project : ${floatedProjects}">
+    <td th:text="${project.title}"></td>
+    <td th:text="${project.department}"></td>
+    <td th:text="${project.deadline}"></td>
+    <td th:text="${project.description}"></td>
+    <td th:text="${project.status}"></td>
+    <td>
+      <form method="post" th:action="@{'/apply/save'}">
+        <input type="hidden" name="projectId" th:value="${project.id}" />
+        <button type="submit" class="btn btn-danger">Apply</button>
+      </form>
+    </td>
+  </tr>
+  </tbody>
+</table>
+</body>
+</html>
