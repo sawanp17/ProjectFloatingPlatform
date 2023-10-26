@@ -11,7 +11,8 @@ import org.springframework.web.bind.annotation.RestController;
 
 import java.security.Principal;
 
-//@SpringBootApplication
+//@Sprin
+// gBootApplication
 @SpringBootApplication(exclude = { SecurityAutoConfiguration.class })
 
 public class ProjectPlatformApplication {
