@@ -31,12 +31,30 @@ public class StudentController {
 
     @GetMapping("/welcome")
     public String greeting(Model model, Authentication authentication) {
+        UserDetails userDetails = (UserDetails) authentication.getPrincipal();
+
+        String username = userDetails.getUsername();
+        Optional<User> currentUser = userRepo.findUserByUsername(username);
+
         Collection<? extends GrantedAuthority> authorities = authentication.getAuthorities();
         for (GrantedAuthority authority: authorities){
             if (authority.getAuthority().equals("ROLE_STUDENT")){
                 System.out.println(
                         ">> adding student to model"
                 );
+
+                String role = currentUser.get().getRole().name();
+                String user_name = currentUser.get().getUsername();
+                String name = currentUser.get().getName();
+                String email = currentUser.get().getEmail();
+
+                model.addAttribute("role", role);
+                model.addAttribute("user_name", user_name);
+                model.addAttribute("name", name);
+                model.addAttribute("email", email);
+
+
+
                 model.addAttribute("isStudent", true);
                 model.addAttribute("isProfessor", false);
             }
@@ -88,7 +106,7 @@ public class StudentController {
             toSave.setUsername(user.getUsername());
             toSave.setPassword(user.getPassword());
             toSave.setEmail(user.getEmail());
-            if (user.getRole().equals("Student")){
+            if (user.getRole().equals(Role.Student)){
                 toSave.setRole(Role.Student);
             }
             else {
@@ -96,7 +114,7 @@ public class StudentController {
             }
             toSave.setAccountNonLocked(true);
             userRepo.save(toSave);
-            return "redirect:/register?success";
+            return "redirect:/login";
         }
     }
 
@@ -156,6 +174,8 @@ public class StudentController {
                 System.out.println(
                         ">> (myProjects) adding student to model"
                 );
+
+
                 model.addAttribute("isStudent", true);
                 model.addAttribute("isProfessor", false);
                 currentRole = Role.Student;
@@ -201,6 +221,7 @@ public class StudentController {
                 }
             }
         }
+
 
         model.addAttribute("listOfProjects", projectList);
         return "myProjects";

@@ -10,7 +10,7 @@
           integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC"
           crossorigin="anonymous">
 </head>
-<body>
+<body style="background-image: url('https://w.forfun.com/fetch/67/674d9f64c8a3c0110654ebdd1e037503.jpeg?download=black-anonim-chelovek-kapyushon-temnii-chernii-81383.jpeg'); background-size: cover; background-repeat: no-repeat; background-attachment: fixed; background-position: center center;">
 <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
     <div class="container-fluid">
         <a class="navbar-brand" th:href="@{/index}">Spring Security Custom Login Example</a>
@@ -20,16 +20,59 @@
     </div>
 </nav>
 <br /><br />
-<div class="container">
-    <div class="row">
-        <div class="col-md-6 offset-md-3">
+<div class="container d-flex justify-content-center align-items-center" style="min-height: 80vh;">
+    <div class="col-md-4">
+        <div class="card">
+            <div class="card-header custom-bg">
+                <h2 class="text-center">Login</h2>
+            </div>
+            <div class="card-body">
+                <form
+                        method="post"
+                        role="form"
+                        th:action="@{/login}"
+                        class="form-horizontal"
+                >
+                    <div class="form-group mb-3 customBG">
+                        <!--                        <label class="control-label"> Username</label>-->
+                        <input
+                                type="text"
+                                id="username"
+                                name="username"
+                                class="form-control"
+                                placeholder="Enter username"
+                        />
+                    </div>
 
-            <div th:if="${param.error}">
-                <div class="alert alert-danger">Invalid Email or Password</div>
-            </div>
-            <div th:if="${param.logout}">
-                <div class="alert alert-success"> You have been logged out.</div>
-            </div>
+                    <div class="form-group mb-3 customBG2">
+                        <!--                        <label class="control-label"> Password</label>-->
+                        <input
+                                type="password"
+                                id="password"
+                                name="password"
+                                class="form-control"
+                                placeholder="Enter password"
+                        />
+                    </div>
+                    <div class="form-group text-center">
+                        <button type="submit" class="btn btn-primary oval-button">Login</button>
+                    </div>
+                    <style>
+                        .oval-button {
+                            background-color: #CCCCFF;
+                            border: 2px solid #CCCCFF;
+                            border-radius: 25px;
+                            padding: 10px 20px;
+                            color: black;
+                        }
+                    </style>
+
+                    <style>
+                        .custom-bg {
+                            background-color: #CCCCFF; /* Replace with your desired color */
+                        }
+                    </style>
+
 
             <div class="card">
                 <div class="card-header">
@@ -53,24 +96,19 @@
                             />
                         </div>
 
-                        <div class="form-group mb-3">
-                            <label class="control-label"> Password</label>
-                            <input
-                                    type="password"
-                                    id="password"
-                                    name="password"
-                                    class="form-control"
-                                    placeholder="Enter password"
-                            />
-                        </div>
-                        <div class="form-group mb-3">
-                            <button type="submit" class="btn btn-primary" >Submit</button>
-                        </div>
-                    </form>
-                </div>
+
+
+                    <style>
+                        .customBG2 {
+                            background-color: #CCCCFF; /* Replace with your desired color */
+                        }
+                    </style>
+
+                </form>
             </div>
         </div>
     </div>
+</div>
 </div>
 </body>
 </html>
