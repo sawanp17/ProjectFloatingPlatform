@@ -34,7 +34,7 @@ public class StudentController {
         UserDetails userDetails = (UserDetails) authentication.getPrincipal();
 
         String username = userDetails.getUsername();
-        Optional<User> currentUser = userRepo.findUserByUsername(username);
+        Optional<User>currentUser = userRepo.findUserByUsername(username);
 
         Collection<? extends GrantedAuthority> authorities = authentication.getAuthorities();
         for (GrantedAuthority authority: authorities){
@@ -62,6 +62,15 @@ public class StudentController {
                 System.out.println(
                         ">> adding prof to model"
                 );
+                String role = currentUser.get().getRole().name();
+                String user_name = currentUser.get().getUsername();
+                String name = currentUser.get().getName();
+                String email = currentUser.get().getEmail();
+
+                model.addAttribute("role", role);
+                model.addAttribute("user_name", user_name);
+                model.addAttribute("name", name);
+                model.addAttribute("email", email);
                 model.addAttribute("isStudent", false);
                 model.addAttribute("isProfessor", true);
             }
