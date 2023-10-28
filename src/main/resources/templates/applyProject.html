@@ -3,35 +3,142 @@
 <head>
   <meta charset="UTF-8">
   <title>List of Projects</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css"
+        rel="stylesheet"
+        integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC"
+        crossorigin="anonymous">
+
+  <style>
+
+    .card-title{
+
+      color: darkslateblue;
+    }
+    .card-table {
+      width: 100%;
+      border-collapse: collapse;
+    }
+    .card-table th, .card-table td {
+      border: 1px solid #ddd;
+
+      padding: 30px;
+      text-align: left;
+    }
+
+    .btn-primary{
+      margin-right: 50px;
+      background-color: white;
+      color: black;
+      border-color: white;
+      font-weight: normal;
+    }
+    .btn-primary:hover{
+      background-color: #D5DBDB;
+      color: black;
+      border-color:#f2f2f2 ;
+    }
+    .btn-primary-1{
+      margin-right: 50px;
+      background-color: #f2f2f2;
+      color: black;
+      border-color: white;
+      font-weight: normal;
+    }
+
+    .btn-secondary{
+
+      margin-right: 40px;
+      background-color: white;
+      font-weight: normal;
+
+      color: black;
+      border-color: white;
+    }
+    .btn-secondary:hover {
+      background-color: #D5DBDB;
+      color: black;
+
+      border-color: #f2f2f2;
+    }
+
+    /*.description-column {*/
+    /*  contain-intrinsic-size: 900px !* Adjust the maximum width as needed *!*/
+    /*  !*word-wrap: break-word;*!*/
+    /*  !*white-space: pre-wrap;*!*/
+    /*}*/
+
+  </style>
+
 </head>
-<body>
-<h1>List of Projects</h1>
-<table>
-  <thead>
-  <tr>
-    <th>Title</th>
-    <th>Department</th>
-    <th>Deadline</th>
-    <th>Description</th>
-    <th>Status</th>
-    <th>Actions</th>
-  </tr>
-  </thead>
-  <tbody>
-  <tr th:each="project : ${floatedProjects}">
-    <td th:text="${project.title}"></td>
-    <td th:text="${project.department}"></td>
-    <td th:text="${project.deadline}"></td>
-    <td th:text="${project.description}"></td>
-    <td th:text="${project.status}"></td>
-    <td>
-      <form method="post" th:action="@{'/apply/save'}">
-        <input type="hidden" name="projectId" th:value="${project.id}" />
-        <button type="submit" class="btn btn-danger">Apply</button>
-      </form>
-    </td>
-  </tr>
-  </tbody>
-</table>
+
+<body style="background-color: #f2f2f2">
+
+<div style="background-color: #f2f2f2; padding: 20px;">
+  <div class="container-fluid">
+    <!-- First Row: Navigation Bar with Logo and Buttons -->
+    <br>
+    <div class="row" style="margin-top: auto">
+      <div class="col">
+        <div class="card w-100">
+          <div class="card-body d-flex justify-content-end align-items-center">
+            <div style="flex: 1;"></div> <!-- Create space to the left -->
+            <button class="btn btn-primary" ><a href="/welcome" style="text-decoration: none; color: black;">Home</a></button>
+            <button class="btn btn-primary"  th:if="${isStudent}"><a href="/myProjects" style="text-decoration: none; color: black;">My Projects</a></button>
+            <button class="btn btn-primary" th:if="${isStudent}"><a href="/apply" style="text-decoration: none; color: black;">Apply for Projects</a></button>
+            <button class ="btn btn-primary"  th:if="${isProfessor}"><a href="/create" style="text-decoration: none; color: black;">Create</a></button>
+            <button class="btn btn-primary"  th:if="${isProfessor}"><a href="/myProjects" style="text-decoration: none; color: black;">My Projects</a></button>
+            <button class="btn btn-secondary" ><a href="/logout" style="text-decoration: none; color: black;">Logout</a></button>
+            <img src="https://iitj.ac.in/uploaded_docs/IITJ%20Logo__Smallest.jpg" alt="Your Logo" height="50" style="margin-right: 30px; transform: scale(1.4);" class="ml-2">
+          </div>
+        </div>
+      </div>
+    </div>
+    <br>
+    <div class="row" style="margin-top: 20px">
+      <div class="col-md-11" style="margin-left: 70px">
+        <div class="card">
+          <div class="card-body">
+            <h5 class="card-title">List of Available Projects</h5>
+            <br>
+            <table class="card-table">
+              <thead>
+              <tr>
+                <th style="width: 15%;">Title</th>
+                <th style="width: 5%;">Department</th>
+                <th style="width: 15%;">Deadline</th>
+                <th style="width: 25%;">Description</th>
+                <th style="width: 20%;">Prerequisite</th>
+                <th style="width: 10%;">Status</th>
+                <th style="width: 10%;">Actions</th>
+              </tr>
+              </thead>
+              <tbody>
+              <tr th:each="project : ${floatedProjects}">
+                <td th:text="${project.title}"></td>
+                <td th:text="${project.department}"></td>
+                <td th:text="${project.deadline}"></td>
+                <td th:text="${project.description}"></td>
+                <td th:text="${project.preReq}"></td>
+                <td th:text="${project.status}"></td>
+                <td>
+                  <form method="post" th:action="@{'/apply/save'}">
+                    <input type="hidden" name="projectId" th:value="${project.id}" />
+                    <button type="submit" class="btn btn-danger">Apply</button>
+                  </form>
+                </td>
+              </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+
+
 </body>
 </html>

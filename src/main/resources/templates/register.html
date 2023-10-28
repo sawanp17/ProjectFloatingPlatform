@@ -1,7 +1,6 @@
 <!DOCTYPE html>
 <html lang="en"
-      xmlns:th="http://www.thymeleaf.org"
->
+      xmlns:th="http://www.thymeleaf.org">
 <head>
   <meta charset="UTF-8">
   <title>Registration and Login System</title>
@@ -10,25 +9,16 @@
         integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC"
         crossorigin="anonymous">
 </head>
-<body style="background-image: url('https://w.forfun.com/fetch/67/674d9f64c8a3c0110654ebdd1e037503.jpeg?download=black-anonim-chelovek-kapyushon-temnii-chernii-81383.jpeg'); background-size: cover; background-repeat: no-repeat; background-attachment: fixed; background-position: center center;">
 
+<body style="background-color: #28282B">
 
 <!--<body>-->
 <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
   <div class="container-fluid">
-    <!--    <a class="navbar-brand" th:href="@{/index}">Registration and Login System</a>-->
-    <!--    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">-->
-    <!--      <span class="navbar-toggler-icon"></span>-->
-    <!--    </button>-->
-    <div class="collapse navbar-collapse" id="navbarSupportedContent">
-      <!--      <ul class="navbar-nav me-auto mb-2 mb-lg-0">-->
-      <!--        <li class="nav-item">-->
-      <!--          <a class="nav-link active" aria-current="page" th:href="@{/login}">Login</a>-->
-      <!--        </li>-->
-      <!--      </ul>-->
-    </div>
+    <div class="collapse navbar-collapse" id="navbarSupportedContent"></div>
   </div>
 </nav>
+
 <br /><br /><br />
 <div class="container ">
 
@@ -37,6 +27,8 @@
       <div class="card-header custom-header">
         <h3 class="text-center">Registration</h3>
       </div>
+
+<!--      Registration successful alter-->
       <div th:if="${param.success}">
         <div id="success-popup" class="alert alert-success" style="display: none;">
           Registration successful!
@@ -50,6 +42,7 @@
                 th:object="${user}"
         >
 
+<!--          Input for Username-->
           <div class="form-group mb-1 ">
             <label class="form-label "></label>
             <input
@@ -64,6 +57,7 @@
                th:if="${#fields.hasErrors('username')}"></p>
           </div>
 
+<!--          Input for Name-->
           <div class="form-group mb-1">
             <label class="form-label "></label>
             <input
@@ -78,7 +72,7 @@
                th:if="${#fields.hasErrors('name')}"></p>
           </div>
 
-
+<!--          Input for Email Address-->
           <div class="form-group mb-1">
             <label class="form-label "></label>
             <input
@@ -93,6 +87,7 @@
                th:if="${#fields.hasErrors('email')}"></p>
           </div>
 
+<!--          Input for the Password-->
           <div class="form-group mb-1">
             <label class="form-label "></label>
             <input
@@ -107,6 +102,7 @@
                th:if="${#fields.hasErrors('password')}"></p>
           </div>
 
+<!--          Input for the role-->
           <div class="form-group mb-2">
             <label for="role"></label>
             <select class="form-control custom-label" id="role" name="role" th:field="*{role}" required>
@@ -117,7 +113,9 @@
             <p th:errors="*{role}" class="text-danger" th:if="${#fields.hasErrors('role')}"></p>
           </div>
 
+          <br>
 
+<!--          Register and Login button-->
           <div class="form-group text-center mb-2">
             <button class="btn btn-primary" type="submit">Register</button>
           </div>
@@ -127,10 +125,6 @@
           <div class="form-group text-center mb-2">
             <a th:href="@{/login}" class="btn btn-secondary">Login</a>
           </div>
-
-
-
-
 
         </form>
 
@@ -155,10 +149,9 @@
           .custom-header{
             background-color: #F0F0F0;
             block-size: 70px;
-            /*font-size: 12px;*/
-
           }
         </style>
+
 
         <style>
           >button{
@@ -168,16 +161,6 @@
           }
         </style>
 
-
-        <!--        <style>-->
-        <!--          .custom-container {-->
-        <!--            background-color: red; /* Replace with your desired background color */-->
-        <!--            padding: 20px; /* Adjust the padding as needed for size */-->
-        <!--            border-radius: 10px; /* Rounded corners for the card */-->
-        <!--            height: 600px;-->
-        <!--            width: 450px;-->
-        <!--          }-->
-        <!--        </style>-->
 
       </div>
     </div>
