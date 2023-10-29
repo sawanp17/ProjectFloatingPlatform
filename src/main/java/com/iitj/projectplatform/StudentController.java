@@ -128,7 +128,32 @@ public class StudentController {
     }
 
     @GetMapping("/create")
-    public String createProject(Model model){
+    public String createProject(Model model, Authentication authentication){
+        UserDetails userDetails = (UserDetails) authentication.getPrincipal();
+        String username = userDetails.getUsername();
+        Optional<User> user = userRepo.findUserByUsername(username);
+        Role role;
+        Boolean isStudent=false, isProfessor=false;
+        if (user.isPresent()){
+            role = user.get().getRole();
+            if (role.equals(Role.Student)){
+                isStudent = true;
+                isProfessor = false;
+            }
+            else {
+                isStudent = false;
+                isProfessor = true;
+            }
+        }
+        else {
+            System.out.println("User not found");
+        }
+
+        model.addAttribute("isStudent", isStudent);
+        model.addAttribute("isProf", isProfessor);
+
+
+
         Project project = new Project();
         model.addAttribute("project",project);
         model.addAttribute("isEdit", false);
@@ -274,11 +299,34 @@ public class StudentController {
 
 
     @GetMapping("/apply")
-    public String applyProject(Model model){
-        System.out.println("here1");
-        List<Project> floatedProjects = projectRepo.findProjectByStatus("FLOATED");
-        System.out.println("here2");
+    public String applyProject(Model model, Authentication authentication){
+        UserDetails userDetails = (UserDetails) authentication.getPrincipal();
+        String username = userDetails.getUsername();
+        Optional<User> user = userRepo.findUserByUsername(username);
+        Role role;
+        Boolean isStudent=false, isProfessor=false;
+        if (user.isPresent()){
+            role = user.get().getRole();
+            if (role.equals(Role.Student)){
+                isStudent = true;
+                isProfessor = false;
+            }
+            else {
+                isStudent = false;
+                isProfessor = true;
+            }
+        }
+        else {
+            System.out.println("User not found");
+        }
 
+        model.addAttribute("isStudent", isStudent);
+        model.addAttribute("isProf", isProfessor);
+
+
+
+
+        List<Project> floatedProjects = projectRepo.findProjectByStatus("FLOATED");
         model.addAttribute("floatedProjects", floatedProjects);
         return "applyProject";
     }
