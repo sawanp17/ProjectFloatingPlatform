@@ -145,16 +145,18 @@
   </div>
 </div>
 
+
+
 <script>
   function showDetails(button) {
     const row = button.closest('tr');
     const table = row.closest('table');
 
-    // Create a new popup window
     const popupWidth = 1000; // Adjust the width as needed
     const popupHeight = 600; // Adjust the height as needed
     const left = (window.innerWidth - popupWidth) / 2;
     const top = (window.innerHeight - popupHeight) / 2;
+
     const popupWindow = window.open('', 'ProjectDetails', `width=${popupWidth},height=${popupHeight},left=${left},top=${top}`);
 
     // Create a new table for the popup
@@ -200,8 +202,11 @@
 </script>
 
 
+
 </body>
 </html>
+
+
 
 
 
