@@ -145,46 +145,60 @@
   </div>
 </div>
 
-
 <script>
   function showDetails(button) {
     const row = button.closest('tr');
     const table = row.closest('table');
-    const clonedTable = table.cloneNode(true);
 
-    // Remove the last cell from each row in the cloned table (the cell with the "View" button)
-    const rows = clonedTable.querySelectorAll('tr');
-    rows.forEach((r) => {
-      r.deleteCell(-1);
-    });
-
-    // Open a new popup window and display the cloned table without the button column
+    // Create a new popup window
     const popupWidth = 1000; // Adjust the width as needed
     const popupHeight = 600; // Adjust the height as needed
     const left = (window.innerWidth - popupWidth) / 2;
     const top = (window.innerHeight - popupHeight) / 2;
-
     const popupWindow = window.open('', 'ProjectDetails', `width=${popupWidth},height=${popupHeight},left=${left},top=${top}`);
+
+    // Create a new table for the popup
+    const popupTable = document.createElement('table');
+    popupTable.className = 'card-table';
+
+    // Add a header row to the popup table
+    const headerRow = table.querySelector('thead tr').cloneNode(true);
+    popupTable.appendChild(headerRow);
+
+    // Add the clicked row's data to the popup table
+    const newRow = document.createElement('tr');
+    row.querySelectorAll('td').forEach((cell) => {
+      const newCell = document.createElement('td');
+      newCell.textContent = cell.textContent;
+      newRow.appendChild(newCell);
+    });
+    popupTable.appendChild(newRow);
+
+    // Remove the last cell from each row in the popup table
+    const rows = popupTable.querySelectorAll('tr');
+    rows.forEach((r) => {
+      r.deleteCell(-1);
+    });
+
+    // Add the popup table to the popup window
     popupWindow.document.write(`
-    <html>
-    <head>
-      <title>Project Details</title>
-      <style>
-        /* Add any additional styling here */
-        ${document.head.innerHTML}
-      </style>
-    </head>
-    <body>
-      <h2>Project Details</h2>
-      ${clonedTable.outerHTML}
-    </body>
-    </html>
-  `);
+      <html>
+      <head>
+        <title>Project Details</title>
+        <style>
+          /* Add any additional styling here */
+          ${document.head.innerHTML}
+        </style>
+      </head>
+      <body>
+        <h2>Project Details</h2>
+        ${popupTable.outerHTML}
+      </body>
+      </html>
+    `);
   }
-
-
-
 </script>
+
 
 </body>
 </html>
