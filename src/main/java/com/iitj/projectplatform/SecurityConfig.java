@@ -35,7 +35,7 @@ public class SecurityConfig {
                 .csrf().disable()
                 .authorizeRequests()
                 .requestMatchers("/login", "/register", "/register/save").permitAll()
-                .requestMatchers("/create","/edit").hasRole("ROLE_PROFESSOR")
+//                .requestMatchers("/create","/edit").hasRole("ROLE_PROFESSOR")
                 .anyRequest().authenticated()
                 .and()
                 .formLogin()

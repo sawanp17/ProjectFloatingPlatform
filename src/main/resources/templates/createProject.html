@@ -9,6 +9,40 @@
           integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC"
           crossorigin="anonymous">
     <style>
+
+        .btn-primary{
+            margin-right: 50px;
+            background-color: white;
+            color: black;
+            border-color: white;
+            font-weight: normal;
+
+        }
+        .btn-primary:hover{
+            background-color: #D5DBDB;
+            color: black;
+            border-color:#f2f2f2 ;
+
+
+
+        }
+
+        .btn-secondary{
+
+            margin-right: 40px;
+            background-color: white;
+            font-weight: normal;
+
+            color: black;
+            border-color: white;
+        }
+        .btn-secondary:hover{
+            background-color: #D5DBDB;
+            color: black;
+
+            border-color:#f2f2f2 ;
+        }
+
         .center-card {
             width: 600px;
             background-color: white;
@@ -46,12 +80,12 @@
             <div class="card w-100">
                 <div class="card-body d-flex justify-content-end align-items-center">
                     <div style="flex: 1;"></div> <!-- Create space to the left -->
-                    <button class="btn btn-primary" style="margin-right: 50px; background-color: white; "><a href="/welcome" style="text-decoration: none; color: black;">Home</a></button>
-                    <button class="btn btn-primary" style="margin-right: 50px; background-color: white; " th:if="${isStudent}"><a href="/myProjects" style="text-decoration: none; color: black;">My Projects</a></button>
-                    <button class="btn btn-primary" style="margin-right: 50px; background-color: white;" th:if="${isStudent}"><a href="/apply" style="text-decoration: none; color: black;">Apply for Projects</a></button>
-                    <button class ="btn btn-primary" style="margin-right: 50px; background-color: white;" th:if="${isProfessor}"><a href="/create" style="text-decoration: none; color: black;">Create</a></button>
-                    <button class="btn btn-primary" style="margin-right: 50px; background-color: white;" th:if="${isProfessor}"><a href="/myProjects" style="text-decoration: none; color: black;">My Projects</a></button>
-                    <button class="btn btn-secondary" style="margin-right: 50px; background-color: white;"><a href="/logout" style="text-decoration: none; color: black;">Logout</a></button>
+                    <button class="btn btn-primary" ><a href="/welcome" style="text-decoration: none; color: black;">Home</a></button>
+                    <button class="btn btn-primary" th:if="${isStudent}"><a href="/myProjects" style="text-decoration: none; color: black;">My Projects</a></button>
+                    <button class="btn btn-primary"  th:if="${isStudent}"><a href="/apply" style="text-decoration: none; color: black;">Apply for Projects</a></button>
+                    <button class ="btn btn-primary"  th:if="${isProf}"><a href="/create" style="text-decoration: none; color: black;">Create</a></button>
+                    <button class="btn btn-primary"  th:if="${isProf}"><a href="/myProjects" style="text-decoration: none; color: black;">My Projects</a></button>
+                    <button class="btn btn-secondary" ><a href="/logout" style="text-decoration: none; color: black;">Logout</a></button>
                     <img src="https://iitj.ac.in/uploaded_docs/IITJ%20Logo__Smallest.jpg" alt="Your Logo" height="50" style="margin-right: 30px; transform: scale(1.4);" class="ml-2">
                 </div>
             </div>
