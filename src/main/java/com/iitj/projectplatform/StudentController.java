@@ -282,12 +282,30 @@ public class StudentController {
     }
 
     @RequestMapping(value = "/edit", method = {RequestMethod.GET,RequestMethod.POST})
-    public String editProject(Model model, @ModelAttribute("projectId") Long projectId){
+    public String editProject(Model model, @ModelAttribute("projectId") Long projectId, Authentication authentication){
+
         Project project = projectRepo.findProjectById(projectId);
+        UserDetails userDetails = (UserDetails) authentication.getPrincipal();
+        String username = userDetails.getUsername();
+        Optional<User> user = userRepo.findUserByUsername(username);
+        Role role;
+        Boolean isStudent=false, isProfessor=false;
         if (project == null){
             System.out.println(">> Project does not exist.");
         }
         else {
+            role = user.get().getRole();
+            if (role.equals(Role.Student)){
+                isStudent = true;
+                isProfessor = false;
+            }
+            else {
+                isStudent = false;
+                isProfessor = true;
+            }
+            model.addAttribute("isStudent", isStudent);
+            model.addAttribute("isProf", isProfessor);
+
             model.addAttribute("project", project);
             model.addAttribute("isEdit", true);
             model.addAttribute("projectId", projectId);
