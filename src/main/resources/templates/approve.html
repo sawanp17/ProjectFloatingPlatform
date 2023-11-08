@@ -26,6 +26,10 @@
           <input type="hidden" name="projectId" th:value="${projectId}" />
           <input type="hidden" name="userId" th:value="${userId}" />
           <button type="submit" class="btn btn-danger">Approve</button>
+        </form>
+        <form method="post" action="/reject/save">
+          <input type="hidden" name="projectId" th:value="${projectId}" />
+          <input type="hidden" name="userId" th:value="${userId}" />
           <button type="submit" class="btn btn-danger">Reject</button>
         </form>
       </td>
