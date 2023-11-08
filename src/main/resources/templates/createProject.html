@@ -100,21 +100,21 @@
                 <option value="AI" th:selected="${isEdit} and ${project.department == 'AI'}">AI</option>
                 <option value="EE" th:selected="${isEdit} and ${project.department == 'EE'}">EE</option>
             </select>
-            <label class="form-label" for="Course Code">Course Code:</label>
-            <select class="form-input-1" id="Course Code" name="Course Code" required>
-                <option value="">Select</option>
-                <option value="CSN1010" th:selected="${isEdit} and ${project.department == 'CSN1010'}">CSN1010</option>
-                <option value="CSN2010" th:selected="${isEdit} and ${project.department == 'CSN2010'}">CSN2010</option>
-                <option value="CSN3010" th:selected="${isEdit} and ${project.department == 'CSN3010'}">CSN3010</option>
-            </select>
+<!--            <label class="form-label" for="Course Code">Course Code:</label>-->
+<!--            <select class="form-input-1" id="Course Code" name="Course Code" required>-->
+<!--                <option value="">Select</option>-->
+<!--                <option value="CSN1010" th:selected="${isEdit} and ${project.department == 'CSN1010'}">CSN1010</option>-->
+<!--                <option value="CSN2010" th:selected="${isEdit} and ${project.department == 'CSN2010'}">CSN2010</option>-->
+<!--                <option value="CSN3010" th:selected="${isEdit} and ${project.department == 'CSN3010'}">CSN3010</option>-->
+<!--            </select>-->
 
-            <label class="form-label" for="Project Type">Project Type:</label>
-            <select class="form-input-1" id="Project Type" name="Project Type" required>
-                <option value="">Select</option>
-                <option value="BTP" th:selected="${isEdit} and ${project.projectType == 'BTP'}">BTP</option>
-                <option value="Design Credit" th:selected="${isEdit} and ${project.projectType == 'Design Credit'}">Design Credit</option>
-                <option value="Internship Project" th:selected="${isEdit} and ${project.projectType == 'Internship Project'}">Internship Project</option>
-            </select>
+<!--            <label class="form-label" for="Project Type">Project Type:</label>-->
+<!--            <select class="form-input-1" id="Project Type" name="Project Type" required>-->
+<!--                <option value="">Select</option>-->
+<!--                <option value="BTP" th:selected="${isEdit} and ${project.projectType == 'BTP'}">BTP</option>-->
+<!--                <option value="Design Credit" th:selected="${isEdit} and ${project.projectType == 'Design Credit'}">Design Credit</option>-->
+<!--                <option value="Internship Project" th:selected="${isEdit} and ${project.projectType == 'Internship Project'}">Internship Project</option>-->
+<!--            </select>-->
 
             <label class="form-label" for="description">Description:</label>
             <textarea class="form-input-3" id="description" name="description" rows="4" cols="50" required th:text="${isEdit} ? ${project.getDescription()} : ''"></textarea>
@@ -128,12 +128,12 @@
             <label class="form-label" for="deadline">Deadline:</label>
             <input class="form-input-1" type="date" id="deadline" name="deadline" required th:value="${isEdit} ? ${project.getDeadline()} : ''">
 
-            <label class="form-label" for="Stipend Option">Stipend Option:</label>
-            <select class="form-input-1" id="Stipend Option" name="Stipend Option" required>
-                <option value="">Select</option>
-                <option value="Yes" th:selected="${isEdit} and ${project.stipendOption == 'Yes'}">Yes</option>
-                <option value="No" th:selected="${isEdit} and ${project.stipendOption == 'No'}">No</option>
-            </select>
+<!--            <label class="form-label" for="Stipend Option">Stipend Option:</label>-->
+<!--            <select class="form-input-1" id="Stipend Option" name="Stipend Option" required>-->
+<!--                <option value="">Select</option>-->
+<!--                <option value="Yes" th:selected="${isEdit} and ${project.stipendOption == 'Yes'}">Yes</option>-->
+<!--                <option value="No" th:selected="${isEdit} and ${project.stipendOption == 'No'}">No</option>-->
+<!--            </select>-->
 
             <label class="form-label" for="status">Status:</label>
             <select class="form-input-1" id="status" name="status" required>
