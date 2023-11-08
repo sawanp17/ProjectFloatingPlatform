@@ -474,25 +474,25 @@ public class StudentController {
         return "redirect:/approve";
     }
 
-//    @PostMapping("/reject/save")
-//    public String rejectSaveMapping(Model model,Authentication authentication,
-//                                    @ModelAttribute("userId") String username,
-//                                    @ModelAttribute("projectId") Long projectId){
-//
-//
-//        Rejected newRejected = new Rejected();
-//        newRejected.setProjectId(projectId);
-//        newRejected.setUserId(username);
-//        newRejected = rejectedRepo.save(newRejected);
-//
-//        //delete this the approved user from applied list of that project
-//        Optional<ProjectApply> projectApply = projectApplyRepo.findProjectByUserIdAndProjectId(username,projectId);
-//
-//        if (projectApply.isPresent()){
-//            projectApplyRepo.delete(projectApply.get());
-//        }
-//        return "redirect:/approve";
-//    }
+    @PostMapping("/reject/save")
+    public String rejectSaveMapping(Model model,Authentication authentication,
+                                    @ModelAttribute("userId") String username,
+                                    @ModelAttribute("projectId") Long projectId){
+
+        System.out.println("Rejected a student");
+
+        Rejected newRejected = new Rejected();
+        newRejected.setProjectId(projectId);
+        newRejected.setUserId(username);
+        newRejected = rejectedRepo.save(newRejected);
+        //delete this the approved user from applied list of that project
+        Optional<ProjectApply> projectApply = projectApplyRepo.findProjectByUserIdAndProjectId(username,projectId);
+
+        if (projectApply.isPresent()){
+            projectApplyRepo.delete(projectApply.get());
+        }
+        return "redirect:/approve";
+    }
 
 
 }
