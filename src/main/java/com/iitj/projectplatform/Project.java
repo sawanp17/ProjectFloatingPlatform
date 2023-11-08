@@ -34,6 +34,16 @@ public class Project {
     @Column(name = "status")
     private String status;
 
+    @Column(name = "ProjectType")
+    private ProjectType projectType;
+
+    @Column(name = "CourseCode")
+    private CourseCode courseCode;
+
+    @Column(name = "Stipend")
+    private Stipend stipend;
+
+
     public Project() {
     }
 
@@ -53,6 +63,30 @@ public class Project {
         this.title = title;
     }
 
+
+    public ProjectType getProjectType() {
+        return projectType;
+    }
+
+    public void setProjectType(ProjectType projectType) {
+        this.projectType = projectType;
+    }
+
+    public CourseCode getCourseCode() {
+        return courseCode;
+    }
+
+    public void setCourseCode(CourseCode courseCode) {
+        this.courseCode = courseCode;
+    }
+
+    public Stipend getStipend() {
+        return stipend;
+    }
+
+    public void setStipend(Stipend stipend) {
+        this.stipend = stipend;
+    }
 
     public String getStatus() {
         return status;
@@ -117,4 +151,6 @@ public class Project {
     public void setMaxLim(int maxLim) {
         this.maxLim = maxLim;
     }
+
+
 }

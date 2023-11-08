@@ -185,6 +185,10 @@ public class StudentController {
         toSave.setPreReq(project.getPreReq());
         toSave.setMaxLim(project.getMaxLim());
         toSave.setStatus(project.getStatus());
+        toSave.setProjectType(project.getProjectType());
+        toSave.setCourseCode(project.getCourseCode());
+        toSave.setStipend(project.getStipend());
+
 
 
         toSave = projectRepo.save(toSave);
