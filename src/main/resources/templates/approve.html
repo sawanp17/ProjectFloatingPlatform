@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <title>Project Applicants</title>
+</head>
+<body>
+<h1>Project Applicants</h1>
+
+<div th:each="entry : ${MapOfProjectApplicants}">
+  <h2 th:text="${entry.key}"></h2>
+  <table>
+    <thead>
+    <tr>
+      <th>User ID</th>
+      <th>Resume Link</th>
+      <th>Action</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr th:each="applicant : ${entry.value}" th:with="projectId=${applicant.projectId}, userId=${applicant.userId}">
+      <td th:text="${applicant.userId}"></td>
+      <td th:text="${applicant.resumeLink}"></td>
+      <td>
+        <form method="post" action="/approve/save">
+          <input type="hidden" name="projectId" th:value="${projectId}" />
+          <input type="hidden" name="userId" th:value="${userId}" />
+          <button type="submit" class="btn btn-danger">Approve</button>
+          <button type="submit" class="btn btn-danger">Reject</button>
+        </form>
+      </td>
+    </tr>
+    </tbody>
+  </table>
+</div>
+</body>
+</html>

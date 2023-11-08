@@ -34,14 +34,14 @@ public class Project {
     @Column(name = "status")
     private String status;
 
-    @Column(name = "ProjectType")
+    @Column(name = "projecttype")
     private ProjectType projectType;
 
-    @Column(name = "CourseCode")
+    @Column(name = "coursecode")
     private CourseCode courseCode;
 
-    @Column(name = "Stipend")
-    private Stipend stipend;
+    @Column(name = "stipendoption")
+    private StipendOption stipendOption;
 
 
     public Project() {
@@ -80,12 +80,12 @@ public class Project {
         this.courseCode = courseCode;
     }
 
-    public Stipend getStipend() {
-        return stipend;
+    public StipendOption getStipend() {
+        return stipendOption;
     }
 
-    public void setStipend(Stipend stipend) {
-        this.stipend = stipend;
+    public void setStipend(StipendOption stipendOption) {
+        this.stipendOption = stipendOption;
     }
 
     public String getStatus() {

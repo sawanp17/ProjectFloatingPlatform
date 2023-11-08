@@ -9,10 +9,9 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
-import java.util.Optional;
+import javax.swing.text.html.Option;
+import java.util.*;
+import java.util.stream.Collectors;
 
 @Controller
 public class StudentController {
@@ -27,6 +26,10 @@ public class StudentController {
     private ProjectApplyRepo projectApplyRepo;
     @Autowired
     private ProjectCreateRepo projectCreateRepo;
+    @Autowired
+    private ApprovedRepo approvedRepo;
+    @Autowired
+    private RejectedRepo rejectedRepo;
 
 
     @GetMapping("/welcome")
@@ -57,6 +60,28 @@ public class StudentController {
 
                 model.addAttribute("isStudent", true);
                 model.addAttribute("isProfessor", false);
+                model.addAttribute("isCoordinator", false);
+
+            }
+            else if (authority.getAuthority().equals("ROLE_COORDINATOR")){
+                System.out.println(
+                        ">> adding coordinator to model"
+                );
+
+                String role = currentUser.get().getRole().name();
+                String user_name = currentUser.get().getUsername();
+                String name = currentUser.get().getName();
+                String email = currentUser.get().getEmail();
+
+                model.addAttribute("role", role);
+                model.addAttribute("user_name", user_name);
+                model.addAttribute("name", name);
+                model.addAttribute("email", email);
+
+
+                model.addAttribute("isCoordinator", true);
+                model.addAttribute("isStudent", false);
+                model.addAttribute("isProfessor", false);
             }
             else {
                 System.out.println(
@@ -71,6 +96,7 @@ public class StudentController {
                 model.addAttribute("user_name", user_name);
                 model.addAttribute("name", name);
                 model.addAttribute("email", email);
+                model.addAttribute("isCoordinator", false);
                 model.addAttribute("isStudent", false);
                 model.addAttribute("isProfessor", true);
             }
@@ -97,6 +123,7 @@ public class StudentController {
     public String showRegister(Model model){
         User user = new User();
         model.addAttribute("user",user);
+        model.addAttribute("roleList",Role.values());
         return "register";
     }
 
@@ -133,6 +160,13 @@ public class StudentController {
         String username = userDetails.getUsername();
         Optional<User> user = userRepo.findUserByUsername(username);
         Role role;
+
+
+        model.addAttribute("stipendOptions", StipendOption.values());
+        model.addAttribute("departmentList", Departments.values());
+        model.addAttribute("courseCodeList", CourseCode.values());
+        model.addAttribute("projectTypeList", ProjectType.values());
+
         Boolean isStudent=false, isProfessor=false;
         if (user.isPresent()){
             role = user.get().getRole();
@@ -376,8 +410,89 @@ public class StudentController {
     }
 
 
+    @GetMapping("/approve")
+    public String approvePage(Model model, Authentication authentication){
+        UserDetails userDetails = (UserDetails) authentication.getPrincipal();
+        String username = userDetails.getUsername();
+
+        List<Optional<ProjectCreate>> myprojects = projectCreateRepo.findProjectCreateByUserId(username);
+        List<Long> projectIds = new ArrayList<>();
+        List<Optional<ProjectApply>> myProjectApplicants = new ArrayList<>();
 
 
+
+        for (Optional<ProjectCreate> projectCreate: myprojects){
+            if (projectCreate.isPresent()){
+                if (projectCreate.get().getUserId().equals(username)){
+                    projectIds.add(projectCreate.get().getProjectId());
+                    myProjectApplicants.addAll(projectApplyRepo.findProjectApplyByProjectId(projectCreate.get().getProjectId()));
+                }
+            }
+        }
+
+
+
+        Map<Long, List<ProjectApply>> groupedByProjectId = myProjectApplicants.stream()
+                .filter(Optional::isPresent) // Filter out empty Optionals
+                .map(Optional::get) // Extract the non-empty ProjectApply instances
+                .collect(Collectors.groupingBy(ProjectApply::getProjectId));
+
+        Map<String, List<ProjectApply>> groupedByProjectName = new HashMap<>();
+        for (Long projectId: groupedByProjectId.keySet()){
+            groupedByProjectName.put(
+                    projectRepo.findProjectById(projectId).getTitle(),
+                    groupedByProjectId.get(projectId)
+            );
+        }
+
+        model.addAttribute("MapOfProjectApplicants", groupedByProjectName);
+        return "approve";
+    }
+
+
+    @PostMapping("/approve/save")
+    public String approveRequest(Model model,Authentication authentication,
+                               @ModelAttribute("userId") String username,
+                               @ModelAttribute("projectId") Long projectId){
+//        UserDetails userDetails = (UserDetails) authentication.getPrincipal();
+//        String username = userDetails.getUsername();
+
+        Approved newApproved = new Approved();
+        newApproved.setProjectId(projectId);
+        newApproved.setUserId(username);
+        newApproved = approvedRepo.save(newApproved);
+
+        //delete this the approved user from applied list of that project
+        Optional<ProjectApply> projectApply = projectApplyRepo.findProjectByUserIdAndProjectId(username,projectId);
+
+        if (projectApply.isPresent()){
+            projectApplyRepo.delete(projectApply.get());
+        }
+
+
+
+        return "redirect:/approve";
+    }
+
+//    @PostMapping("/reject/save")
+//    public String rejectSaveMapping(Model model,Authentication authentication,
+//                                    @ModelAttribute("userId") String username,
+//                                    @ModelAttribute("projectId") Long projectId){
+//
+//
+//        Rejected newRejected = new Rejected();
+//        newRejected.setProjectId(projectId);
+//        newRejected.setUserId(username);
+//        newRejected = rejectedRepo.save(newRejected);
+//
+//        //delete this the approved user from applied list of that project
+//        Optional<ProjectApply> projectApply = projectApplyRepo.findProjectByUserIdAndProjectId(username,projectId);
+//
+//        if (projectApply.isPresent()){
+//            projectApplyRepo.delete(projectApply.get());
+//        }
+//        return "redirect:/approve";
+//    }
 
 
 }

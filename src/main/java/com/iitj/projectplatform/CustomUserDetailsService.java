@@ -37,6 +37,10 @@ public class CustomUserDetailsService implements UserDetailsService {
             System.out.println(">>  Assigning role of Professor to " + user.getUsername());
             authorities.add(new SimpleGrantedAuthority("ROLE_PROFESSOR"));
         }
+        else if (user.getRole().equals(Role.Coordinator)){
+            System.out.println(">>  Assigning role of Coordinator to " + user.getUsername());
+            authorities.add(new SimpleGrantedAuthority("ROLE_COORDINATOR"));
+        }
         else if (user.getRole().equals(Role.Student)){
             System.out.println(">>  Assigning role of Student to " + user.getUsername());
 

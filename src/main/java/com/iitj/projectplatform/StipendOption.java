@@ -1,6 +1,6 @@
 package com.iitj.projectplatform;
 
-public enum Stipend {
+public enum StipendOption {
     YES,
     NO,
     MAYBE

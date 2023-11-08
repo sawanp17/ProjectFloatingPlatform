@@ -3,36 +3,26 @@ package com.iitj.projectplatform;
 import jakarta.persistence.*;
 
 @Entity
-@Table(name = "projectapply")
-public class ProjectApply {
+@Table(name = "approved")
+public class Approved {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
     private Long id;
 
-    @Column(name = "user_id")
+    @Column(name = "userid")
     private String userId;
 
-    @Column(name = "project_id")
+    @Column(name = "projectid")
     private Long projectId;
 
-    @Column(name = "resumelink")
-    private String resumeLink;
-
-    public ProjectApply() {
+    public Approved(Long id, String userId, Long projectId) {
+        this.id = id;
+        this.userId = userId;
+        this.projectId = projectId;
     }
 
-    public ProjectApply(String user_id, Long project_id) {
-        this.userId = user_id;
-        this.projectId = project_id;
-    }
-
-    public String getResumeLink() {
-        return resumeLink;
-    }
-
-    public void setResumeLink(String resumeLink) {
-        this.resumeLink = resumeLink;
+    public Approved() {
     }
 
     public Long getId() {
