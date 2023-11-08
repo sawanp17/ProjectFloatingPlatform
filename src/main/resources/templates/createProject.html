@@ -22,11 +22,7 @@
             background-color: #D5DBDB;
             color: black;
             border-color:#f2f2f2 ;
-
-
-
         }
-
         .btn-secondary{
 
             margin-right: 40px;
@@ -103,6 +99,13 @@
                 <option value="CSE" th:selected="${isEdit} and ${project.department == 'CSE'}">CSE</option>
                 <option value="AI" th:selected="${isEdit} and ${project.department == 'AI'}">AI</option>
                 <option value="EE" th:selected="${isEdit} and ${project.department == 'EE'}">EE</option>
+            </select>
+            <label class="form-label" for="Course Code">Course Code:</label>
+            <select class="form-input-1" id="Course Code" name="Course Code" required>
+                <option value="">Select</option>
+                <option value="CSN1010" th:selected="${isEdit} and ${project.department == 'CSN1010'}">CSE</option>
+                <option value="CSN2010" th:selected="${isEdit} and ${project.department == 'CSN2010'}">AI</option>
+                <option value="CSN3010" th:selected="${isEdit} and ${project.department == 'CSN3010'}">EE</option>
             </select>
             <label class="form-label" for="description">Description:</label>
             <textarea class="form-input-3" id="description" name="description" rows="4" cols="50" required th:text="${isEdit} ? ${project.getDescription()} : ''"></textarea>
