@@ -100,6 +100,8 @@
               <tr>
                 <th style="width: 15%;">Title</th>
                 <th style="width: 5%;">Department</th>
+                <th style="width: 5%;">Professor</th>
+
                 <th style="width: 15%;">Deadline</th>
                 <th style="width: 25%;">Description</th>
                 <th style="width: 20%;">Prerequisite</th>
@@ -112,6 +114,7 @@
               <tr th:each="project : ${floatedProjects}">
                 <td th:text="${project.title}"></td>
                 <td th:text="${project.department}"></td>
+                <td th:text="${projectToProf.get(project.getId())}"></td>
                 <td th:text="${project.deadline}"></td>
                 <td th:text="${project.description}"></td>
                 <td th:text="${project.preReq}"></td>

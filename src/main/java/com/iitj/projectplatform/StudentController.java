@@ -395,7 +395,17 @@ public class StudentController {
             }
         }
         floatedProjects.removeAll(toRemove);
+
+
+        Map<Long,String> projectToProf = new HashMap<>();
+        for (Project project: floatedProjects){
+            Long projectID = project.getId();
+            String userID = projectCreateRepo.findProjectCreateByProjectId(projectID).get(0).get().getUserId();
+            projectToProf.put(projectID, userRepo.findUserByUsername(userID).get().getName());
+        }
+
         model.addAttribute("floatedProjects", floatedProjects);
+        model.addAttribute("projectToProf", projectToProf);
         return "applyProject";
     }
 
