@@ -385,6 +385,16 @@ public class StudentController {
 
 
         List<Project> floatedProjects = projectRepo.findProjectByStatus("FLOATED");
+        List<Project> toRemove = new ArrayList<>();
+        for (Project project: floatedProjects){
+            if (rejectedRepo.findRejectedByUserIdAndProjectId(username,project.getId()).isPresent()
+                || approvedRepo.findApprovedByUserIdAndProjectId(username,project.getId()).isPresent()
+                    || projectApplyRepo.findProjectByUserIdAndProjectId(username,project.getId()).isPresent()
+            ){
+                toRemove.add(project);
+            }
+        }
+        floatedProjects.removeAll(toRemove);
         model.addAttribute("floatedProjects", floatedProjects);
         return "applyProject";
     }
@@ -405,7 +415,7 @@ public class StudentController {
             );
             ProjectApply projectApply = new ProjectApply(userDetails.getUsername(), projectId);
             projectApplyRepo.save(projectApply);
-            return "redirect:/myProjects";
+            return "redirect:/apply";
         }
     }
 
@@ -455,7 +465,8 @@ public class StudentController {
                                @ModelAttribute("userId") String username,
                                @ModelAttribute("projectId") Long projectId){
 //        UserDetails userDetails = (UserDetails) authentication.getPrincipal();
-//        String username = userDetails.getUsername();
+//        String currentUser = userDetails.getUsername();
+
 
         Approved newApproved = new Approved();
         newApproved.setProjectId(projectId);
