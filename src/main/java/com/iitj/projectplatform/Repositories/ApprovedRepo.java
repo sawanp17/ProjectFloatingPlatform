@@ -14,4 +14,5 @@ public interface ApprovedRepo extends JpaRepository<Approved,Long> {
     List<Approved> findApprovedByCourseCode(CourseCode courseCode);
     List<Approved> findApprovedByUserId(String userId);
 
+
 }

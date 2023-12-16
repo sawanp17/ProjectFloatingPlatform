@@ -418,7 +418,6 @@ public class StudentController {
         }
         floatedProjects.removeAll(toRemove);
 
-
         Map<Long,String> projectToProf = new HashMap<>();
         for (Project project: floatedProjects){
             Long projectID = project.getId();
@@ -545,20 +544,6 @@ public class StudentController {
         return "redirect:/approve";
     }
 
-
-//    @RequestMapping(value = "/filter", method = {RequestMethod.GET, RequestMethod.POST})
-//    public String getFilteredResults(@ModelAttribute("courseCode") CourseCode courseCode, Model model){
-//        if (!(courseCode == null)){
-//            //if coordinator has posted some courseCode
-//            List<Approved> approvedByCourseCode = approvedRepo.findApprovedByCourseCode(courseCode);
-//            model.addAttribute("approvedByCourseCode", approvedByCourseCode);
-//            return "courseCodeApproved";
-//        }
-//        else {
-//            model.addAttribute("courseCodeList", CourseCode.values());
-//            return "ListCourseCode";
-//        }
-//    }
 
     @GetMapping("/filter")
     public String getCourseCode(Model model){
