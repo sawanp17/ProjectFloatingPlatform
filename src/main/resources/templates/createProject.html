@@ -95,26 +95,25 @@
             <input class="form-input-1" type="text" id="title" name="title" required th:value="${isEdit} ? ${project.getTitle()} : ''">
             <label class="form-label" for="department">Department:</label>
             <select class="form-input-1" id="department" name="department" required>
-                <option value="">Select</option>
-                <option th:each="option : ${departmentList}"
+                <!-- Iterate through projectTypeList and display options -->
+                <option th:each="option : ${listDepartments}"
                         th:value="${option}"
-                        th:text="${option}"></option>
-            </select>
-            <label class="form-label" for="Course Code">Course Code:</label>
-            <select class="form-input-1" id="Course Code" name="Course Code" required>
-                <option value="">Select</option>
-                <option th:each="option : ${courseCodeList}"
-                        th:value="${option}"
-                        th:text="${option}"></option>
+                        th:text="${option}"
+                        th:selected="${isEdit and option == project.getDepartment()}">
+                </option>
             </select>
 
-            <label class="form-label" for="Project Type">Project Type:</label>
-            <select class="form-input-1" id="Project Type" name="Project Type" required>
-                <option value="">Select</option>
-                <option th:each="option : ${projectTypeList}"
+            <label class="form-label" for="projectType">Project Type:</label>
+            <select class="form-input-1" id="projectType" name="projectType" required>
+                <!-- Iterate through projectTypeList and display options -->
+                <option th:each="option : ${listProjectTypes}"
                         th:value="${option}"
-                        th:text="${option}"></option>
+                        th:text="${option}"
+                        th:selected="${isEdit and option == project.getProjectType()}">
+                </option>
             </select>
+
+
 
             <label class="form-label" for="description">Description:</label>
             <textarea class="form-input-3" id="description" name="description" rows="4" cols="50" required th:text="${isEdit} ? ${project.getDescription()} : ''"></textarea>
@@ -128,13 +127,18 @@
             <label class="form-label" for="deadline">Deadline:</label>
             <input class="form-input-1" type="date" id="deadline" name="deadline" required th:value="${isEdit} ? ${project.getDeadline()} : ''">
 
-            <label class="form-label" for="stipendOptions">Stipend Option:</label>
-            <select class="form-input-1" id="stipendOptions" name="stipendOptions" required>
-                <option value="">Select</option>
-                <option th:each="option : ${stipendOptions}"
+            <label class="form-label" for="stipendOption">Stipend Option:</label>
+            <select class="form-input-1" id="stipendOption" name="stipendOption" required>
+                <!-- Iterate through projectTypeList and display options -->
+                <option th:each="option : ${listStipendOptions}"
                         th:value="${option}"
-                        th:text="${option}"></option>
+                        th:text="${option}"
+                        th:selected="${isEdit and option == project.getStipendOption()}">
+                </option>
             </select>
+
+            <label class="form-label" for="stipendAmount">Stipend Amount:</label>
+            <input class="form-input-1" type="number" id="stipendAmount" name="stipendAmount" required th:value="${isEdit} ? ${project.getStipendAmount()} : 0">
 
 
             <label class="form-label" for="status">Status:</label>

@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+  <meta charset="UTF-8">
+  <title>Course Code Dropdown</title>
+</head>
+<body>
+<form action="/filter/get" method="post" >
+  <label for="courseCode">Select a Course Code:</label>
+  <select id="courseCode" name="courseCode">
+    <!-- Populate dropdown options using Thymeleaf -->
+    <option th:each="code : ${courseCodeList}" th:value="${code}" th:text="${code}"></option>
+  </select>
+  <br><br>
+  <input type="submit" value="Submit">
+</form>
+</body>
+</html>

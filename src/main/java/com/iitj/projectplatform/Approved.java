@@ -16,6 +16,10 @@ public class Approved {
     @Column(name = "projectid")
     private Long projectId;
 
+    @Column(name = "coursecode")
+    @Enumerated(EnumType.STRING)
+    private CourseCode courseCode;
+
     public Approved(Long id, String userId, Long projectId) {
         this.id = id;
         this.userId = userId;
@@ -47,5 +51,13 @@ public class Approved {
 
     public void setProjectId(Long projectId) {
         this.projectId = projectId;
+    }
+
+    public CourseCode getCourseCode() {
+        return courseCode;
+    }
+
+    public void setCourseCode(CourseCode courseCode) {
+        this.courseCode = courseCode;
     }
 }

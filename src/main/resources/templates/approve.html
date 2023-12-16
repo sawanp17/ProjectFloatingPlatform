@@ -1,41 +1,50 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
 <head>
   <meta charset="UTF-8">
-  <title>Project Applicants</title>
+  <title>Project Apply Details</title>
 </head>
 <body>
-<h1>Project Applicants</h1>
-
+<!-- Iterate through the map entries -->
 <div th:each="entry : ${MapOfProjectApplicants}">
+  <!-- Print the key as a heading -->
   <h2 th:text="${entry.key}"></h2>
-  <table>
+
+  <!-- Iterate through the list associated with the key -->
+  <table border="1">
     <thead>
     <tr>
       <th>User ID</th>
       <th>Resume Link</th>
-      <th>Action</th>
+      <th>Course Code</th>
+      <th>Actions</th> <!-- New column for Approve/Reject buttons -->
     </tr>
     </thead>
     <tbody>
-    <tr th:each="applicant : ${entry.value}" th:with="projectId=${applicant.projectId}, userId=${applicant.userId}">
-      <td th:text="${applicant.userId}"></td>
-      <td th:text="${applicant.resumeLink}"></td>
+    <!-- Iterate through each ProjectApply in the list -->
+    <tr th:each="projectApply : ${entry.value}">
+      <td th:text="${projectApply.getUserId()}"></td>
+      <td th:text="${projectApply.getResumeLink()}"></td>
+      <td th:text="${projectApply.getCourseCode()}"></td>
       <td>
-        <form method="post" action="/approve/save">
-          <input type="hidden" name="projectId" th:value="${projectId}" />
-          <input type="hidden" name="userId" th:value="${userId}" />
-          <button type="submit" class="btn btn-danger">Approve</button>
+        <!-- Approve button -->
+        <form th:action="@{/approve/save}" method="post">
+          <input type="hidden" name="userId" th:value="${projectApply.getUserId()}" />
+          <input type="hidden" name="projectId" th:value="${projectApply.getProjectId()}" />
+          <button type="submit">Approve</button>
         </form>
-        <form method="post" action="/reject/save">
-          <input type="hidden" name="projectId" th:value="${projectId}" />
-          <input type="hidden" name="userId" th:value="${userId}" />
-          <button type="submit" class="btn btn-danger">Reject</button>
+
+        <!-- Reject button -->
+        <form th:action="@{/reject/save}" method="post">
+          <input type="hidden" name="userId" th:value="${projectApply.getUserId()}" />
+          <input type="hidden" name="projectId" th:value="${projectApply.getProjectId()}" />
+          <button type="submit">Reject</button>
         </form>
       </td>
     </tr>
     </tbody>
   </table>
+  <br>
 </div>
 </body>
 </html>

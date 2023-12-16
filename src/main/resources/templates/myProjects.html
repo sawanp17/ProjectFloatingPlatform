@@ -94,6 +94,68 @@
           <div class="card-body">
             <h5 class="card-title">My Projects</h5>
             <br>
+
+            <h2 th:if="${isStudent}">Approved Projects</h2>
+            <table th:if="${isStudent}" class="card-table">
+              <thead>
+              <tr>
+                <th>Title</th>
+                <th>Deadline</th>
+                <th>Status</th>
+                <th class="hidden">Department</th>
+                <th class="hidden">Description</th>
+                <th class="hidden">Prerequisite</th>
+                <th>More detail</th>
+              </tr>
+              </thead>
+              <tbody>
+              <tr th:each="project : ${approvedList}">
+                <td th:text="${project.getTitle()}"></td>
+                <td th:text="${project.getDeadline()}"></td>
+                <td th:text="${project.getStatus()}"></td>
+                <td class="hidden" th:text="${project.getDepartment()}"></td>
+                <td class="hidden" th:text="${project.getDescription()}"></td>
+                <td class="hidden" th:text="${project.getPreReq()}"></td>
+
+                <td>
+                  <button class="btn btn-primary-1" onclick="showDetails(this)">View</button>
+                </td>
+              </tr>
+              </tbody>
+            </table>
+
+            <h2 th:if="${isStudent}">Rejected Projects</h2>
+            <table th:if="${isStudent}" class="card-table">
+              <thead>
+              <tr>
+                <th>Title</th>
+                <th>Deadline</th>
+                <th>Status</th>
+                <th class="hidden">Department</th>
+                <th class="hidden">Description</th>
+                <th class="hidden">Prerequisite</th>
+                <th>More detail</th>
+              </tr>
+              </thead>
+              <tbody>
+              <tr th:each="project : ${rejectedList}">
+                <td th:text="${project.getTitle()}"></td>
+                <td th:text="${project.getDeadline()}"></td>
+                <td th:text="${project.getStatus()}"></td>
+                <td class="hidden" th:text="${project.getDepartment()}"></td>
+                <td class="hidden" th:text="${project.getDescription()}"></td>
+                <td class="hidden" th:text="${project.getPreReq()}"></td>
+
+                <td>
+                  <button class="btn btn-primary-1" onclick="showDetails(this)">View</button>
+                </td>
+              </tr>
+              </tbody>
+            </table>
+
+            <h2 th:if="${isStudent}">Pending Projects</h2>
+            <table th:if="${isStudent}" class="card-table">
+            </table>
             <table class="card-table">
               <thead>
               <tr>
@@ -109,25 +171,25 @@
               </thead>
               <tbody>
               <tr th:each="project : ${listOfProjects}">
-                <td th:if="${project.isPresent()}" th:text="${project.get().getTitle()}"></td>
-                <td th:if="${project.isPresent()}" th:text="${project.get().getDeadline()}"></td>
-                <td th:if="${project.isPresent()}" th:text="${project.get().getStatus()}"></td>
-                <td class="hidden" th:if="${project.isPresent()}" th:text="${project.get().getDepartment()}"></td>
-                <td class="hidden" th:if="${project.isPresent()}" th:text="${project.get().getDescription()}"></td>
-                <td class="hidden" th:if="${project.isPresent()}" th:text="${project.get().getPreReq()}"></td>
+                <td th:text="${project.getTitle()}"></td>
+                <td th:text="${project.getDeadline()}"></td>
+                <td th:text="${project.getStatus()}"></td>
+                <td class="hidden" th:text="${project.getDepartment()}"></td>
+                <td class="hidden" th:text="${project.getDescription()}"></td>
+                <td class="hidden" th:text="${project.getPreReq()}"></td>
 
                 <td>
                   <button class="btn btn-primary-1" onclick="showDetails(this)">View</button>
                 </td>
 
                 <td th:if="${isProfessor}">
-                  <form th:if="${isProfessor} and ${project.isPresent()}" method="post" action="/edit">
-                    <input type="hidden" name="projectId" th:value="${project.get().getId()}" />
+                  <form th:if="${isProfessor}}" method="post" action="/edit">
+                    <input type="hidden" name="projectId" th:value="${project.getId()}" />
                     <button type="submit" class="btn btn-danger">Edit</button>
                   </form>
 
                   <form th:if="${isProfessor} and ${project.isPresent()}" method="post" action="/delete">
-                    <input type="hidden" name="projectId" th:value="${project.get().getId()}" />
+                    <input type="hidden" name="projectId" th:value="${project.getId()}" />
                     <button type="submit" class="btn btn-danger">Delete</button>
                   </form>
 
