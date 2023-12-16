@@ -8,7 +8,7 @@ import java.util.Optional;
 
 public interface ProjectApplyRepo extends JpaRepository<ProjectApply,Long> {
     List<Optional<ProjectApply>> findProjectApplyByUserId(String username);
-    List<Optional<ProjectApply>> findProjectApplyByProjectId(Long projectId);
+    List<ProjectApply> findProjectApplyByProjectId(Long projectId);
 
 //    List<Optional<ProjectApply>> findProjectApplyByProjectId(List<Long> projectId);
     Optional<ProjectApply> findProjectByUserIdAndProjectId(String username, Long projectId);

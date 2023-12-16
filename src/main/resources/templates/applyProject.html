@@ -107,6 +107,7 @@
                 <th style="width: 20%;">Prerequisite</th>
                 <th style="width: 10%;">Status</th>
                 <th style="width: 10%;">Resume Link</th>
+                <th style="width: 10%;">Course Code</th>
                 <th style="width: 10%;">Actions</th>
               </tr>
               </thead>
@@ -119,11 +120,17 @@
                 <td th:text="${project.description}"></td>
                 <td th:text="${project.preReq}"></td>
                 <td th:text="${project.status}"></td>
-                <td><input type="url" name="resumeLink" placeholder="Insert Resume Link" required pattern="https?://.*"></td>
 
                 <td>
                   <form method="post" th:action="@{'/apply/save'}">
                     <input type="hidden" name="projectId" th:value="${project.id}" />
+                    <input type="hidden" name="resumeLink" th:value="${resumeLink}" />
+                    <select name="courseCode" required>
+                      <option value="" disabled selected>Select Course Code</option>
+                      <option th:each="courseCode : ${courseCodeList}" th:value="${courseCode}" th:text="${courseCode}"></option>
+                    </select>
+                    <input type="url" name="resumeLink" placeholder="Insert Resume Link" required pattern="https?://.*">
+
                     <button type="submit" class="btn btn-danger">Apply</button>
                   </form>
                 </td>

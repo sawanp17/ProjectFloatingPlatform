@@ -19,6 +19,10 @@ public class ProjectApply {
     @Column(name = "resumelink")
     private String resumeLink;
 
+    @Column(name="coursecode")
+    @Enumerated(EnumType.STRING)
+    private CourseCode courseCode;
+
     public ProjectApply() {
     }
 
@@ -27,11 +31,20 @@ public class ProjectApply {
         this.projectId = project_id;
     }
 
+    public CourseCode getCourseCode() {
+        return courseCode;
+    }
+
+    public void setCourseCode(CourseCode courseCode) {
+        this.courseCode = courseCode;
+    }
+
     public String getResumeLink() {
         return resumeLink;
     }
 
     public void setResumeLink(String resumeLink) {
+        System.out.println("Here****************************************" + resumeLink);
         this.resumeLink = resumeLink;
     }
 
@@ -58,4 +71,5 @@ public class ProjectApply {
     public void setProjectId(Long projectId) {
         this.projectId = projectId;
     }
+
 }

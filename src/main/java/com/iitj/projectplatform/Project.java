@@ -35,13 +35,15 @@ public class Project {
     private String status;
 
     @Column(name = "projecttype")
+    @Enumerated(EnumType.STRING)
     private ProjectType projectType;
 
-    @Column(name = "coursecode")
-    private CourseCode courseCode;
-
     @Column(name = "stipendoption")
+    @Enumerated(EnumType.STRING)
     private StipendOption stipendOption;
+
+    @Column(name = "stipendamount")
+    private Integer stipendAmount;
 
 
     public Project() {
@@ -58,6 +60,21 @@ public class Project {
         this.status = status;
     }
 
+    public StipendOption getStipendOption() {
+        return stipendOption;
+    }
+
+    public void setStipendOption(StipendOption stipendOption) {
+        this.stipendOption = stipendOption;
+    }
+
+    public Integer getStipendAmount() {
+        return stipendAmount;
+    }
+
+    public void setStipendAmount(Integer stipendAmount) {
+        this.stipendAmount = stipendAmount;
+    }
 
     public Project(String title) {
         this.title = title;
@@ -72,21 +89,6 @@ public class Project {
         this.projectType = projectType;
     }
 
-    public CourseCode getCourseCode() {
-        return courseCode;
-    }
-
-    public void setCourseCode(CourseCode courseCode) {
-        this.courseCode = courseCode;
-    }
-
-    public StipendOption getStipend() {
-        return stipendOption;
-    }
-
-    public void setStipend(StipendOption stipendOption) {
-        this.stipendOption = stipendOption;
-    }
 
     public String getStatus() {
         return status;

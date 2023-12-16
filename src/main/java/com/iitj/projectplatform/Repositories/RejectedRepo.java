@@ -10,5 +10,5 @@ import java.util.Optional;
 public interface RejectedRepo extends JpaRepository<Rejected,Long> {
     List<Rejected> findRejecteddByProjectId(Long projectId);
     Optional<Rejected> findRejectedByUserIdAndProjectId(String username, Long projectId);
-
+    List<Rejected> findRejectedByUserId(String UserId);
 }

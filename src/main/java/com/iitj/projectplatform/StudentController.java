@@ -1,6 +1,7 @@
 package com.iitj.projectplatform;
 
 import com.iitj.projectplatform.Repositories.*;
+import com.nimbusds.oauth2.sdk.http.HTTPRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
@@ -27,9 +28,11 @@ public class StudentController {
     @Autowired
     private ProjectCreateRepo projectCreateRepo;
     @Autowired
-    private ApprovedRepo approvedRepo;
-    @Autowired
     private RejectedRepo rejectedRepo;
+
+    @Autowired
+    private ApprovedRepo approvedRepo;
+
 
 
     @GetMapping("/welcome")
@@ -145,6 +148,9 @@ public class StudentController {
             if (user.getRole().equals(Role.Student)){
                 toSave.setRole(Role.Student);
             }
+            else if (user.getRole().equals(Role.Coordinator)){
+                toSave.setRole(Role.Coordinator);
+            }
             else {
                 toSave.setRole(Role.Professor);
             }
@@ -162,7 +168,7 @@ public class StudentController {
         Role role;
 
 
-        model.addAttribute("stipendOptions", StipendOption.values());
+        model.addAttribute("stipendOptionsList", StipendOption.values());
         model.addAttribute("departmentList", Departments.values());
         model.addAttribute("courseCodeList", CourseCode.values());
         model.addAttribute("projectTypeList", ProjectType.values());
@@ -220,11 +226,8 @@ public class StudentController {
         toSave.setMaxLim(project.getMaxLim());
         toSave.setStatus(project.getStatus());
         toSave.setProjectType(project.getProjectType());
-        toSave.setCourseCode(project.getCourseCode());
-        toSave.setStipend(project.getStipend());
-
-
-
+        toSave.setStipendOption(project.getStipendOption());
+        toSave.setStipendAmount(project.getStipendAmount());
 
         toSave = projectRepo.save(toSave);
 
@@ -270,27 +273,44 @@ public class StudentController {
         if (currentRole.equals(Role.Professor)) createdProjects = projectCreateRepo.findProjectCreateByUserId(username);
 
         List<Optional<ProjectApply>> applyProjects = new ArrayList<>();
-        if (currentRole.equals(Role.Student)) applyProjects = projectApplyRepo.findProjectApplyByUserId(username);
+        List<Project> approvedProjects = new ArrayList<>();
+        List<Project> rejectedProjects = new ArrayList<>();
+
+        if (currentRole.equals(Role.Student)){
+            applyProjects = projectApplyRepo.findProjectApplyByUserId(username);
+            List<Approved> approvedObjectList = approvedRepo.findApprovedByUserId(username);
+            for (Approved it: approvedObjectList){
+                approvedProjects.add(projectRepo.findProjectById(it.getProjectId()));
+            }
+            List<Rejected> rejectedObjectList = rejectedRepo.findRejectedByUserId(username);
+            for (Rejected it: rejectedObjectList){
+                rejectedProjects.add(projectRepo.findProjectById(it.getProjectId()));
+            }
+
+            model.addAttribute("approvedList", approvedProjects);
+            model.addAttribute("rejectedList", rejectedProjects);
+        }
 
 
-        List<Optional<Project>> projectList = new ArrayList<>();
+        List<Project> projectList = new ArrayList<>();
 
         if (currentRole.equals(Role.Professor)){
             for (Optional<ProjectCreate> projectCreateIterator: createdProjects){
                 if (projectCreateIterator.isPresent()){
                     Optional<Project> foundProject = projectRepo.findById(projectCreateIterator.get().getProjectId());
                     if (foundProject.isPresent()){
-                        projectList.add(foundProject);
+                        projectList.add(foundProject.get());
                     }
                 }
             }
         }
+        //else: all other than professor, might modify to else if in future
         else {
             for (Optional<ProjectApply> projectApplyIterator: applyProjects){
                 if (projectApplyIterator.isPresent()){
                     Optional<Project> foundProject = projectRepo.findById(projectApplyIterator.get().getProjectId());
-                    if (foundProject.isPresent()){
-                        projectList.add(foundProject);
+                    if (foundProject.isPresent() && !approvedProjects.contains(foundProject) && !rejectedProjects.contains(foundProject)){
+                        projectList.add(foundProject.get());
                     }
                 }
             }
@@ -310,9 +330,9 @@ public class StudentController {
             projectCreateRepo.deleteById(projectCreatedIterator.get().getId());
         }
 
-        List<Optional<ProjectApply>> projectApplied = projectApplyRepo.findProjectApplyByProjectId(projectId);
-        for (Optional<ProjectApply> projectApplyIterator: projectApplied){
-            projectApplyRepo.deleteById(projectApplyIterator.get().getId());
+        List<ProjectApply> projectApplied = projectApplyRepo.findProjectApplyByProjectId(projectId);
+        for (ProjectApply projectApplyIterator: projectApplied){
+            projectApplyRepo.deleteById(projectApplyIterator.getId());
         }
 
         projectRepo.deleteById(projectId);
@@ -345,12 +365,13 @@ public class StudentController {
             }
             model.addAttribute("isStudent", isStudent);
             model.addAttribute("isProf", isProfessor);
-
+            model.addAttribute("listProjectTypes", ProjectType.values());
+            model.addAttribute("listStipendOptions", StipendOption.values());
+            model.addAttribute("listDepartments", Departments.values());
             model.addAttribute("project", project);
             model.addAttribute("isEdit", true);
             model.addAttribute("projectId", projectId);
         }
-        // Add the project as a model attribute
 
         return "createProject";
     }
@@ -380,6 +401,7 @@ public class StudentController {
 
         model.addAttribute("isStudent", isStudent);
         model.addAttribute("isProf", isProfessor);
+        model.addAttribute("courseCodeList", CourseCode.values());
 
 
 
@@ -410,8 +432,12 @@ public class StudentController {
     }
 
     @PostMapping("apply/save")
-    public String saveAppliedProject(@ModelAttribute("projectId") Long projectId,
-                                     Authentication authentication){
+    public String saveAppliedProject(
+            @RequestParam("projectId") Long projectId,
+            @RequestParam("courseCode") CourseCode courseCode,
+            @RequestParam("resumeLink") String resumeLink,
+            Authentication authentication
+    ){
         Project project = projectRepo.findProjectById(projectId);
         if (project == null){
             System.out.println(">> Project does not exist");
@@ -423,7 +449,12 @@ public class StudentController {
             System.out.println(
                     "User " + userDetails.getUsername() + " applied for project " + projectId
             );
-            ProjectApply projectApply = new ProjectApply(userDetails.getUsername(), projectId);
+            ProjectApply projectApply = new ProjectApply();
+            projectApply.setProjectId(projectId);
+            projectApply.setUserId(userDetails.getUsername());
+            projectApply.setResumeLink(resumeLink);
+            projectApply.setCourseCode(courseCode);
+
             projectApplyRepo.save(projectApply);
             return "redirect:/apply";
         }
@@ -437,7 +468,7 @@ public class StudentController {
 
         List<Optional<ProjectCreate>> myprojects = projectCreateRepo.findProjectCreateByUserId(username);
         List<Long> projectIds = new ArrayList<>();
-        List<Optional<ProjectApply>> myProjectApplicants = new ArrayList<>();
+        List<ProjectApply> myProjectApplicants = new ArrayList<>();
 
 
 
@@ -445,7 +476,8 @@ public class StudentController {
             if (projectCreate.isPresent()){
                 if (projectCreate.get().getUserId().equals(username)){
                     projectIds.add(projectCreate.get().getProjectId());
-                    myProjectApplicants.addAll(projectApplyRepo.findProjectApplyByProjectId(projectCreate.get().getProjectId()));
+                    List<ProjectApply> projectApplicants = projectApplyRepo.findProjectApplyByProjectId(projectCreate.get().getProjectId());
+                    myProjectApplicants.addAll(projectApplicants);
                 }
             }
         }
@@ -453,10 +485,7 @@ public class StudentController {
 
 
         Map<Long, List<ProjectApply>> groupedByProjectId = myProjectApplicants.stream()
-                .filter(Optional::isPresent) // Filter out empty Optionals
-                .map(Optional::get) // Extract the non-empty ProjectApply instances
                 .collect(Collectors.groupingBy(ProjectApply::getProjectId));
-
         Map<String, List<ProjectApply>> groupedByProjectName = new HashMap<>();
         for (Long projectId: groupedByProjectId.keySet()){
             groupedByProjectName.put(
@@ -477,13 +506,14 @@ public class StudentController {
 //        UserDetails userDetails = (UserDetails) authentication.getPrincipal();
 //        String currentUser = userDetails.getUsername();
 
-
+        System.out.println("here*** " + username + projectId);
         Approved newApproved = new Approved();
         newApproved.setProjectId(projectId);
         newApproved.setUserId(username);
+        newApproved.setCourseCode(projectApplyRepo.findProjectApplyByProjectId(projectId).get(0).getCourseCode());
         newApproved = approvedRepo.save(newApproved);
 
-        //delete this the approved user from applied list of that project
+        //delete this approved user from applied list of that project
         Optional<ProjectApply> projectApply = projectApplyRepo.findProjectByUserIdAndProjectId(username,projectId);
 
         if (projectApply.isPresent()){
@@ -515,5 +545,44 @@ public class StudentController {
         return "redirect:/approve";
     }
 
+
+//    @RequestMapping(value = "/filter", method = {RequestMethod.GET, RequestMethod.POST})
+//    public String getFilteredResults(@ModelAttribute("courseCode") CourseCode courseCode, Model model){
+//        if (!(courseCode == null)){
+//            //if coordinator has posted some courseCode
+//            List<Approved> approvedByCourseCode = approvedRepo.findApprovedByCourseCode(courseCode);
+//            model.addAttribute("approvedByCourseCode", approvedByCourseCode);
+//            return "courseCodeApproved";
+//        }
+//        else {
+//            model.addAttribute("courseCodeList", CourseCode.values());
+//            return "ListCourseCode";
+//        }
+//    }
+
+    @GetMapping("/filter")
+    public String getCourseCode(Model model){
+        model.addAttribute(CourseCode.values());
+        return "ListCourseCode";
+    }
+
+    @PostMapping("/filter/get")
+    public String getListOfStudentWithCourseCode(@RequestParam("courseCode") CourseCode courseCode, Model model){
+        List<Approved> approvedList =  approvedRepo.findApprovedByCourseCode(courseCode);
+        Map<User,Project> mapOfApproved = new HashMap<>();
+        for (Approved approved: approvedList){
+            mapOfApproved.put(
+                    userRepo.findUserByUsername(approved.getUserId()).get(),
+                    projectRepo.findProjectById(approved.getProjectId())
+            );
+        }
+        model.addAttribute("mapOfApproved", mapOfApproved);
+        return "courseCodeApproved";
+    }
+
+//    @GetMapping("/gotApproved")
+//    public String gotApprovedList(@ModelAttribute("mapOfApproved") Map<User,Project> mapOfApproved){
+//        return "courseCodeApproved";
+//    }
 
 }
