@@ -280,11 +280,18 @@ public class StudentController {
             applyProjects = projectApplyRepo.findProjectApplyByUserId(username);
             List<Approved> approvedObjectList = approvedRepo.findApprovedByUserId(username);
             for (Approved it: approvedObjectList){
-                approvedProjects.add(projectRepo.findProjectById(it.getProjectId()));
+                Project currProject = projectRepo.findProjectById(it.getProjectId());
+                if (!(currProject==null)){
+                    approvedProjects.add(currProject);
+                }
+
             }
             List<Rejected> rejectedObjectList = rejectedRepo.findRejectedByUserId(username);
             for (Rejected it: rejectedObjectList){
-                rejectedProjects.add(projectRepo.findProjectById(it.getProjectId()));
+                Project currProject = projectRepo.findProjectById(it.getProjectId());
+                if (!(currProject==null)){
+                    approvedProjects.add(currProject);
+                }
             }
 
             model.addAttribute("approvedList", approvedProjects);
@@ -298,7 +305,7 @@ public class StudentController {
             for (Optional<ProjectCreate> projectCreateIterator: createdProjects){
                 if (projectCreateIterator.isPresent()){
                     Optional<Project> foundProject = projectRepo.findById(projectCreateIterator.get().getProjectId());
-                    if (foundProject.isPresent()){
+                    if (foundProject.isPresent() && !(foundProject == null)){
                         projectList.add(foundProject.get());
                     }
                 }
@@ -309,7 +316,8 @@ public class StudentController {
             for (Optional<ProjectApply> projectApplyIterator: applyProjects){
                 if (projectApplyIterator.isPresent()){
                     Optional<Project> foundProject = projectRepo.findById(projectApplyIterator.get().getProjectId());
-                    if (foundProject.isPresent() && !approvedProjects.contains(foundProject) && !rejectedProjects.contains(foundProject)){
+                    if (foundProject.isPresent() && !approvedProjects.contains(foundProject)
+                            && !rejectedProjects.contains(foundProject) && !(foundProject==null)){
                         projectList.add(foundProject.get());
                     }
                 }
