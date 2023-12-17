@@ -3,6 +3,8 @@ package com.iitj.projectplatform;
 import jakarta.persistence.*;
 
 import java.sql.Date;
+import java.util.HashSet;
+import java.util.Set;
 
 @Entity
 @Table(name = "Project")
@@ -44,7 +46,6 @@ public class Project {
 
     @Column(name = "stipendamount")
     private Integer stipendAmount;
-
 
     public Project() {
     }

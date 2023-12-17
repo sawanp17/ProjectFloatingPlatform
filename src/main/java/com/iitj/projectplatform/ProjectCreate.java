@@ -2,6 +2,9 @@ package com.iitj.projectplatform;
 
 import jakarta.persistence.*;
 
+import java.util.HashSet;
+import java.util.Set;
+
 @Entity
 @Table(name = "projectcreation")
 public class ProjectCreate {
@@ -14,6 +17,7 @@ public class ProjectCreate {
 
     @Column(name = "project_id")
     private Long projectId;
+
 
     public ProjectCreate() {
     }
