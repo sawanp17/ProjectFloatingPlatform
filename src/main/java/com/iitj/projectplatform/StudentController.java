@@ -365,12 +365,14 @@ public class StudentController {
             }
             model.addAttribute("isStudent", isStudent);
             model.addAttribute("isProf", isProfessor);
-            model.addAttribute("listProjectTypes", ProjectType.values());
-            model.addAttribute("listStipendOptions", StipendOption.values());
-            model.addAttribute("listDepartments", Departments.values());
             model.addAttribute("project", project);
             model.addAttribute("isEdit", true);
             model.addAttribute("projectId", projectId);
+            model.addAttribute("stipendOptionsList", StipendOption.values());
+            model.addAttribute("departmentList", Departments.values());
+            model.addAttribute("courseCodeList", CourseCode.values());
+            model.addAttribute("projectTypeList", ProjectType.values());
+
         }
 
         return "createProject";

@@ -183,12 +183,12 @@
                 </td>
 
                 <td th:if="${isProfessor}">
-                  <form th:if="${isProfessor}}" method="post" action="/edit">
+                  <form th:if="${isProfessor}" method="post" action="/edit">
                     <input type="hidden" name="projectId" th:value="${project.getId()}" />
                     <button type="submit" class="btn btn-danger">Edit</button>
                   </form>
 
-                  <form th:if="${isProfessor} and ${project.isPresent()}" method="post" action="/delete">
+                  <form th:if="${isProfessor}" method="post" action="/delete">
                     <input type="hidden" name="projectId" th:value="${project.getId()}" />
                     <button type="submit" class="btn btn-danger">Delete</button>
                   </form>
