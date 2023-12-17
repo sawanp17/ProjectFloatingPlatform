@@ -96,7 +96,7 @@
             <label class="form-label" for="department">Department:</label>
             <select class="form-input-1" id="department" name="department" required>
                 <!-- Iterate through projectTypeList and display options -->
-                <option th:each="option : ${listDepartments}"
+                <option th:each="option : ${departmentList}"
                         th:value="${option}"
                         th:text="${option}"
                         th:selected="${isEdit and option == project.getDepartment()}">
@@ -106,7 +106,7 @@
             <label class="form-label" for="projectType">Project Type:</label>
             <select class="form-input-1" id="projectType" name="projectType" required>
                 <!-- Iterate through projectTypeList and display options -->
-                <option th:each="option : ${listProjectTypes}"
+                <option th:each="option : ${projectTypeList}"
                         th:value="${option}"
                         th:text="${option}"
                         th:selected="${isEdit and option == project.getProjectType()}">
@@ -130,7 +130,7 @@
             <label class="form-label" for="stipendOption">Stipend Option:</label>
             <select class="form-input-1" id="stipendOption" name="stipendOption" required>
                 <!-- Iterate through projectTypeList and display options -->
-                <option th:each="option : ${listStipendOptions}"
+                <option th:each="option : ${stipendOptionsList}"
                         th:value="${option}"
                         th:text="${option}"
                         th:selected="${isEdit and option == project.getStipendOption()}">
