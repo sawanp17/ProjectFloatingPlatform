@@ -558,10 +558,16 @@ public class StudentController {
         List<Approved> approvedList =  approvedRepo.findApprovedByCourseCode(courseCode);
         Map<User,Project> mapOfApproved = new HashMap<>();
         for (Approved approved: approvedList){
-            mapOfApproved.put(
-                    userRepo.findUserByUsername(approved.getUserId()).get(),
-                    projectRepo.findProjectById(approved.getProjectId())
-            );
+            if (
+                    projectRepo.findProjectById(approved.getProjectId())!=null
+                    && userRepo.findUserByUsername(approved.getUserId())!=null
+            ){
+                mapOfApproved.put(
+                        userRepo.findUserByUsername(approved.getUserId()).get(),
+                        projectRepo.findProjectById(approved.getProjectId())
+                );
+            }
+
         }
         model.addAttribute("mapOfApproved", mapOfApproved);
         return "courseCodeApproved";
