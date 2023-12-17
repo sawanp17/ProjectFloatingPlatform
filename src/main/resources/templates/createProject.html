@@ -80,6 +80,8 @@
                     <button class="btn btn-primary" th:if="${isStudent}"><a href="/myProjects" style="text-decoration: none; color: black;">My Projects</a></button>
                     <button class="btn btn-primary"  th:if="${isStudent}"><a href="/apply" style="text-decoration: none; color: black;">Apply for Projects</a></button>
                     <button class ="btn btn-primary"  th:if="${isProf}"><a href="/create" style="text-decoration: none; color: black;">Create</a></button>
+                    <button class ="btn btn-primary"  th:if="${isProf}"><a href="/approve" style="text-decoration: none; color: black;">Approve</a></button>
+
                     <button class="btn btn-primary"  th:if="${isProf}"><a href="/myProjects" style="text-decoration: none; color: black;">My Projects</a></button>
                     <button class="btn btn-secondary" ><a href="/logout" style="text-decoration: none; color: black;">Logout</a></button>
                     <img src="https://iitj.ac.in/uploaded_docs/IITJ%20Logo__Smallest.jpg" alt="Your Logo" height="50" style="margin-right: 30px; transform: scale(1.4);" class="ml-2">
@@ -95,7 +97,10 @@
             <input class="form-input-1" type="text" id="title" name="title" required th:value="${isEdit} ? ${project.getTitle()} : ''">
             <label class="form-label" for="department">Department:</label>
             <select class="form-input-1" id="department" name="department" required>
-                <!-- Iterate through projectTypeList and display options -->
+                <!-- Default option -->
+                <option value="" disabled selected>Select Department</option>
+
+                <!-- Iterate through departmentList and display options -->
                 <option th:each="option : ${departmentList}"
                         th:value="${option}"
                         th:text="${option}"
@@ -105,6 +110,7 @@
 
             <label class="form-label" for="projectType">Project Type:</label>
             <select class="form-input-1" id="projectType" name="projectType" required>
+                <option value="" disabled selected>Select Project Type</option>
                 <!-- Iterate through projectTypeList and display options -->
                 <option th:each="option : ${projectTypeList}"
                         th:value="${option}"
@@ -128,7 +134,8 @@
             <input class="form-input-1" type="date" id="deadline" name="deadline" required th:value="${isEdit} ? ${project.getDeadline()} : ''">
 
             <label class="form-label" for="stipendOption">Stipend Option:</label>
-            <select class="form-input-1" id="stipendOption" name="stipendOption" required>
+            <select class="form-input-1" id="stipendOption" name="stipendOption" required onchange="toggleStipendAmount()">
+                <option value="" disabled selected>Select </option>
                 <!-- Iterate through projectTypeList and display options -->
                 <option th:each="option : ${stipendOptionsList}"
                         th:value="${option}"
@@ -137,8 +144,26 @@
                 </option>
             </select>
 
-            <label class="form-label" for="stipendAmount">Stipend Amount:</label>
-            <input class="form-input-1" type="number" id="stipendAmount" name="stipendAmount" required th:value="${isEdit} ? ${project.getStipendAmount()} : 0">
+            <label class="form-label" for="stipendAmount" id="stipendAmountLabel" style="display: none;">Stipend Amount:</label>
+            <input class="form-input-1" type="number" id="stipendAmount" name="stipendAmount" required th:value="${isEdit} ? ${project.getStipendAmount()} : 0" style="display: none;">
+
+
+            <script>
+                function toggleStipendAmount() {
+                    var stipendOption = document.getElementById("stipendOption");
+                    var stipendAmountLabel = document.getElementById("stipendAmountLabel");
+                    var stipendAmountInput = document.getElementById("stipendAmount");
+
+                    if (stipendOption.value === "Yes") {
+                        stipendAmountLabel.style.display = "block";
+                        stipendAmountInput.style.display = "block";
+                    } else {
+                        stipendAmountLabel.style.display = "none";
+                        stipendAmountInput.style.display = "none";
+                    }
+                }
+            </script>
+
 
 
             <label class="form-label" for="status">Status:</label>
@@ -163,3 +188,4 @@
 </div>
 </body>
 </html>
+

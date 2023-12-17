@@ -80,6 +80,8 @@
             <button class="btn btn-primary"  th:if="${isStudent}"><a href="/myProjects" style="text-decoration: none; color: black;">My Projects</a></button>
             <button class="btn btn-primary" th:if="${isStudent}"><a href="/apply" style="text-decoration: none; color: black;">Apply for Projects</a></button>
             <button class ="btn btn-primary"  th:if="${isProfessor}"><a href="/create" style="text-decoration: none; color: black;">Create</a></button>
+            <button class ="btn btn-primary"  th:if="${isProfessor}"><a href="/approve" style="text-decoration: none; color: black;">Approve</a></button>
+
             <button class="btn btn-primary"  th:if="${isProfessor}"><a href="/myProjects" style="text-decoration: none; color: black;">My Projects</a></button>
             <button class="btn btn-secondary" ><a href="/logout" style="text-decoration: none; color: black;">Logout</a></button>
             <img src="https://iitj.ac.in/uploaded_docs/IITJ%20Logo__Smallest.jpg" alt="Your Logo" height="50" style="margin-right: 30px; transform: scale(1.4);" class="ml-2">
@@ -88,15 +90,19 @@
       </div>
     </div>
     <br>
+
     <div class="row" style="margin-top: 20px">
       <div class="col-md-9" style="margin-left: 70px">
         <div class="card">
           <div class="card-body">
             <h5 class="card-title">My Projects</h5>
-            <br>
+          </div>
+        </div>
+        <br>
 
-            <h2 th:if="${isStudent}">Approved Projects</h2>
-            <table th:if="${isStudent}" class="card-table">
+        <div th:if="${isProfessor}" class="card">
+          <div class="card-body">
+            <table class="card-table">
               <thead>
               <tr>
                 <th>Title</th>
@@ -107,7 +113,47 @@
                 <th class="hidden">Prerequisite</th>
                 <th>More detail</th>
               </tr>
+
               </thead>
+
+              <tbody>
+              <tr th:each="project : ${listOfProjects}">
+                <td th:text="${project.getTitle()}"></td>
+                <td th:text="${project.getDeadline()}"></td>
+                <td th:text="${project.getStatus()}"></td>
+                <td class="hidden" th:text="${project.getDepartment()}"></td>
+                <td class="hidden" th:text="${project.getDescription()}"></td>
+                <td class="hidden" th:text="${project.getPreReq()}"></td>
+
+                <td>
+                  <button class="btn btn-primary-1" onclick="showDetails(this)">View</button>
+                </td>
+              </tr>
+              </tbody>
+
+            </table>
+          </div>
+        </div>
+
+<!--     Approved Projects    -->
+        <div th:if="${isStudent}" class="card">
+          <div class="card-body">
+            <h5 class="card-title">Approved Projects</h5>
+            <br>
+            <table class="card-table">
+              <thead>
+              <tr>
+                <th>Title</th>
+                <th>Deadline</th>
+                <th>Status</th>
+                <th class="hidden">Department</th>
+                <th class="hidden">Description</th>
+                <th class="hidden">Prerequisite</th>
+                <th>More detail</th>
+              </tr>
+
+              </thead>
+
               <tbody>
               <tr th:each="project : ${approvedList}">
                 <td th:text="${project.getTitle()}"></td>
@@ -122,10 +168,17 @@
                 </td>
               </tr>
               </tbody>
-            </table>
 
-            <h2 th:if="${isStudent}">Rejected Projects</h2>
-            <table th:if="${isStudent}" class="card-table">
+            </table>
+          </div>
+        </div>
+<br>
+<!--     Rejected Projects       -->
+        <div th:if="${isStudent}" class="card">
+          <div class="card-body">
+            <h5 class="card-title">Rejected Projects</h5>
+            <br>
+            <table class="card-table">
               <thead>
               <tr>
                 <th>Title</th>
@@ -136,6 +189,7 @@
                 <th class="hidden">Prerequisite</th>
                 <th>More detail</th>
               </tr>
+
               </thead>
               <tbody>
               <tr th:each="project : ${rejectedList}">
@@ -152,10 +206,14 @@
               </tr>
               </tbody>
             </table>
-
-            <h2 th:if="${isStudent}">Pending Projects</h2>
-            <table th:if="${isStudent}" class="card-table">
-            </table>
+          </div>
+        </div>
+<br>
+<!--     Applied Projects        -->
+        <div th:if="${isStudent}" class="card">
+          <div class="card-body">
+            <h5 class="card-title">Applied Projects</h5>
+            <br>
             <table class="card-table">
               <thead>
               <tr>
@@ -166,8 +224,8 @@
                 <th class="hidden">Description</th>
                 <th class="hidden">Prerequisite</th>
                 <th>More detail</th>
-                <th th:if="${isProfessor}">Actions</th>
               </tr>
+
               </thead>
               <tbody>
               <tr th:each="project : ${listOfProjects}">
@@ -202,9 +260,16 @@
             </table>
           </div>
         </div>
+<br>
+
+
+
+
       </div>
+
     </div>
   </div>
+
 </div>
 
 

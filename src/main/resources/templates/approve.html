@@ -3,48 +3,138 @@
 <head>
   <meta charset="UTF-8">
   <title>Project Apply Details</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css"
+        rel="stylesheet"
+        integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC"
+        crossorigin="anonymous">
+  <style>
+    .hidden {
+      display: none;
+    }
+    .card-title{
+      color: darkslateblue;
+    }
+    .card-table {
+      width: 100%;
+      border-collapse: collapse;
+    }
+    .card-table th, .card-table td {
+      border: 1px solid #ddd;
+
+      padding: 15px;
+      text-align: left;
+    }
+
+    .btn-primary{
+      margin-right: 50px;
+      background-color: white;
+      color: black;
+      border-color: white;
+      font-weight: normal;
+    }
+    .btn-primary:hover{
+      background-color: #D5DBDB;
+      color: black;
+      border-color:#f2f2f2 ;
+    }
+    .btn-primary-1{
+      margin-right: 50px;
+      background-color: #f2f2f2;
+      color: black;
+      border-color: white;
+      font-weight: normal;
+    }
+
+    .btn-secondary{
+
+      margin-right: 40px;
+      background-color: white;
+      font-weight: normal;
+
+      color: black;
+      border-color: white;
+    }
+    .btn-secondary:hover {
+      background-color: #D5DBDB;
+      color: black;
+
+      border-color: #f2f2f2;
+    }
+  </style>
+
 </head>
-<body>
-<!-- Iterate through the map entries -->
-<div th:each="entry : ${MapOfProjectApplicants}">
-  <!-- Print the key as a heading -->
-  <h2 th:text="${entry.key}"></h2>
+<body style="background-color: #f2f2f2">
+<div style="background-color: #f2f2f2; padding: 20px;">
+  <div class="container-fluid">
+    <br>
+    <div class="row" style="margin-top: auto">
+      <div class="col">
+        <div class="card w-100">
+          <div class="card-body d-flex justify-content-end align-items-center">
+            <div style="flex: 1;"></div> <!-- Create space to the left -->
+            <button class="btn btn-primary" ><a href="/welcome" style="text-decoration: none; color: black;">Home</a></button>
 
-  <!-- Iterate through the list associated with the key -->
-  <table border="1">
-    <thead>
-    <tr>
-      <th>User ID</th>
-      <th>Resume Link</th>
-      <th>Course Code</th>
-      <th>Actions</th> <!-- New column for Approve/Reject buttons -->
-    </tr>
-    </thead>
-    <tbody>
-    <!-- Iterate through each ProjectApply in the list -->
-    <tr th:each="projectApply : ${entry.value}">
-      <td th:text="${projectApply.getUserId()}"></td>
-      <td th:text="${projectApply.getResumeLink()}"></td>
-      <td th:text="${projectApply.getCourseCode()}"></td>
-      <td>
-        <!-- Approve button -->
-        <form th:action="@{/approve/save}" method="post">
-          <input type="hidden" name="userId" th:value="${projectApply.getUserId()}" />
-          <input type="hidden" name="projectId" th:value="${projectApply.getProjectId()}" />
-          <button type="submit">Approve</button>
-        </form>
+            <button class ="btn btn-primary"  ><a href="/create" style="text-decoration: none; color: black;">Create</a></button>
+            <button class ="btn btn-primary"  ><a href="/approve" style="text-decoration: none; color: black;">Approve</a></button>
 
-        <!-- Reject button -->
-        <form th:action="@{/reject/save}" method="post">
-          <input type="hidden" name="userId" th:value="${projectApply.getUserId()}" />
-          <input type="hidden" name="projectId" th:value="${projectApply.getProjectId()}" />
-          <button type="submit">Reject</button>
-        </form>
-      </td>
-    </tr>
-    </tbody>
-  </table>
+            <button class="btn btn-primary"  ><a href="/myProjects" style="text-decoration: none; color: black;">My Projects</a></button>
+            <button class="btn btn-secondary" ><a href="/logout" style="text-decoration: none; color: black;">Logout</a></button>
+            <img src="https://iitj.ac.in/uploaded_docs/IITJ%20Logo__Smallest.jpg" alt="Your Logo" height="50" style="margin-right: 30px; transform: scale(1.4);" class="ml-2">
+          </div>
+        </div>
+      </div>
+    </div>
+    <br>
+
+    <div class="row" style="margin-top: 20px">
+      <div class="col-md-9" style="margin-left: 70px">
+
+        <div class="card">
+          <div th:each="entry : ${MapOfProjectApplicants}" class="card-body">
+            <h4 th:text="${entry.key}"></h4>
+
+            <table class="card-table" border="1">
+              <thead>
+              <tr>
+                <th>User ID</th>
+                <th>Resume Link</th>
+                <th>Course Code</th>
+                <th>Actions</th> <!-- New column for Approve/Reject buttons -->
+              </tr>
+              </thead>
+              <tbody>
+              <!-- Iterate through each ProjectApply in the list -->
+              <tr th:each="projectApply : ${entry.value}">
+                <td th:text="${projectApply.getUserId()}"></td>
+                <td th:text="${projectApply.getResumeLink()}"></td>
+                <td th:text="${projectApply.getCourseCode()}"></td>
+                <td>
+                  <!-- Approve button -->
+                  <form th:action="@{/approve/save}" method="post">
+                    <input type="hidden" name="userId" th:value="${projectApply.getUserId()}" />
+                    <input type="hidden" name="projectId" th:value="${projectApply.getProjectId()}" />
+                    <button type="submit">Approve</button>
+
+                  </form>
+                  <br>
+
+                  <!-- Reject button -->
+                  <form th:action="@{/reject/save}" method="post">
+                    <input type="hidden" name="userId" th:value="${projectApply.getUserId()}" />
+                    <input type="hidden" name="projectId" th:value="${projectApply.getProjectId()}" />
+                    <button type="submit">Reject</button>
+                  </form>
+                </td>
+              </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+
   <br>
 </div>
+
 </body>
 </html>
