@@ -93,7 +93,7 @@
     <div class="row" style="margin-top: 20px">
       <div class="col-md-12" >
         <div class="card">
-          <div class="card-body">
+          <div class="card-body" style="overflow-x: auto;">
             <h5 class="card-title">List of Available Projects</h5>
             <br>
             <table class="card-table">
@@ -103,9 +103,13 @@
                 <th>Department</th>
                 <th>Professor</th>
                 <th>Deadline</th>
+                <th>Type</th>
                 <th>Description</th>
                 <th>Prerequisite</th>
                 <th>Course Code</th>
+                <th>Max people allowed</th>
+                <th>Stipend</th>
+                <th>Amount</th>
                 <th>Resume Link</th>
                 <th>Actions</th>
               </tr>
@@ -117,6 +121,8 @@
                   <td th:text="${project.department}"></td>
                   <td th:text="${projectToProf.get(project.getId())}"></td>
                   <td th:text="${project.deadline}"></td>
+                  <td th:text="${project.projectType}"></td>
+
                   <td th:text="${project.description}"></td>
                   <td th:text="${project.preReq}"></td>
                   <td>
@@ -125,6 +131,12 @@
                       <option th:each="courseCode : ${courseCodeList}" th:value="${courseCode}" th:text="${courseCode}"></option>
                     </select>
                   </td>
+                  <td th:text="${project.maxLim}"></td>
+                  <td th:text="${project.stipendOption}"></td>
+                  <td th:text="${project.stipendAmount}"></td>
+
+
+
                   <td>
                     <input type="url" name="resumeLink" placeholder="Insert Resume Link" required pattern="https?://.*" />
                   </td>

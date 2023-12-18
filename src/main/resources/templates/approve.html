@@ -91,7 +91,10 @@
       <div class="col-md-9" style="margin-left: 70px">
 
         <div class="card">
+
+<!--          <h5> Project Title</h5>-->
           <div th:each="entry : ${MapOfProjectApplicants}" class="card-body">
+
             <h4 th:text="${entry.key}"></h4>
 
             <table class="card-table" border="1">

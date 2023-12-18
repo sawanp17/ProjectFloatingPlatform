@@ -62,6 +62,22 @@
 
       border-color: #f2f2f2;
     }
+    .btn-danger{
+      background-color: #D5DBDB;
+      margin-right: 40px;
+
+      font-weight: normal;
+
+      color: black;
+      border-color: white;
+
+    }
+    .btn-danger:hover {
+      background-color: #D5DBDB;
+      color: black;
+
+      border-color: #f2f2f2;
+    }
   </style>
 
 </head>
@@ -109,9 +125,15 @@
                 <th>Deadline</th>
                 <th>Status</th>
                 <th class="hidden">Department</th>
+                <th class="hidden">Type of Project</th>
                 <th class="hidden">Description</th>
                 <th class="hidden">Prerequisite</th>
+                <th class="hidden">Max People Allowed</th>
+                <th class="hidden">Stipend</th>
+                <th class="hidden">Amount</th>
                 <th>More detail</th>
+                <th>Action</th>
+
               </tr>
 
               </thead>
@@ -121,13 +143,36 @@
                 <td th:text="${project.getTitle()}"></td>
                 <td th:text="${project.getDeadline()}"></td>
                 <td th:text="${project.getStatus()}"></td>
+
                 <td class="hidden" th:text="${project.getDepartment()}"></td>
+                <td class="hidden" th:text="${project.getProjectType()}"></td>
                 <td class="hidden" th:text="${project.getDescription()}"></td>
                 <td class="hidden" th:text="${project.getPreReq()}"></td>
+                <td class="hidden" th:text="${project.getMaxLim()}"></td>
+                <td class="hidden" th:text="${project.getStipendOption()}"></td>
+                <td class="hidden" th:text="${project.getStipendAmount()}"></td>
+
+<!--                <td class="hidden" th:text="${project.getStipendAmount()}"></td>-->
+
 
                 <td>
                   <button class="btn btn-primary-1" onclick="showDetails(this)">View</button>
                 </td>
+
+                <td th:if="${isProfessor}">
+                  <form method="post" action="/edit">
+                    <input type="hidden" name="projectId" th:value="${project.getId()}" />
+                    <button type="submit" class="btn btn-danger">Edit</button>
+                  </form>
+                <br>
+                  <form method="post" action="/delete">
+                    <input type="hidden" name="projectId" th:value="${project.getId()}" />
+                    <button type="submit" class="btn btn-danger">Delete</button>
+                  </form>
+                </td>
+
+
+
               </tr>
               </tbody>
 
@@ -147,8 +192,16 @@
                 <th>Deadline</th>
                 <th>Status</th>
                 <th class="hidden">Department</th>
+                <th class="hidden">Project Type</th>
+
                 <th class="hidden">Description</th>
                 <th class="hidden">Prerequisite</th>
+                <th class="hidden">Max People Allowed</th>
+                <th class="hidden">Stipend</th>
+                <th class="hidden">Amount</th>
+
+
+
                 <th>More detail</th>
               </tr>
 
@@ -160,8 +213,12 @@
                 <td th:text="${project.getDeadline()}"></td>
                 <td th:text="${project.getStatus()}"></td>
                 <td class="hidden" th:text="${project.getDepartment()}"></td>
+                <td class="hidden" th:text="${project.getProjectType()}"></td>
                 <td class="hidden" th:text="${project.getDescription()}"></td>
                 <td class="hidden" th:text="${project.getPreReq()}"></td>
+                <td class="hidden" th:text="${project.getMaxLim()}"></td>
+                <td class="hidden" th:text="${project.getStipendOption()}"></td>
+                <td class="hidden" th:text="${project.getStipendAmount()}"></td>
 
                 <td>
                   <button class="btn btn-primary-1" onclick="showDetails(this)">View</button>
@@ -184,9 +241,12 @@
                 <th>Title</th>
                 <th>Deadline</th>
                 <th>Status</th>
-                <th class="hidden">Department</th>
+                <th class="hidden">Project Type</th>
                 <th class="hidden">Description</th>
                 <th class="hidden">Prerequisite</th>
+                <th class="hidden">Max People Allowed</th>
+                <th class="hidden">Stipend</th>
+                <th class="hidden">Amount</th>
                 <th>More detail</th>
               </tr>
 
@@ -197,8 +257,12 @@
                 <td th:text="${project.getDeadline()}"></td>
                 <td th:text="${project.getStatus()}"></td>
                 <td class="hidden" th:text="${project.getDepartment()}"></td>
+                <td class="hidden" th:text="${project.getProjectType()}"></td>
                 <td class="hidden" th:text="${project.getDescription()}"></td>
                 <td class="hidden" th:text="${project.getPreReq()}"></td>
+                <td class="hidden" th:text="${project.getMaxLim()}"></td>
+                <td class="hidden" th:text="${project.getStipendOption()}"></td>
+                <td class="hidden" th:text="${project.getStipendAmount()}"></td>
 
                 <td>
                   <button class="btn btn-primary-1" onclick="showDetails(this)">View</button>
@@ -221,8 +285,12 @@
                 <th>Deadline</th>
                 <th>Status</th>
                 <th class="hidden">Department</th>
+                <th class="hidden">Project Type</th>
                 <th class="hidden">Description</th>
                 <th class="hidden">Prerequisite</th>
+                <th class="hidden">Max People Allowed</th>
+                <th class="hidden">Stipend</th>
+                <th class="hidden">Amount</th>
                 <th>More detail</th>
               </tr>
 
@@ -233,25 +301,18 @@
                 <td th:text="${project.getDeadline()}"></td>
                 <td th:text="${project.getStatus()}"></td>
                 <td class="hidden" th:text="${project.getDepartment()}"></td>
+                <td class="hidden" th:text="${project.getProjectType()}"></td>
                 <td class="hidden" th:text="${project.getDescription()}"></td>
                 <td class="hidden" th:text="${project.getPreReq()}"></td>
+                <td class="hidden" th:text="${project.getMaxLim()}"></td>
+                <td class="hidden" th:text="${project.getStipendOption()}"></td>
+                <td class="hidden" th:text="${project.getStipendAmount()}"></td>
 
                 <td>
                   <button class="btn btn-primary-1" onclick="showDetails(this)">View</button>
                 </td>
 
-                <td th:if="${isProfessor}">
-                  <form th:if="${isProfessor}" method="post" action="/edit">
-                    <input type="hidden" name="projectId" th:value="${project.getId()}" />
-                    <button type="submit" class="btn btn-danger">Edit</button>
-                  </form>
 
-                  <form th:if="${isProfessor}" method="post" action="/delete">
-                    <input type="hidden" name="projectId" th:value="${project.getId()}" />
-                    <button type="submit" class="btn btn-danger">Delete</button>
-                  </form>
-
-                </td>
 
 
 
@@ -279,7 +340,7 @@
     const row = button.closest('tr');
     const table = row.closest('table');
 
-    const popupWidth = 1000; // Adjust the width as needed
+    const popupWidth = 1200; // Adjust the width as needed
     const popupHeight = 600; // Adjust the height as needed
     const left = (window.innerWidth - popupWidth) / 2;
     const top = (window.innerHeight - popupHeight) / 2;
@@ -308,6 +369,9 @@
     rows.forEach((r) => {
       r.deleteCell(-1);
     });
+    rows.forEach((r) => {
+      r.deleteCell(-1);
+    });
 
     // Add the popup table to the popup window
     popupWindow.document.write(`
@@ -327,6 +391,7 @@
     `);
   }
 </script>
+
 
 
 

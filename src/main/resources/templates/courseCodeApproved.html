@@ -1,35 +1,147 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
-    <!-- Add your head content here -->
+    <meta charset="UTF-8">
+    <title>Course Code Approved</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css"
+          rel="stylesheet"
+          integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC"
+          crossorigin="anonymous">
+
+    <style>
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .submit-button {
+            background-color: #B2B2B2;
+            color: black;
+            border-color: #B2B2B2;
+        }
+
+        .submit-button:hover {
+            background-color: #B2B2B2;
+            color: black;
+            border-color: #B2B2B2;
+        }
+
+        .btn-primary{
+            margin-right: 50px;
+            background-color: white;
+            color: black;
+            border-color: white;
+            font-weight: normal;
+
+        }
+        .btn-primary:hover{
+            background-color: #D5DBDB;
+            color: black;
+            border-color:#f2f2f2 ;
+
+
+
+        }
+
+        .btn-secondary{
+
+            margin-right: 40px;
+            background-color: white;
+            font-weight: normal;
+
+            color: black;
+            border-color: white;
+        }
+        .btn-secondary:hover{
+            background-color: #D5DBDB;
+            color: black;
+
+            border-color:#f2f2f2 ;
+        }
+
+
+        .card-title{
+            color: darkslateblue;
+        }
+        .card-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+
+        .card-table th, .card-table td {
+            border: 1px solid #ddd;
+            padding: 8px;
+            text-align: left;
+        }
+
+        .card-table th {
+            background-color: #f2f2f2;
+        }
+
+    </style>
+
 </head>
-<body>
-<button onclick="exportTableToExcel('tblData')">Export Table Data To Excel File</button>
 
-<!-- Table headers for Student and Project outside the loop -->
-<table id="tblData">
-    <thead>
-    <tr>
-        <th>Student</th>
-        <th>Project</th>
-    </tr>
-    </thead>
+<body style="background-color: #f2f2f2">
+<div style="background-color: #f2f2f2; padding: 20px;">
+    <div class="container-fluid">
+        <br>
+        <div class="row" style="margin-top: auto">
+            <div class="col">
+                <div class="card w-100">
+                    <div class="card-body d-flex justify-content-end align-items-center">
+                        <div style="flex: 1;"></div> <!-- Create space to the left -->
+                        <button class="btn btn-primary" ><a href="/welcome" style="text-decoration: none; color: black;">Home</a></button>
+                        <button class="btn btn-primary" ><a href="/filter" style="text-decoration: none; color: black;">Filter</a></button>
+                        <button class="btn btn-secondary" ><a href="/logout" style="text-decoration: none; color: black;">Logout</a></button>
+                        <img src="https://iitj.ac.in/uploaded_docs/IITJ%20Logo__Smallest.jpg" alt="Your Logo" height="50" style="margin-right: 30px; transform: scale(1.4);" class="ml-2">
+                    </div>
+                </div>
+            </div>
+        </div>
+        <br>
 
-    <tbody>
-    <!-- Iterate through the map entries -->
-    <div th:each="entry : ${mapOfApproved}">
-        <!-- Get the User and Project for each entry -->
-        <tr>
-            <!-- Print User's Username -->
-            <td th:text="${entry.key.getUsername()}"></td>
-            <!-- Print Project's Title -->
-            <td th:text="${entry.value.getTitle()}"></td>
-        </tr>
+        <div class="row" style="margin-top: 20px">
+            <div class="col-md-9" style="margin-left: 70px">
+                <div class="card">
+                    <div class="card-body">
+                        <h5 class="card-title">Listed Projects</h5>
+                    </div>
+                </div>
+                <br>
+
+            <div class="card">
+                <div class="card-body">
+                    <button onclick="exportTableToExcel('tblData')">Export Table Data To Excel File</button>
+                    <table class="card-table" id="tblData">
+                        <thead>
+                        <tr>
+                            <th>Student Name</th>
+                            <th>Project Title</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <!-- Iterate through the map entries -->
+                        <tr th:each="entry : ${mapOfApproved}">
+                            <!-- Get the User and Project for each entry -->
+                            <td th:text="${entry.key.getUsername()}"></td>
+                            <td th:text="${entry.value.getTitle()}"></td>
+                        </tr>
+                        </tbody>
+                    </table>
+
+                </div>
+            </div>
+
+            </div>
+
+        </div>
+
     </div>
-    </tbody>
-</table>
 
-
+</div>
 <script>
     function exportTableToExcel(tableID, filename = ''){
     var downloadLink;
@@ -62,5 +174,6 @@
     }
 }
 </script>
+
 </body>
 </html>
