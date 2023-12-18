@@ -11,20 +11,17 @@
 
   <style>
 
-    .hidden {
-      display: none;
-    }
-
     .card-title{
+
       color: darkslateblue;
     }
-
     .card-table {
       width: 100%;
       border-collapse: collapse;
     }
     .card-table th, .card-table td {
       border: 1px solid #ddd;
+
       padding: 30px;
       text-align: left;
     }
@@ -42,18 +39,28 @@
       border-color:#f2f2f2 ;
     }
 
+
     .btn-secondary{
+
       margin-right: 40px;
       background-color: white;
       font-weight: normal;
+
       color: black;
       border-color: white;
     }
     .btn-secondary:hover {
       background-color: #D5DBDB;
       color: black;
+
       border-color: #f2f2f2;
     }
+
+    /*.description-column {*/
+    /*  contain-intrinsic-size: 900px !* Adjust the maximum width as needed *!*/
+    /*  !*word-wrap: break-word;*!*/
+    /*  !*white-space: pre-wrap;*!*/
+    /*}*/
 
   </style>
 
@@ -86,7 +93,7 @@
     <div class="row" style="margin-top: 20px">
       <div class="col-md-12" >
         <div class="card">
-          <div class="card-body" >
+          <div class="card-body" style="overflow-x: auto;">
             <h5 class="card-title">List of Available Projects</h5>
             <br>
             <table class="card-table">
@@ -97,15 +104,13 @@
                 <th>Professor</th>
                 <th>Deadline</th>
                 <th>Type</th>
-
-                <th class="hidden">Description</th>
-                <th class="hidden">Prerequisite</th>
+                <th>Description</th>
+                <th>Prerequisite</th>
                 <th>Course Code</th>
-                <th class="hidden">Max people allowed</th>
+                <th>Max people allowed</th>
                 <th>Stipend</th>
                 <th>Amount</th>
                 <th>Resume Link</th>
-                <th>More detail</th>
                 <th>Actions</th>
               </tr>
               </thead>
@@ -118,15 +123,15 @@
                   <td th:text="${project.deadline}"></td>
                   <td th:text="${project.projectType}"></td>
 
-                  <td class="hidden" th:text="${project.description}"></td>
-                  <td class="hidden" th:text="${project.preReq}"></td>
+                  <td th:text="${project.description}"></td>
+                  <td th:text="${project.preReq}"></td>
                   <td>
                     <select name="courseCode" required>
                       <option value="" disabled selected>Select Course Code</option>
                       <option th:each="courseCode : ${courseCodeList}" th:value="${courseCode}" th:text="${courseCode}"></option>
                     </select>
                   </td>
-                  <td class="hidden" th:text="${project.maxLim}"></td>
+                  <td th:text="${project.maxLim}"></td>
                   <td th:text="${project.stipendOption}"></td>
                   <td th:text="${project.stipendAmount}"></td>
 
@@ -136,13 +141,9 @@
                     <input type="url" name="resumeLink" placeholder="Insert Resume Link" required pattern="https?://.*" />
                   </td>
                   <td>
-                    <button class="btn btn-primary-1" onclick="showDetails(this)">View</button>
-                  </td>
-                  <td>
                     <input type="hidden" name="projectId" th:value="${project.id}" />
                     <button type="submit" class="btn btn-danger">Apply</button>
                   </td>
-
                 </form>
               </tr>
               </tbody>
@@ -155,58 +156,8 @@
   </div>
 </div>
 
-<script>
-  function showDetails(button) {
-    const row = button.closest('tr');
-    const table = row.closest('table');
 
-    const popupWidth = 1220;
-    const popupHeight = 800;
-    const left = (window.innerWidth - popupWidth) / 2;
-    const top = (window.innerHeight - popupHeight) / 2;
 
-    const popupWindow = window.open('', 'ProjectDetails', `width=${popupWidth},height=${popupHeight},left=${left},top=${top}`);
-
-    // Create a new table for the popup
-    const popupTable = document.createElement('table');
-    popupTable.className = 'card-table';
-
-    // Add a header row to the popup table
-    const headerRow = document.createElement('tr');
-    table.querySelector('thead').querySelectorAll('th.hidden').forEach((hiddenTh) => {
-      const newTh = document.createElement('th');
-      newTh.textContent = hiddenTh.textContent;
-      headerRow.appendChild(newTh);
-    });
-    popupTable.appendChild(headerRow);
-
-    // Add the clicked row's hidden cell data to the popup table
-    const newRow = document.createElement('tr');
-    row.querySelectorAll('td.hidden').forEach((hiddenCell) => {
-      const newCell = document.createElement('td');
-      newCell.textContent = hiddenCell.textContent;
-      newRow.appendChild(newCell);
-    });
-    popupTable.appendChild(newRow);
-
-    // Add the popup table to the popup window
-    popupWindow.document.write(`
-      <html>
-      <head>
-        <title>Project Details</title>
-        <style>
-          /* Add any additional styling here */
-          ${document.head.innerHTML}
-        </style>
-      </head>
-      <body>
-        <h2>Project Details</h2>
-        ${popupTable.outerHTML}
-      </body>
-      </html>
-    `);
-  }
-</script>
 
 </body>
 </html>
