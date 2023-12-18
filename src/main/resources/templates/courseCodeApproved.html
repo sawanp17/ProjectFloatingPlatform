@@ -124,10 +124,10 @@
                         </thead>
                         <tbody>
                         <!-- Iterate through the map entries -->
-                        <tr th:each="entry : ${mapOfApproved}">
+                        <tr th:each="entry : ${PairsOfApproved}">
                             <!-- Get the User and Project for each entry -->
-                            <td th:text="${entry.key.getUsername()}"></td>
-                            <td th:text="${entry.value.getTitle()}"></td>
+                            <td th:text="${entry.get(0).getUsername()}"></td>
+                            <td th:text="${entry.get(1).getTitle()}"></td>
                         </tr>
                         </tbody>
                     </table>

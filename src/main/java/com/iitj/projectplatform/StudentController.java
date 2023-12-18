@@ -447,6 +447,7 @@ public class StudentController {
             @RequestParam("resumeLink") String resumeLink,
             Authentication authentication
     ){
+//        System.out.println("RESUME LINK: " + resumeLink);
         Project project = projectRepo.findProjectById(projectId);
         if (project == null){
             System.out.println(">> Project does not exist");
@@ -584,20 +585,25 @@ public class StudentController {
     @PostMapping("/filter/get")
     public String getListOfStudentWithCourseCode(@RequestParam("courseCode") CourseCode courseCode, Model model){
         List<Approved> approvedList =  approvedRepo.findApprovedByCourseCode(courseCode);
-        Map<User,Project> mapOfApproved = new HashMap<>();
+        System.out.println("the size of list: " + approvedList.size());
+        List<List<Object>> mapOfApproved = new ArrayList<>();
         for (Approved approved: approvedList){
             if (
                     projectRepo.findProjectById(approved.getProjectId())!=null
                     && userRepo.findUserByUsername(approved.getUserId())!=null
             ){
-                mapOfApproved.put(
-                        userRepo.findUserByUsername(approved.getUserId()).get(),
-                        projectRepo.findProjectById(approved.getProjectId())
+                mapOfApproved.add(
+                        List.of(
+                                userRepo.findUserByUsername(approved.getUserId()).get(),
+                                projectRepo.findProjectById(approved.getProjectId())
+                        )
+
                 );
             }
 
         }
-        model.addAttribute("mapOfApproved", mapOfApproved);
+        System.out.println(mapOfApproved);
+        model.addAttribute("PairsOfApproved", mapOfApproved);
         return "courseCodeApproved";
     }
 
