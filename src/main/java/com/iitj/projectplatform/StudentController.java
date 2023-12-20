@@ -280,8 +280,9 @@ public class StudentController {
             applyProjects = projectApplyRepo.findProjectApplyByUserId(username);
             List<Approved> approvedObjectList = approvedRepo.findApprovedByUserId(username);
             for (Approved it: approvedObjectList){
+
                 Project currProject = projectRepo.findProjectById(it.getProjectId());
-                if (!(currProject==null)){
+                if (!(currProject==null) && currProject.getDeleted().equals(Boolean.FALSE)){
                     approvedProjects.add(currProject);
                 }
 
@@ -289,7 +290,7 @@ public class StudentController {
             List<Rejected> rejectedObjectList = rejectedRepo.findRejectedByUserId(username);
             for (Rejected it: rejectedObjectList){
                 Project currProject = projectRepo.findProjectById(it.getProjectId());
-                if (!(currProject==null)){
+                if (!(currProject==null) && currProject.getDeleted().equals(Boolean.FALSE)){
                     approvedProjects.add(currProject);
                 }
             }
@@ -305,7 +306,7 @@ public class StudentController {
             for (Optional<ProjectCreate> projectCreateIterator: createdProjects){
                 if (projectCreateIterator.isPresent()){
                     Optional<Project> foundProject = projectRepo.findById(projectCreateIterator.get().getProjectId());
-                    if (foundProject.isPresent() && !(foundProject == null)){
+                    if (foundProject.isPresent() && !(foundProject == null) && foundProject.get().getDeleted().equals(Boolean.FALSE)){
                         projectList.add(foundProject.get());
                     }
                 }
@@ -314,10 +315,10 @@ public class StudentController {
         //else: all other than professor, might modify to else if in future
         else {
             for (Optional<ProjectApply> projectApplyIterator: applyProjects){
-                if (projectApplyIterator.isPresent()){
+                if (projectApplyIterator.isPresent() && projectApplyIterator.get().getDeleted().equals(Boolean.FALSE)){
                     Optional<Project> foundProject = projectRepo.findById(projectApplyIterator.get().getProjectId());
                     if (foundProject.isPresent() && !approvedProjects.contains(foundProject)
-                            && !rejectedProjects.contains(foundProject) && !(foundProject==null)){
+                            && !rejectedProjects.contains(foundProject) && !(foundProject==null) && foundProject.get().getDeleted().equals(Boolean.FALSE)){
                         projectList.add(foundProject.get());
                     }
                 }
@@ -333,17 +334,19 @@ public class StudentController {
     public String deleteProject(@ModelAttribute("projectId") Long projectId){
 
         //cascade deletes
-        List<Optional<ProjectCreate>> projectCreated = projectCreateRepo.findProjectCreateByProjectId(projectId);
-        for (Optional<ProjectCreate> projectCreatedIterator: projectCreated){
-            projectCreateRepo.deleteById(projectCreatedIterator.get().getId());
-        }
+//        List<Optional<ProjectCreate>> projectCreated = projectCreateRepo.findProjectCreateByProjectId(projectId);
+//        for (Optional<ProjectCreate> projectCreatedIterator: projectCreated){
+//            projectCreateRepo.deleteById(projectCreatedIterator.get().getId());
+//        }
+//
+//        List<ProjectApply> projectApplied = projectApplyRepo.findProjectApplyByProjectId(projectId);
+//        for (ProjectApply projectApplyIterator: projectApplied){
+//            projectApplyRepo.deleteById(projectApplyIterator.getId());
+//        }
 
-        List<ProjectApply> projectApplied = projectApplyRepo.findProjectApplyByProjectId(projectId);
-        for (ProjectApply projectApplyIterator: projectApplied){
-            projectApplyRepo.deleteById(projectApplyIterator.getId());
-        }
-
-        projectRepo.deleteById(projectId);
+        Project projectToDelete = projectRepo.findProjectById(projectId);
+        projectToDelete.setDeleted(true);
+        projectRepo.save(projectToDelete);
 
         System.out.println(">> Deleted id: " + projectId);
         return "redirect:/myProjects";
@@ -422,6 +425,7 @@ public class StudentController {
             if (rejectedRepo.findRejectedByUserIdAndProjectId(username,project.getId()).isPresent()
                 || approvedRepo.findApprovedByUserIdAndProjectId(username,project.getId()).isPresent()
                     || projectApplyRepo.findProjectByUserIdAndProjectId(username,project.getId()).isPresent()
+                    || project.getDeleted().equals(Boolean.TRUE)  //added condition for checking isDeleted
             ){
                 toRemove.add(project);
             }
@@ -504,10 +508,15 @@ public class StudentController {
 
         for (Optional<ProjectCreate> projectCreate: myprojects){
             if (projectCreate.isPresent()){
-                if (projectCreate.get().getUserId().equals(username)){
+                if (projectCreate.get().getUserId().equals(username) && projectRepo.findProjectById(projectCreate.get().getProjectId()).getDeleted().equals(Boolean.FALSE)){
                     projectIds.add(projectCreate.get().getProjectId());
                     List<ProjectApply> projectApplicants = projectApplyRepo.findProjectApplyByProjectId(projectCreate.get().getProjectId());
-                    myProjectApplicants.addAll(projectApplicants);
+//                    myProjectApplicants.addAll(projectApplicants);
+                    for (ProjectApply projectApplyIterator: projectApplicants){
+                        if (projectApplyIterator.getDeleted().equals(Boolean.FALSE)){
+                            myProjectApplicants.add(projectApplyIterator);
+                        }
+                    }
                 }
             }
         }
@@ -536,7 +545,7 @@ public class StudentController {
 //        UserDetails userDetails = (UserDetails) authentication.getPrincipal();
 //        String currentUser = userDetails.getUsername();
 
-        System.out.println("here*** " + username + projectId);
+//        System.out.println("here*** " + username + projectId);
         Approved newApproved = new Approved();
         newApproved.setProjectId(projectId);
         newApproved.setUserId(username);
@@ -547,7 +556,8 @@ public class StudentController {
         Optional<ProjectApply> projectApply = projectApplyRepo.findProjectByUserIdAndProjectId(username,projectId);
 
         if (projectApply.isPresent()){
-            projectApplyRepo.delete(projectApply.get());
+            projectApply.get().setDeleted(true);
+            projectApplyRepo.save(projectApply.get());
         }
 
 
@@ -570,7 +580,8 @@ public class StudentController {
         Optional<ProjectApply> projectApply = projectApplyRepo.findProjectByUserIdAndProjectId(username,projectId);
 
         if (projectApply.isPresent()){
-            projectApplyRepo.delete(projectApply.get());
+            projectApply.get().setDeleted(true);
+            projectApplyRepo.save(projectApply.get());
         }
         return "redirect:/approve";
     }
@@ -585,11 +596,12 @@ public class StudentController {
     @PostMapping("/filter/get")
     public String getListOfStudentWithCourseCode(@RequestParam("courseCode") CourseCode courseCode, Model model){
         List<Approved> approvedList =  approvedRepo.findApprovedByCourseCode(courseCode);
-        System.out.println("the size of list: " + approvedList.size());
+//        System.out.println("the size of list: " + approvedList.size());
         List<List<Object>> mapOfApproved = new ArrayList<>();
         for (Approved approved: approvedList){
+            Project currProject = projectRepo.findProjectById(approved.getProjectId());
             if (
-                    projectRepo.findProjectById(approved.getProjectId())!=null
+                    currProject!=null && currProject.getDeleted().equals(Boolean.FALSE)
                     && userRepo.findUserByUsername(approved.getUserId())!=null
             ){
                 mapOfApproved.add(

@@ -23,12 +23,23 @@ public class ProjectApply {
     @Enumerated(EnumType.STRING)
     private CourseCode courseCode;
 
+    @Column(name="isdeleted")
+    private Boolean isDeleted = false;
+
     public ProjectApply() {
     }
 
     public ProjectApply(String user_id, Long project_id) {
         this.userId = user_id;
         this.projectId = project_id;
+    }
+
+    public Boolean getDeleted() {
+        return isDeleted;
+    }
+
+    public void setDeleted(Boolean deleted) {
+        isDeleted = deleted;
     }
 
     public CourseCode getCourseCode() {

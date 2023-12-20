@@ -47,6 +47,9 @@ public class Project {
     @Column(name = "stipendamount")
     private Integer stipendAmount;
 
+    @Column(name = "isdeleted")
+    private Boolean isDeleted = false;
+
     public Project() {
     }
 
@@ -155,5 +158,11 @@ public class Project {
         this.maxLim = maxLim;
     }
 
+    public Boolean getDeleted() {
+        return isDeleted;
+    }
 
+    public void setDeleted(Boolean deleted) {
+        isDeleted = deleted;
+    }
 }
