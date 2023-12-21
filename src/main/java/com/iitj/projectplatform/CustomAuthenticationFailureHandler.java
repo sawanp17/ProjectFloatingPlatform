@@ -20,10 +20,12 @@ public class CustomAuthenticationFailureHandler implements AuthenticationFailure
         );
         httpServletResponse.setStatus(HttpStatus.UNAUTHORIZED.value());
 
-        String jsonPayload = "{\"message\" : \"%s\", \"timestamp\" : \"%s\" }";
-        httpServletResponse.getOutputStream()
-                .println(String.format(jsonPayload,
-                        e.getMessage(),
-                        Calendar.getInstance().getTime()));
+//        String jsonPayload = "{\"message\" : \"%s\", \"timestamp\" : \"%s\" }";
+//        httpServletResponse.getOutputStream()
+//                .println(String.format(jsonPayload,
+//                        e.getMessage(),
+//                        Calendar.getInstance().getTime()));
+
+        httpServletResponse.sendRedirect("/login");
     }
 }
