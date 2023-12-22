@@ -173,6 +173,7 @@ public class StudentController {
         model.addAttribute("courseCodeList", CourseCode.values());
         model.addAttribute("projectTypeList", ProjectType.values());
 
+
         Boolean isStudent=false, isProfessor=false;
         if (user.isPresent()){
             role = user.get().getRole();
@@ -291,7 +292,7 @@ public class StudentController {
             for (Rejected it: rejectedObjectList){
                 Project currProject = projectRepo.findProjectById(it.getProjectId());
                 if (!(currProject==null) && currProject.getDeleted().equals(Boolean.FALSE)){
-                    approvedProjects.add(currProject);
+                    rejectedProjects.add(currProject);
                 }
             }
 

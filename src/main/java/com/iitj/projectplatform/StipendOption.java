@@ -5,3 +5,5 @@ public enum StipendOption {
     NO,
     MAYBE
 }
+
+

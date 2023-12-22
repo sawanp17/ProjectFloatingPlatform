@@ -96,7 +96,7 @@
                 <th>Department</th>
                 <th>Professor</th>
                 <th>Deadline</th>
-                <th>Type</th>
+                <th class="hidden">Type</th>
 
                 <th class="hidden">Description</th>
                 <th class="hidden">Prerequisite</th>
@@ -116,7 +116,7 @@
                   <td th:text="${project.department}"></td>
                   <td th:text="${projectToProf.get(project.getId())}"></td>
                   <td th:text="${project.deadline}"></td>
-                  <td th:text="${project.projectType}"></td>
+                  <td class="hidden" th:text="${project.projectType}"></td>
 
                   <td class="hidden" th:text="${project.description}"></td>
                   <td class="hidden" th:text="${project.preReq}"></td>
