@@ -233,6 +233,7 @@
                 <th>Title</th>
                 <th>Deadline</th>
                 <th>Status</th>
+                <th class="hidden">Department</th>
                 <th class="hidden">Project Type</th>
                 <th class="hidden">Description</th>
                 <th class="hidden">Prerequisite</th>
@@ -361,9 +362,7 @@
     rows.forEach((r) => {
       r.deleteCell(-1);
     });
-    rows.forEach((r) => {
-      r.deleteCell(-1);
-    });
+
 
     // Add the popup table to the popup window
     popupWindow.document.write(`
