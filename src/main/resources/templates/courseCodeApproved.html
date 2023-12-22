@@ -95,6 +95,8 @@
                         <thead>
                         <tr>
                             <th>Student Name</th>
+<!--                            <th>Student Roll no.</th>-->
+                            <th>Professor Name </th>
                             <th>Project Title</th>
                         </tr>
                         </thead>
@@ -103,6 +105,7 @@
                         <tr th:each="entry : ${PairsOfApproved}">
                             <!-- Get the User and Project for each entry -->
                             <td th:text="${entry.get(0).getUsername()}"></td>
+                            <td th:text="${entry.get(2)}"></td>
                             <td th:text="${entry.get(1).getTitle()}"></td>
                         </tr>
                         </tbody>

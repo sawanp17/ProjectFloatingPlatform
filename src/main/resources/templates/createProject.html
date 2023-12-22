@@ -91,18 +91,18 @@
         <form th:action="@{/create/save}" method="post">
             <label class="form-label" for="title">Title:</label>
             <input class="form-input-1" type="text" id="title" name="title" required th:value="${isEdit} ? ${project.getTitle()} : ''">
-            <label class="form-label" for="department">Department:</label>
-            <select class="form-input-1" id="department" name="department" required>
-                <!-- Default option -->
-                <option value="" disabled selected>Select Department</option>
+<!--            <label class="form-label" for="department">Department:</label>-->
+<!--            <select class="form-input-1" id="department" name="department" required>-->
+<!--                &lt;!&ndash; Default option &ndash;&gt;-->
+<!--                <option value="" disabled selected>Select Department</option>-->
 
-                <!-- Iterate through departmentList and display options -->
-                <option th:each="option : ${departmentList}"
-                        th:value="${option}"
-                        th:text="${option}"
-                        th:selected="${isEdit and option == project.getDepartment()}">
-                </option>
-            </select>
+<!--                &lt;!&ndash; Iterate through departmentList and display options &ndash;&gt;-->
+<!--                <option th:each="option : ${departmentList}"-->
+<!--                        th:value="${option}"-->
+<!--                        th:text="${option}"-->
+<!--                        th:selected="${isEdit and option == project.getDepartment()}">-->
+<!--                </option>-->
+<!--            </select>-->
 
             <label class="form-label" for="projectType">Project Type:</label>
             <select class="form-input-1" id="projectType" name="projectType" required>
@@ -126,7 +126,7 @@
             <label class="form-label" for="maxLim">Max People Allowed:</label>
             <input class="form-input-1" type="number" id="maxLim" name="maxLim" required th:value="${isEdit} ? ${project.getMaxLim()} : 0">
 
-            <label class="form-label" for="deadline">Deadline:</label>
+            <label class="form-label" for="deadline">Project Deadline:</label>
             <input class="form-input-1" type="date" id="deadline" name="deadline" required th:value="${isEdit} ? ${project.getDeadline()} : ''">
 
             <label class="form-label" for="stipendOption">Stipend Option:</label>

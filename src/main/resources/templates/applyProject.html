@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
+<html lang="" xmlns:th="http://www.thymeleaf.org">
 <head>
   <meta charset="UTF-8">
   <title>List of Projects</title>
@@ -93,9 +93,9 @@
               <thead>
               <tr>
                 <th>Title</th>
-                <th>Department</th>
+<!--                <th>Department</th>-->
                 <th>Professor</th>
-                <th>Deadline</th>
+                <th>Project Deadline</th>
                 <th class="hidden">Type</th>
 
                 <th class="hidden">Description</th>
@@ -113,7 +113,7 @@
               <tr th:each="project : ${floatedProjects}">
                 <form method="post" th:action="@{'/apply/save'}">
                   <td th:text="${project.title}"></td>
-                  <td th:text="${project.department}"></td>
+<!--                  <td th:text="${project.department}"></td>-->
                   <td th:text="${projectToProf.get(project.getId())}"></td>
                   <td th:text="${project.deadline}"></td>
                   <td class="hidden" th:text="${project.projectType}"></td>
@@ -121,10 +121,12 @@
                   <td class="hidden" th:text="${project.description}"></td>
                   <td class="hidden" th:text="${project.preReq}"></td>
                   <td>
-                    <select name="courseCode" required>
-                      <option value="" disabled selected>Select Course Code</option>
-                      <option th:each="courseCode : ${courseCodeList}" th:value="${courseCode}" th:text="${courseCode}"></option>
-                    </select>
+                    <label>
+                      <select name="courseCode">
+                        <option value="" disabled selected>Select Course Code</option>
+                        <option th:each="courseCode : ${courseCodeList}" th:value="${courseCode}" th:text="${courseCode}"></option>
+                      </select>
+                    </label>
                   </td>
                   <td class="hidden" th:text="${project.maxLim}"></td>
                   <td th:text="${project.stipendOption}"></td>
@@ -133,7 +135,9 @@
 
 
                   <td>
-                    <input type="url" name="resumeLink" placeholder="Insert Resume Link" required pattern="https?://.*" />
+                    <label>
+                      <input type="url" name="resumeLink" placeholder="Insert Resume Link" required pattern="https?://.*" />
+                    </label>
                   </td>
                   <td>
                     <button class="btn btn-primary-1" onclick="showDetails(this)">View</button>
@@ -191,7 +195,7 @@
 
     // Add the popup table to the popup window
     popupWindow.document.write(`
-      <html>
+      <html lang="">
       <head>
         <title>Project Details</title>
         <style>

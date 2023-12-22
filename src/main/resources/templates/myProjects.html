@@ -114,9 +114,9 @@
               <thead>
               <tr>
                 <th>Title</th>
-                <th>Deadline</th>
+                <th>Project Deadline</th>
                 <th>Status</th>
-                <th class="hidden">Department</th>
+<!--                <th class="hidden">Department</th>-->
                 <th class="hidden">Type of Project</th>
                 <th class="hidden">Description</th>
                 <th class="hidden">Prerequisite</th>
@@ -136,7 +136,7 @@
                 <td th:text="${project.getDeadline()}"></td>
                 <td th:text="${project.getStatus()}"></td>
 
-                <td class="hidden" th:text="${project.getDepartment()}"></td>
+<!--                <td class="hidden" th:text="${project.getDepartment()}"></td>-->
                 <td class="hidden" th:text="${project.getProjectType()}"></td>
                 <td class="hidden" th:text="${project.getDescription()}"></td>
                 <td class="hidden" th:text="${project.getPreReq()}"></td>
@@ -181,22 +181,17 @@
               <thead>
               <tr>
                 <th>Title</th>
-                <th>Deadline</th>
+                <th>Project Deadline</th>
                 <th>Status</th>
-                <th class="hidden">Department</th>
+<!--                <th class="hidden">Department</th>-->
                 <th class="hidden">Project Type</th>
-
                 <th class="hidden">Description</th>
                 <th class="hidden">Prerequisite</th>
                 <th class="hidden">Max People Allowed</th>
                 <th class="hidden">Stipend</th>
                 <th class="hidden">Amount</th>
-
-
-
                 <th>More detail</th>
               </tr>
-
               </thead>
 
               <tbody>
@@ -204,7 +199,7 @@
                 <td th:text="${project.getTitle()}"></td>
                 <td th:text="${project.getDeadline()}"></td>
                 <td th:text="${project.getStatus()}"></td>
-                <td class="hidden" th:text="${project.getDepartment()}"></td>
+<!--                <td class="hidden" th:text="${project.getDepartment()}"></td>-->
                 <td class="hidden" th:text="${project.getProjectType()}"></td>
                 <td class="hidden" th:text="${project.getDescription()}"></td>
                 <td class="hidden" th:text="${project.getPreReq()}"></td>
@@ -231,9 +226,9 @@
               <thead>
               <tr>
                 <th>Title</th>
-                <th>Deadline</th>
+                <th>Project Deadline</th>
                 <th>Status</th>
-                <th class="hidden">Department</th>
+<!--                <th class="hidden">Department</th>-->
                 <th class="hidden">Project Type</th>
                 <th class="hidden">Description</th>
                 <th class="hidden">Prerequisite</th>
@@ -249,7 +244,7 @@
                 <td th:text="${project.getTitle()}"></td>
                 <td th:text="${project.getDeadline()}"></td>
                 <td th:text="${project.getStatus()}"></td>
-                <td class="hidden" th:text="${project.getDepartment()}"></td>
+<!--                <td class="hidden" th:text="${project.getDepartment()}"></td>-->
                 <td class="hidden" th:text="${project.getProjectType()}"></td>
                 <td class="hidden" th:text="${project.getDescription()}"></td>
                 <td class="hidden" th:text="${project.getPreReq()}"></td>
@@ -275,9 +270,9 @@
               <thead>
               <tr>
                 <th>Title</th>
-                <th>Deadline</th>
+                <th>Project Deadline</th>
                 <th>Status</th>
-                <th class="hidden">Department</th>
+<!--                <th class="hidden">Department</th>-->
                 <th class="hidden">Project Type</th>
                 <th class="hidden">Description</th>
                 <th class="hidden">Prerequisite</th>
@@ -286,46 +281,32 @@
                 <th class="hidden">Amount</th>
                 <th>More detail</th>
               </tr>
-
               </thead>
               <tbody>
               <tr th:each="project : ${listOfProjects}">
                 <td th:text="${project.getTitle()}"></td>
                 <td th:text="${project.getDeadline()}"></td>
                 <td th:text="${project.getStatus()}"></td>
-                <td class="hidden" th:text="${project.getDepartment()}"></td>
+<!--                <td class="hidden" th:text="${project.getDepartment()}"></td>-->
                 <td class="hidden" th:text="${project.getProjectType()}"></td>
                 <td class="hidden" th:text="${project.getDescription()}"></td>
                 <td class="hidden" th:text="${project.getPreReq()}"></td>
                 <td class="hidden" th:text="${project.getMaxLim()}"></td>
                 <td class="hidden" th:text="${project.getStipendOption()}"></td>
                 <td class="hidden" th:text="${project.getStipendAmount()}"></td>
-
                 <td>
                   <button class="btn btn-primary-1" onclick="showDetails(this)">View</button>
                 </td>
-
-
-
-
-
               </tr>
               </tbody>
             </table>
           </div>
         </div>
-<br>
-
-
-
-
+      <br>
       </div>
-
     </div>
   </div>
-
 </div>
-
 
 
 <script>
@@ -366,7 +347,7 @@
 
     // Add the popup table to the popup window
     popupWindow.document.write(`
-      <html>
+      <html lang="">
       <head>
         <title>Project Details</title>
         <style>

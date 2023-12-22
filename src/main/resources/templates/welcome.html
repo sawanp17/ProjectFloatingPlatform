@@ -99,8 +99,35 @@
             <div class="col-md-7" style="margin-left: 70px" >
                 <div class="card">
                     <div class="card-body">
-                        <h5 class="card-title">Applied Projects</h5>
-                        <p class="card-text"></p>
+                        <h3 class="card-title">Welcome <span th:text="${#strings.capitalize(name)}"></span>! </h3>
+                        <!--     Approved Projects    -->
+                        <div th:if="${isStudent}" class="card">
+                            <div class="card-body">
+
+                                <table class="card-table">
+                                    <thead>
+                                    <tr>
+                                        <th>Title</th>
+                                        <th>Project Deadline</th>
+                                        <th>Status</th>
+                                        <th>Description</th>
+                                        <th>Prerequisite</th>
+                                    </tr>
+                                    </thead>
+
+                                    <tbody>
+                                    <tr th:each="project : ${approvedList}">
+                                        <td th:text="${project.getTitle()}"></td>
+                                        <td th:text="${project.getDeadline()}"></td>
+                                        <td th:text="${project.getStatus()}"></td>
+                                        <td th:text="${project.getDescription()}"></td>
+                                        <td th:text="${project.getPreReq()}"></td>
+                                    </tr>
+                                    </tbody>
+
+                                </table>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
