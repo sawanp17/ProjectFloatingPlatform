@@ -38,9 +38,10 @@ public class StudentController {
     @GetMapping("/welcome")
     public String greeting(Model model, Authentication authentication) {
         UserDetails userDetails = (UserDetails) authentication.getPrincipal();
-
         String username = userDetails.getUsername();
         Optional<User>currentUser = userRepo.findUserByUsername(username);
+//        Role currentRole ;
+        // add project list
 
         Collection<? extends GrantedAuthority> authorities = authentication.getAuthorities();
         for (GrantedAuthority authority: authorities){
@@ -53,6 +54,7 @@ public class StudentController {
                 String user_name = currentUser.get().getUsername();
                 String name = currentUser.get().getName();
                 String email = currentUser.get().getEmail();
+
 
                 model.addAttribute("role", role);
                 model.addAttribute("user_name", user_name);
@@ -325,7 +327,10 @@ public class StudentController {
                 }
             }
         }
-
+//        applyProjects.sort(Comparator.comparing(Project::getDeadline));
+        approvedProjects.sort(Comparator.comparing(Project::getDeadline));
+        rejectedProjects.sort(Comparator.comparing(Project::getDeadline));
+        projectList.sort(Comparator.comparing(Project::getDeadline));
 
         model.addAttribute("listOfProjects", projectList);
         return "myProjects";
@@ -432,6 +437,8 @@ public class StudentController {
             }
         }
         floatedProjects.removeAll(toRemove);
+        floatedProjects.sort(Comparator.comparing(Project::getDeadline));
+
 
         Map<Long,String> projectToProf = new HashMap<>();
         for (Project project: floatedProjects){
@@ -453,6 +460,7 @@ public class StudentController {
             Authentication authentication
     ){
 //        System.out.println("RESUME LINK: " + resumeLink);
+
         Project project = projectRepo.findProjectById(projectId);
         if (project == null){
             System.out.println(">> Project does not exist");
@@ -601,15 +609,19 @@ public class StudentController {
         List<List<Object>> mapOfApproved = new ArrayList<>();
         for (Approved approved: approvedList){
             Project currProject = projectRepo.findProjectById(approved.getProjectId());
+            User professor = userRepo.findUserByUsername(projectCreateRepo.findProjectCreateByProjectId(approved.getProjectId()).get(0).get().getUserId()).orElse(null);
+
             if (
                     currProject!=null && currProject.getDeleted().equals(Boolean.FALSE)
-                    && userRepo.findUserByUsername(approved.getUserId())!=null
-            ){
+                    && userRepo.findUserByUsername(approved.getUserId())!=null && professor != null ){
                 mapOfApproved.add(
                         List.of(
                                 userRepo.findUserByUsername(approved.getUserId()).get(),
-                                projectRepo.findProjectById(approved.getProjectId())
+//                                approved.getUserId(),
+                                projectRepo.findProjectById(approved.getProjectId()),
+                                professor.getName()
                         )
+
 
                 );
             }

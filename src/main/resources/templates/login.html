@@ -1,6 +1,5 @@
 <!DOCTYPE html>
-<html lang="en"
-      xmlns:th="http://www.thymeleaf.org">
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
     <title>Login System</title>
@@ -8,29 +7,53 @@
           rel="stylesheet"
           integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC"
           crossorigin="anonymous">
+    <style>
+        .oval-button {
+            /*login button*/
+            background-color: #f7eeed;
+            border: 2px solid #ced4da;
+            border-radius: 25px;
+            padding: 10px 20px;
+            color: black;
+            transition: background-color 0.3s;
+        }
+
+        .oval-button:hover {
+            background-color: #f7eeed;
+            color: #28282B;
+        }
+
+        .custom-bg {
+            background-color: #f7eeed;
+        }
+
+        .customBG::placeholder {
+            background-color: #f7eeed;
+        }
+        .custom-input {
+            background-color: #f7eeed;
+        }
+    </style>
 </head>
-
-<body style="background-color: #28282B">
-
+<body style="background-image: url('https://iitj.ac.in/plasma2022/images/iitjcampus.jpg'); background-size: 170%; background-position: center; margin: 0; overflow: hidden;">
 <div class="container d-flex justify-content-center align-items-center" style="min-height: 80vh;">
     <div class="col-md-4">
-        <div class="card">
-            <div class="card-header custom-bg">
+        <div class="card" style="background-color: rgba(211, 211, 211, 0.7); padding: 20px; border-radius: 10px;">
+            <div class="card-header custom-bg" style="background-color: #f7eeed">
                 <h3 class="text-center">Login</h3>
             </div>
-
             <div class="card-body">
                 <form method="post"
-                        role="form"
-                        th:action="@{/login}"
-                        class="form-horizontal">
+                      role="form"
+                      th:action="@{/login}"
+                      class="form-horizontal">
 
                     <div class="form-group mb-3 customBG">
                         <input
                                 type="text"
                                 id="username"
                                 name="username"
-                                class="form-control"
+                                class="form-control custom-input"
                                 placeholder="Enter username"
                         />
                     </div>
@@ -40,7 +63,7 @@
                                 type="password"
                                 id="password"
                                 name="password"
-                                class="form-control"
+                                class="form-control custom-input"
                                 placeholder="Enter password"
                         />
                     </div>
@@ -52,41 +75,10 @@
                     <div class="form-group text-center">
                         <p>Don't have an account? <a href="/register">Register</a></p>
                     </div>
-
-                    <style>
-                        .oval-button {
-                            background-color: #CCCCFF;
-                            border: 2px solid #CCCCFF;
-                            border-radius: 25px;
-                            padding: 10px 20px;
-                            color: black;
-                            transition: background-color 0.3s;
-                        }
-
-                        .oval-button:hover{
-                            background-color: #CCCCFF; /* Replace 'YourHoverColor' with the color you want on hover */
-                            color: #28282B;
-                        }
-
-                    </style>
-
-                    <style>
-                        .custom-bg {
-                            background-color: #F0F0F0; /* Replace with your desired color */
-                        }
-                    </style>
-
-                    <style>
-                        .customBG::placeholder {
-                            background-color: #F0F0F0 /* Replace with your desired color */
-                        }
-                    </style>
-
                 </form>
             </div>
         </div>
     </div>
 </div>
-
 </body>
 </html>
