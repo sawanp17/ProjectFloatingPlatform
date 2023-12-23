@@ -58,6 +58,37 @@
       color: black;
       border-color: #f2f2f2;
     }
+
+    .btn-btn-danger {
+      width: 70px;
+      height: 40px;
+      padding: 10px 20px; /* Adjust padding as needed for button size */
+      font-size: 16px; /* Adjust font size as needed */
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background-color: #db222a;
+      border: none;
+      border-radius: 5px;
+      color: white;
+    }
+
+    .btn-success{
+      width: 90px;
+      height: 40px;
+      position: relative;
+      padding: 10px 20px; /* Adjust padding as needed for button size */
+      font-size: 16px; /* Adjust font size as needed */
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      /*align-items: center;*/
+      /*text-align: center;*/
+      background-color: #73a942;
+      border: none;
+      border-radius: 5px;
+      color: white;
+    }
     .btn-danger{
       background-color: #D5DBDB;
       margin-right: 40px;
@@ -70,6 +101,31 @@
       color: black;
       border-color: #f2f2f2;
     }
+    .view-btn {
+      width: 90px;
+      height: 40px;
+      position: relative;
+      padding: 10px 20px; /* Adjust padding as needed for button size */
+      font-size: 16px; /* Adjust font size as needed */
+      display: flex;
+      align-items: center;
+      background-color: #003566;
+      border: none;
+      border-radius: 5px;
+      color: white;
+    }
+    .view-icon-group {
+      display: flex;
+      align-items: center;
+    }
+    .view-text {
+      margin-right: 5px; /* Adjust the spacing between text and icon */
+    }
+    .fa-eye {
+      width: 1.2em;
+      height: 1.2em;
+      fill: currentColor;
+    }
   </style>
 
 </head>
@@ -81,7 +137,7 @@
     <br>
     <div class="row" style="margin-top: auto">
       <div class="col">
-        <div class="card w-100">
+        <div class="card w-100" style="border-radius: 0px; box-shadow: 0px 0px 8px 0px #888888;">
           <div class="card-body d-flex justify-content-end align-items-center">
             <div style="flex: 1;"></div> <!-- Create space to the left -->
             <button class="btn btn-primary" ><a href="/welcome" style="text-decoration: none; color: black;">Home</a></button>
@@ -101,14 +157,14 @@
 
     <div class="row" style="margin-top: 20px">
       <div class="col-md-9" style="margin-left: 70px">
-        <div class="card">
+        <div class="card" style=" box-shadow: 0px 0px 6px 0px #888888;">
           <div class="card-body">
             <h5 class="card-title">My Projects</h5>
           </div>
         </div>
         <br>
 
-        <div th:if="${isProfessor}" class="card">
+        <div th:if="${isProfessor}" class="card" style="border-radius: 5px; box-shadow: 0px 0px 8px 0px #888888;">
           <div class="card-body">
             <table class="card-table">
               <thead>
@@ -148,19 +204,28 @@
 
 
                 <td>
-                  <button class="btn btn-primary-1" onclick="showDetails(this)">View</button>
+                  <button type="button" class="view-btn" onclick="showDetails(this)">
+                    <div class="view-icon-group">
+                      <span class="view-text">View</span>
+                      <i class="fa fa-eye" aria-hidden="true"></i>
+                    </div>
+                  </button>
                 </td>
 
                 <td th:if="${isProfessor}">
+                  <div style="display: inline-block; margin-right: 25px;">
                   <form method="post" action="/edit">
                     <input type="hidden" name="projectId" th:value="${project.getId()}" />
-                    <button type="submit" class="btn btn-danger">Edit</button>
+                    <button type="submit" class="btn btn-success">Edit</button>
                   </form>
-                <br>
+                  </div>
+
+                  <div style="display: inline-block;">
                   <form method="post" action="/delete">
                     <input type="hidden" name="projectId" th:value="${project.getId()}" />
-                    <button type="submit" class="btn btn-danger">Delete</button>
+                    <button type="submit" class="btn btn-btn-danger">Delete</button>
                   </form>
+                  </div>
                 </td>
 
 
@@ -173,7 +238,7 @@
         </div>
 
 <!--     Approved Projects    -->
-        <div th:if="${isStudent}" class="card">
+        <div th:if="${isStudent}" class="card" style="border-radius: 5px; box-shadow: 0px 0px 5px 0px #888888;">
           <div class="card-body">
             <h5 class="card-title">Approved Projects</h5>
             <br>
@@ -207,8 +272,14 @@
                 <td class="hidden" th:text="${project.getStipendOption()}"></td>
                 <td class="hidden" th:text="${project.getStipendAmount()}"></td>
 
+
                 <td>
-                  <button class="btn btn-primary-1" onclick="showDetails(this)">View</button>
+                  <button type="button" class="view-btn" onclick="showDetails(this)">
+                    <div class="view-icon-group">
+                      <span class="view-text">View</span>
+                      <i class="fa fa-eye" aria-hidden="true"></i>
+                    </div>
+                  </button>
                 </td>
               </tr>
               </tbody>
@@ -218,7 +289,7 @@
         </div>
 <br>
 <!--     Rejected Projects       -->
-        <div th:if="${isStudent}" class="card">
+        <div th:if="${isStudent}" class="card" style="border-radius: 5px; box-shadow: 0px 0px 5px 0px #888888;">
           <div class="card-body">
             <h5 class="card-title">Rejected Projects</h5>
             <br>
@@ -252,8 +323,14 @@
                 <td class="hidden" th:text="${project.getStipendOption()}"></td>
                 <td class="hidden" th:text="${project.getStipendAmount()}"></td>
 
+
                 <td>
-                  <button class="btn btn-primary-1" onclick="showDetails(this)">View</button>
+                  <button type="button" class="view-btn" onclick="showDetails(this)">
+                    <div class="view-icon-group">
+                      <span class="view-text">View</span>
+                      <i class="fa fa-eye" aria-hidden="true"></i>
+                    </div>
+                  </button>
                 </td>
               </tr>
               </tbody>
@@ -262,7 +339,7 @@
         </div>
 <br>
 <!--     Applied Projects        -->
-        <div th:if="${isStudent}" class="card">
+        <div th:if="${isStudent}" class="card" style="border-radius: 5px; box-shadow: 0px 0px 5px 0px #888888;">
           <div class="card-body">
             <h5 class="card-title">Applied Projects</h5>
             <br>
@@ -294,8 +371,14 @@
                 <td class="hidden" th:text="${project.getMaxLim()}"></td>
                 <td class="hidden" th:text="${project.getStipendOption()}"></td>
                 <td class="hidden" th:text="${project.getStipendAmount()}"></td>
+
                 <td>
-                  <button class="btn btn-primary-1" onclick="showDetails(this)">View</button>
+                  <button type="button" class="view-btn" onclick="showDetails(this)">
+                    <div class="view-icon-group">
+                      <span class="view-text">View</span>
+                      <i class="fa fa-eye" aria-hidden="true"></i>
+                    </div>
+                  </button>
                 </td>
               </tr>
               </tbody>

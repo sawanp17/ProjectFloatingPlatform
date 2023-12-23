@@ -44,6 +44,38 @@
       color: black;
       border-color: #f2f2f2;
     }
+
+    .btn-danger {
+      width: 70px;
+      height: 40px;
+      padding: 10px 20px; /* Adjust padding as needed for button size */
+      font-size: 16px; /* Adjust font size as needed */
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background-color: #db222a;
+      border: none;
+      border-radius: 5px;
+      color: white;
+    }
+
+    .btn-outline-success{
+      width: 90px;
+      height: 40px;
+      position: relative;
+      padding: 10px 20px; /* Adjust padding as needed for button size */
+      font-size: 16px; /* Adjust font size as needed */
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      /*align-items: center;*/
+      /*text-align: center;*/
+      background-color: #73a942;
+      border: none;
+      border-radius: 5px;
+      color: white;
+    }
+
   </style>
 
 </head>
@@ -53,7 +85,7 @@
     <br>
     <div class="row" style="margin-top: auto">
       <div class="col">
-        <div class="card w-100">
+        <div class="card w-100" style="border-radius: 0px; box-shadow: 0px 0px 5px 0px #888888;">
           <div class="card-body d-flex justify-content-end align-items-center">
             <div style="flex: 1;"></div> <!-- Create space to the left -->
             <button class="btn btn-primary" ><a href="/welcome" style="text-decoration: none; color: black;">Home</a></button>
@@ -73,12 +105,12 @@
     <div class="row" style="margin-top: 20px">
       <div class="col-md-9" style="margin-left: 70px">
 
-        <div class="card">
+        <div class="card" style="border-radius: 5px; box-shadow: 0px 0px 5px 0px #888888;">
 
 <!--          <h5> Project Title</h5>-->
           <div th:each="entry : ${MapOfProjectApplicants}" class="card-body">
 
-            <h4 th:text="${entry.key}"></h4>
+            <h4 style="color: darkslateblue; font-weight: normal" th:text="${entry.key}"></h4>
 
             <table class="card-table" >
               <thead>
@@ -97,21 +129,24 @@
                 <td th:text="${projectApply.getCourseCode()}"></td>
                 <td>
                   <!-- Approve button -->
-                  <form th:action="@{/approve/save}" method="post">
-                    <input type="hidden" name="userId" th:value="${projectApply.getUserId()}" />
-                    <input type="hidden" name="projectId" th:value="${projectApply.getProjectId()}" />
-                    <button type="submit">Approve</button>
-
-                  </form>
-                  <br>
+                  <div style="display: inline-block; margin-right: 25px;">
+                    <form th:action="@{/approve/save}" method="post">
+                      <input type="hidden" name="userId" th:value="${projectApply.getUserId()}" />
+                      <input type="hidden" name="projectId" th:value="${projectApply.getProjectId()}" />
+                      <button type="submit" class="btn-outline-success">Approve</button>
+                    </form>
+                  </div>
 
                   <!-- Reject button -->
-                  <form th:action="@{/reject/save}" method="post">
-                    <input type="hidden" name="userId" th:value="${projectApply.getUserId()}" />
-                    <input type="hidden" name="projectId" th:value="${projectApply.getProjectId()}" />
-                    <button type="submit">Reject</button>
-                  </form>
+                  <div style="display: inline-block;">
+                    <form th:action="@{/reject/save}" method="post">
+                      <input type="hidden" name="userId" th:value="${projectApply.getUserId()}" />
+                      <input type="hidden" name="projectId" th:value="${projectApply.getProjectId()}" />
+                      <button type="submit" class="btn-danger">Reject</button>
+                    </form>
+                  </div>
                 </td>
+
               </tr>
               </tbody>
             </table>

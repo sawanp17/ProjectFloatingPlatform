@@ -8,23 +8,56 @@
         rel="stylesheet"
         integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC"
         crossorigin="anonymous">
+
+    <style>
+        .custom-card {
+            background-color: white; /* Replace with your desired background color */
+            padding: 20px; /* Adjust the padding as needed for size */
+            border-radius: 10px; /* Rounded corners for the card */
+            height: 600px;
+            width: 450px;
+            align-self: center;
+        }
+
+        .custom-label{
+            color: gray;
+            background-color: #f7eeed;
+        }
+        .oval-button {
+            /*login button*/
+            background-color: #f7eeed;
+            border: 2px solid #ced4da;
+            border-radius: 25px;
+            padding: 10px 20px;
+            color: black;
+            transition: background-color 0.3s;
+        }
+
+        .oval-button:hover {
+            background-color: #f7eeed;
+            color: #28282B;
+        }
+
+
+
+        /*.custom-header{*/
+        /*    background-color: #F0F0F0;*/
+        /*    block-size: 70px;*/
+        /*}*/
+
+        >button{
+            cursor: pointer;
+            color: #F0F0F0;
+        }
+    </style>
 </head>
 
-<body style="background-color: #28282B">
+<body style="background-image: url('https://iitj.ac.in/plasma2022/images/iitjcampus.jpg'); background-size: 170%; background-position: center; margin: 0; overflow: hidden;">
 
-<!--<body>-->
-<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
-  <div class="container-fluid">
-    <div class="collapse navbar-collapse" id="navbarSupportedContent"></div>
-  </div>
-</nav>
-
-<br /><br /><br />
-<div class="container ">
-
-  <div class="row col-md-6 offset-md-4">
-    <div class="card custom-card">
-      <div class="card-header custom-header">
+<div class="container d-flex justify-content-center align-items-center" style="min-height: 80vh;">
+  <div class="col-md-4" >
+    <div class="card" style="background-color: rgba(211, 211, 211, 0.7);padding: 20px; border-radius: 10px;top: 70px">
+      <div class="card-header custom-bg" style="background-color: #f7eeed">
         <h3 class="text-center">Registration</h3>
       </div>
 
@@ -39,8 +72,7 @@
                 method="post"
                 role="form"
                 th:action="@{/register/save}"
-                th:object="${user}"
-        >
+                th:object="${user}">
 
 <!--          Input for Username-->
           <div class="form-group mb-1 ">
@@ -88,7 +120,7 @@
           </div>
 
 <!--          Input for the Password-->
-          <div class="form-group mb-1">
+          <div class="form-group mb-1" >
             <label class="form-label "></label>
             <input
                     class="form-control custom-label"
@@ -103,22 +135,20 @@
           </div>
 
 <!--          Input for the role-->
-          <div class="form-group mb-2">
-            <label for="role"></label>
-            <select class="form-control custom-label" id="role" name="role" th:field="*{role}" required>
-                <option value="">Select</option>
-                <option th:each="option : ${roleList}"
-                        th:value="${option}"
-                        th:text="${option}"></option>
-            </select>
-            <p th:errors="*{role}" class="text-danger" th:if="${#fields.hasErrors('role')}"></p>
-          </div>
+            <div class="form-group mb-2">
+                <label for="role"></label>
+                <select class="form-control custom-label" id="role" name="role" th:field="*{role}" required style="color: gray;">
+                    <option value="" style="color: gray;">Select</option>
+                    <option th:each="option : ${roleList}" th:value="${option}" th:text="${option}" style="color: gray;"></option>
+                </select>
+                <p th:errors="*{role}" class="text-danger" th:if="${#fields.hasErrors('role')}"></p>
+            </div>
 
-          <br>
+            <br>
 
 <!--          Register and Login button-->
-          <div class="form-group text-center mb-2">
-            <button class="btn btn-primary" type="submit">Register</button>
+          <div class="form-group text-center mb-2 " >
+            <button class="btn btn-primary oval-button" style="background-color:#f7eeed; color: black" type="submit">Register</button>
           </div>
           <div class="form-group text-center mb-2">
             <span>Already registered?</span>
@@ -128,39 +158,6 @@
           </div>
 
         </form>
-
-        <style>
-          .custom-card {
-            background-color: white; /* Replace with your desired background color */
-            padding: 20px; /* Adjust the padding as needed for size */
-            border-radius: 10px; /* Rounded corners for the card */
-            height: 600px;
-            width: 450px;
-            align-self: center;
-          }
-        </style>
-
-        <style>
-          .custom-label{
-            background-color: #F0F0F0;
-          }
-        </style>
-
-        <style>
-          .custom-header{
-            background-color: #F0F0F0;
-            block-size: 70px;
-          }
-        </style>
-
-
-        <style>
-          >button{
-            /*font-family: $fontAsap;*/
-            cursor: pointer;
-            color: #F0F0F0;
-          }
-        </style>
 
 
       </div>

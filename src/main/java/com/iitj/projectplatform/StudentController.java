@@ -617,6 +617,7 @@ public class StudentController {
                 mapOfApproved.add(
                         List.of(
                                 userRepo.findUserByUsername(approved.getUserId()).get(),
+//                                approved.getUserId(),
                                 projectRepo.findProjectById(approved.getProjectId()),
                                 professor.getName()
                         )
