@@ -64,12 +64,107 @@
             display: flex;
             align-items: center;
             justify-content: center;
-            /*align-items: center;*/
-            /*text-align: center;*/
             background-color: #73a942;
             border: none;
             border-radius: 5px;
             color: white;
+        }
+        @media only screen and (max-width: 600px) {
+            .container-fluid{
+                margin-top: -20px;
+            }
+            .btn-primary{
+                display: none;
+            }
+            .btn-secondary{
+                display: none;
+            }
+
+            .btn-icon {
+                background-color: transparent;
+                border: none;
+                cursor: pointer;
+                padding: 5px;
+                position: absolute;
+                top: 25px;
+                left: 10px;
+            }
+            .fa-times{
+                margin-left: 10px;
+                cursor: pointer;
+                font-size: 22px;
+                color: black;
+            }
+            .btn-icon i {
+                font-size: 22px;
+                color: black;
+            }
+
+            .nav-page {
+                position: fixed;
+                top: 0;
+                left: 0;
+                width: 50%;
+                height: 100%;
+                background-color: #fff;
+                box-shadow: 2px 0 5px rgba(0, 0, 0, 0.2);
+                display: flex;
+                flex-direction: column;
+                padding: 20px;
+                z-index: 1000;
+                transform: translateX(-100%);
+                transition: transform 0.3s ease-in-out;
+            }
+
+            .nav-card {
+
+                height: 86px;
+                margin-bottom: 40px;
+                margin-top: 2px;
+            }
+
+            .nav-page a {
+                display: block;
+                margin-bottom: 10px;
+                padding: 10px;
+                text-align: center;
+                text-decoration: none;
+                color: #fff;
+                font-size: 18px;
+                background-color: #003566;
+                border: none;
+                border-radius: 5px;
+                transition: background-color 0.3s ease;
+            }
+
+            .nav-page a:hover {
+                background-color: #003566;
+            }
+
+            .nav-page card{
+                margin-top: -20px;
+            }
+            .card {
+                overflow-x: auto;
+            }
+            .card-table {
+                display: block;
+                width: 100%;
+                overflow: auto;
+            }
+            .card-table th,
+            .card-table td {
+                white-space: nowrap;
+            }
+        }
+
+        @media only screen and (min-width: 601px) {
+            .btn-icon {
+                display: none;
+            }
+            .nav-page{
+                display: none;
+            }
         }
 
     </style>
@@ -84,7 +179,10 @@
             <div class="col">
                 <div class="card w-100" style="border-radius: 0px; box-shadow: 0px 0px 5px 0px #888888;">
                     <div class="card-body d-flex justify-content-end align-items-center">
-                        <div style="flex: 1;"></div> <!-- Create space to the left -->
+                        <div class="nav-menu" style="flex: 1;"></div>
+                        <button class="btn btn-icon" onclick="toggleNav()">
+                            <i class="fas fa-bars"></i>
+                        </button>
                         <button class="btn btn-primary" ><a href="/welcome" style="text-decoration: none; color: black;">Home</a></button>
                         <button class="btn btn-primary" ><a href="/filter" style="text-decoration: none; color: black;">Filter</a></button>
                         <button class="btn btn-secondary" ><a href="/logout" style="text-decoration: none; color: black;">Logout</a></button>
@@ -96,7 +194,7 @@
         <br>
 
         <div class="row" style="margin-top: 20px">
-            <div class="col-md-9" style="margin-left: 70px">
+            <div class="col-md-9" style="margin-left: auto; margin-right: auto">
                 <div class="card" style="border-radius: 5px; box-shadow: 0px 0px 5px 0px #888888;">
                     <div class="card-body">
                         <h5 class="card-title">Listed Projects</h5>
@@ -111,44 +209,58 @@
                         <thead>
                         <tr>
                             <th>Student Name</th>
-<!--                            <th>Student Roll no.</th>-->
                             <th>Professor Name </th>
                             <th>Project Title</th>
                         </tr>
                         </thead>
                         <tbody>
-                        <!-- Iterate through the map entries -->
                         <tr th:each="entry : ${PairsOfApproved}">
-                            <!-- Get the User and Project for each entry -->
                             <td th:text="${entry.get(0).getUsername()}"></td>
-<!--                            <td th:text="${entry.get(0).getId()}"></td>-->
                             <td th:text="${entry.get(2)}"></td>
                             <td th:text="${entry.get(1).getTitle()}"></td>
                         </tr>
                         </tbody>
                     </table>
-
                 </div>
             </div>
-
             </div>
-
         </div>
-
+        <div class="nav-page">
+            <div class="card nav-card w-100" style="border-radius: 0px; box-shadow: 0px 0px 5px 0px #888888;">
+                <div class="card-body d-flex justify-content-end align-items-center">
+                    <div class="nav-menu" style="flex: 1;"></div>
+                    <button class="btn btn-icon" onclick="toggleNav()" style="margin-left:auto ">
+                        <i class="fas fa-times"></i>
+                    </button>
+                    <button class="btn btn-columns" ></button>
+                </div>
+            </div>
+            <a href="/welcome">Home</a>
+            <a href="/filter">Filter</a>
+            <a href="/logout">Logout</a>
+        </div>
     </div>
-
 </div>
 <script>
+    function toggleNav() {
+        var navPage = document.querySelector('.nav-page');
+        var navIcon = document.querySelector('.btn-icon');
+
+        if (navPage.style.transform === 'translateX(-100%)' || navPage.style.transform === '') {
+            navPage.style.transform = 'translateX(0)';
+        } else {
+            navPage.style.transform = 'translateX(-100%)';
+            navIcon.innerHTML = '<i class="fas fa-bars"></i>'; // Change icon back to 'bars'
+        }
+    }
+
     function exportTableToExcel(tableID, filename = ''){
     var downloadLink;
     var dataType = 'application/vnd.ms-excel';
     var tableSelect = document.getElementById(tableID);
     var tableHTML = tableSelect.outerHTML.replace(/ /g, '%20');
 
-    // Specify file name
     filename = filename?filename+'.xls':'excel_data.xls';
-
-    // Create download link element
     downloadLink = document.createElement("a");
 
     document.body.appendChild(downloadLink);
@@ -159,13 +271,8 @@
         });
         navigator.msSaveOrOpenBlob( blob, filename);
     }else{
-        // Create a link to the file
         downloadLink.href = 'data:' + dataType + ', ' + tableHTML;
-
-        // Setting the file name
         downloadLink.download = filename;
-
-        //triggering the function
         downloadLink.click();
     }
 }
