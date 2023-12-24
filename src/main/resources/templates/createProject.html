@@ -110,6 +110,7 @@
         <form th:action="@{/create/save}" method="post">
             <label class="form-label" for="title">Title:</label>
             <input class="form-input-1" type="text" id="title" name="title" required th:value="${isEdit} ? ${project.getTitle()} : ''">
+
             <label class="form-label" for="projectType">Project Type:</label>
             <select class="form-input-1" id="projectType" name="projectType" required>
                 <option value="" disabled selected>Select Project Type</option>
@@ -128,6 +129,9 @@
 
             <label class="form-label" for="preReq">Pre-Requisites:</label>
             <textarea class="form-input-3" id="preReq" name="preReq" rows="4" cols="50" required th:text="${isEdit} ? ${project.getPreReq()} : ''"></textarea>
+
+            <label class="form-label" for="tagsGiven">Tags (line seperated):</label>
+            <input class="form-input-1" type="text" id="tagsGiven" name="tagsGiven" required th:value="${isEdit} ? ${project.getTags()} : ''">
 
             <label class="form-label" for="maxLim">Max People Allowed:</label>
             <input class="form-input-1" type="number" id="maxLim" name="maxLim" required th:value="${isEdit} ? ${project.getMaxLim()} : 0">
@@ -177,6 +181,8 @@
                 <option value="IN_PROGRESS" th:selected="${isEdit} and ${project.getStatus() == 'IN_PROGRESS'}">IN PROGRESS</option>
                 <option value="COMPLETED" th:selected="${isEdit} and ${project.getStatus() == 'COMPLETED'}">COMPLETED</option>
             </select>
+
+
 
             <input type="hidden" name="isEdit" th:value="${isEdit}" />
             <th:block th:if="${isEdit}">

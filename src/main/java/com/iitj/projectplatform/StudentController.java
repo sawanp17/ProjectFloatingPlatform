@@ -11,6 +11,9 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import javax.swing.text.html.Option;
+import java.sql.Date;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -32,7 +35,11 @@ public class StudentController {
 
     @Autowired
     private ApprovedRepo approvedRepo;
+    @Autowired
+    private TagMappingRepo tagMappingRepo;
 
+    @Autowired
+    private TagRepository tagRepository;
 
 
     @GetMapping("/welcome")
@@ -171,7 +178,7 @@ public class StudentController {
 
 
         model.addAttribute("stipendOptionsList", StipendOption.values());
-        model.addAttribute("departmentList", Departments.values());
+//        model.addAttribute("departmentList", Departments.values());
         model.addAttribute("courseCodeList", CourseCode.values());
         model.addAttribute("projectTypeList", ProjectType.values());
 
@@ -207,12 +214,34 @@ public class StudentController {
     @PostMapping("/create/save")
     public String saveProject(@ModelAttribute("project") Project project,
                               @ModelAttribute("projectId") Long projectId,
+                              @ModelAttribute("tagsGiven") String tagsGiven,
                               @ModelAttribute("isEdit") Boolean isEdit,
                               Authentication authentication){
 
         System.out.println("Editing Project " + projectId);
         UserDetails userDetails = (UserDetails) authentication.getPrincipal();
         String username = userDetails.getUsername();
+        List<String> tagList = Arrays.asList(tagsGiven.split(","));
+        for (String tag: tagList){
+            tagList.set(tagList.indexOf(tag), tag.toLowerCase());
+        }
+        List<Tag> tagObjectList = new ArrayList<>();
+        for (String tag: tagList){
+            try {
+                tagRepository.findTagByName(tag);
+                tagObjectList.add(
+                        tagRepository.findTagByName(tag).get()
+                );
+
+            }
+            catch (NoSuchElementException e){
+                Tag newTag = new Tag(tag);
+                newTag = tagRepository.save(newTag);
+                tagObjectList.add(newTag);
+            }
+        }
+
+
 
 
         Project toSave ;
@@ -222,7 +251,7 @@ public class StudentController {
         else toSave = projectRepo.findProjectById(projectId);
 
         toSave.setTitle(project.getTitle());
-        toSave.setDepartment(project.getDepartment());
+//        toSave.setDepartment(project.getDepartment());
         toSave.setDeadline(project.getDeadline());
         toSave.setDescription(project.getDescription());
         toSave.setPreReq(project.getPreReq());
@@ -232,7 +261,14 @@ public class StudentController {
         toSave.setStipendOption(project.getStipendOption());
         toSave.setStipendAmount(project.getStipendAmount());
 
+
+
         toSave = projectRepo.save(toSave);
+
+        for (Tag tag: tagObjectList){
+            TagMapping tagMapping = new TagMapping(toSave.getId(),tag.getId());
+            tagMappingRepo.save(tagMapping);
+        }
 
         //cascade add
         if (!isEdit){
@@ -386,7 +422,7 @@ public class StudentController {
             model.addAttribute("isEdit", true);
             model.addAttribute("projectId", projectId);
             model.addAttribute("stipendOptionsList", StipendOption.values());
-            model.addAttribute("departmentList", Departments.values());
+//            model.addAttribute("departmentList", Departments.values());
             model.addAttribute("courseCodeList", CourseCode.values());
             model.addAttribute("projectTypeList", ProjectType.values());
 
@@ -395,9 +431,53 @@ public class StudentController {
         return "createProject";
     }
 
+    @PostMapping("/apply")
+    public String showFilteredProjects(Model model,
+                                       @RequestParam("title") String title,
+                                       @RequestParam("deadline") String deadline,
+                                       @RequestParam("keywords") String keywords,
+                                       @RequestParam("stipendOption") String stipendOption) throws ParseException {
+//        System.out.println("here>>>>>>>>>>>>>>>>>>>" + projectFilter.getDeadline());
+        model.addAttribute("stipendOptionsList",StipendOption.values());
+        if (keywords==""){
+            keywords = null;
+        }
+        if (stipendOption==""){
+            stipendOption = null;
+        }
+
+        ProjectFilter projectFilter1 = new ProjectFilter(projectRepo,tagRepository,tagMappingRepo);
+        projectFilter1.setDeadline(deadline==""?null: Date.valueOf(deadline));
+        if (keywords!=null) {
+            List<String> listOfKeywords = new ArrayList<>();
+            List<String> temp = Arrays.stream(keywords.split(",")).toList();
+            for (String key: temp){
+                listOfKeywords.add(key.toLowerCase());
+            }
+            System.out.println("list of Keys: " + listOfKeywords);
+
+            projectFilter1.setKeywords(listOfKeywords);
+        }
+        if (stipendOption!=null) projectFilter1.setStipendOption(StipendOption.valueOf(stipendOption));
+        projectFilter1.setTitle(title);
+
+        List<Project> listProjects = projectFilter1.getFilteredResults();
+        Map<Long,String> projectToProf = new HashMap<>();
+        for (Project project: listProjects){
+            Long projectID = project.getId();
+            String userID = projectCreateRepo.findProjectCreateByProjectId(projectID).get(0).get().getUserId();
+            projectToProf.put(projectID, userRepo.findUserByUsername(userID).get().getName());
+        }
+        model.addAttribute("floatedProjects", listProjects);
+        model.addAttribute("projectToProf", projectToProf);
+
+        return "applyProject";
+    }
 
     @GetMapping("/apply")
     public String applyProject(Model model, Authentication authentication){
+        model.addAttribute("stipendOptionsList",StipendOption.values());
+        model.addAttribute("courseCodeList",CourseCode.values());
         UserDetails userDetails = (UserDetails) authentication.getPrincipal();
         String username = userDetails.getUsername();
         Optional<User> user = userRepo.findUserByUsername(username);
@@ -631,6 +711,76 @@ public class StudentController {
         model.addAttribute("PairsOfApproved", mapOfApproved);
         return "courseCodeApproved";
     }
+
+//    @PostMapping("/filterProject")
+//    public String filteredProjects(Model model, @ModelAttribute("searchKeyword") String searchKeyword){
+//        Optional<Tag> getTag = tagRepository.findTagByName(searchKeyword);
+//        List<TagMapping> getAllTagMappingsForThisTag = tagMappingRepo.findTagMappingByTagId(getTag.get().getId());
+//        List<Project> listProjects = new ArrayList<>();
+//        for (TagMapping tagMapping: getAllTagMappingsForThisTag){
+//            listProjects.add(projectRepo.findProjectById(tagMapping.getProjectId()));
+//        }
+//        Map<Long,String> projectToProf = new HashMap<>();
+//        for (Project project: listProjects){
+//            Long projectID = project.getId();
+//            String userID = projectCreateRepo.findProjectCreateByProjectId(projectID).get(0).get().getUserId();
+//            projectToProf.put(projectID, userRepo.findUserByUsername(userID).get().getName());
+//        }
+//
+//        model.addAttribute("floatedProjects", listProjects);
+//        model.addAttribute("projectToProf", projectToProf);
+//        return "redirect://apply";
+//    }
+
+    @GetMapping("/filterProjects")
+    public String filterProjects(Model model){
+        model.addAttribute("projectFilter", new ProjectFilter());
+        model.addAttribute("stipendOptionsList",StipendOption.values());
+        return "filterProjects";
+    }
+
+//    @PostMapping("/filterProjects/get")
+//    public String showFilteredProjects(Model model,
+//                                       @RequestParam("title") String title,
+//                                       @RequestParam("deadline") String deadline,
+//                                       @RequestParam("keywords") String keywords,
+//                                       @RequestParam("stipendOption") String stipendOption) throws ParseException {
+////        System.out.println("here>>>>>>>>>>>>>>>>>>>" + projectFilter.getDeadline());
+//
+//        if (keywords==""){
+//            keywords = null;
+//        }
+//        if (stipendOption==""){
+//            stipendOption = null;
+//        }
+//
+//        ProjectFilter projectFilter1 = new ProjectFilter(projectRepo,tagRepository,tagMappingRepo);
+//        projectFilter1.setDeadline(deadline==""?null: Date.valueOf(deadline));
+//        if (keywords!=null) {
+//            List<String> listOfKeywords = new ArrayList<>();
+//            List<String> temp = Arrays.stream(keywords.split(",")).toList();
+//            for (String key: temp){
+//                listOfKeywords.add(key.toLowerCase());
+//            }
+//            System.out.println("list of Keys: " + listOfKeywords);
+//
+//            projectFilter1.setKeywords(listOfKeywords);
+//        }
+//        if (stipendOption!=null) projectFilter1.setStipendOption(StipendOption.valueOf(stipendOption));
+//        projectFilter1.setTitle(title);
+//
+//        List<Project> listProjects = projectFilter1.getFilteredResults();
+//        Map<Long,String> projectToProf = new HashMap<>();
+//        for (Project project: listProjects){
+//            Long projectID = project.getId();
+//            String userID = projectCreateRepo.findProjectCreateByProjectId(projectID).get(0).get().getUserId();
+//            projectToProf.put(projectID, userRepo.findUserByUsername(userID).get().getName());
+//        }
+//        model.addAttribute("floatedProjects", listProjects);
+//        model.addAttribute("projectToProf", projectToProf);
+//
+//        return "applyProject";
+//    }
 
 //    @GetMapping("/gotApproved")
 //    public String gotApprovedList(@ModelAttribute("mapOfApproved") Map<User,Project> mapOfApproved){

@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+  <title>Project Filter Form</title>
+</head>
+<body>
+<form action="/filterProjects/get" method="post">
+  <label for="title">Title:</label>
+  <input type="text" id="title" name="title" />
+
+  <label for="deadline">Deadline:</label>
+  <input type="date" id="deadline" name="deadline" />
+
+  <label for="keywords">Keywords:</label>
+  <input type="text" id="keywords" name="keywords" />
+
+  <label for="stipendOption">Stipend Option:</label>
+  <select id="stipendOption" name="stipendOption">
+    <option value="">Select </option>
+    <!-- Iterate through projectTypeList and display options -->
+    <option th:each="option : ${stipendOptionsList}"
+            th:value="${option}"
+            th:text="${option}" >
+    </option>
+  </select>
+
+  <button type="submit">Filter</button>
+</form>
+</body>
+</html>
