@@ -439,6 +439,7 @@ public class StudentController {
                                        @RequestParam("stipendOption") String stipendOption) throws ParseException {
 //        System.out.println("here>>>>>>>>>>>>>>>>>>>" + projectFilter.getDeadline());
         model.addAttribute("stipendOptionsList",StipendOption.values());
+        model.addAttribute("courseCodeList", CourseCode.values());
         if (keywords==""){
             keywords = null;
         }
