@@ -83,6 +83,29 @@
     </div>
     <br>
 
+    <form action="/apply" method="post">
+      <label for="title">Title:</label>
+      <input type="text" id="title" name="title" />
+
+      <label for="deadline">Deadline:</label>
+      <input type="date" id="deadline" name="deadline" />
+
+      <label for="keywords">Keywords:</label>
+      <input type="text" id="keywords" name="keywords" />
+
+      <label for="stipendOption">Stipend Option:</label>
+      <select id="stipendOption" name="stipendOption">
+        <option value="">Select </option>
+        <!-- Iterate through projectTypeList and display options -->
+        <option th:each="option : ${stipendOptionsList}"
+                th:value="${option}"
+                th:text="${option}" >
+        </option>
+      </select>
+
+      <button type="submit">Filter</button>
+      <button type="post" formaction="/apply">Clear</button>
+    </form>
     <div class="row" style="margin-top: 20px">
       <div class="col-md-12" >
         <div class="card">
@@ -93,7 +116,7 @@
               <thead>
               <tr>
                 <th>Title</th>
-                <th>Department</th>
+<!--                <th>Department</th>-->
                 <th>Professor</th>
                 <th>Deadline</th>
                 <th class="hidden">Type</th>
@@ -113,7 +136,7 @@
               <tr th:each="project : ${floatedProjects}">
                 <form method="post" th:action="@{'/apply/save'}">
                   <td th:text="${project.title}"></td>
-                  <td th:text="${project.department}"></td>
+<!--                  <td th:text="${project.department}"></td>-->
                   <td th:text="${projectToProf.get(project.getId())}"></td>
                   <td th:text="${project.deadline}"></td>
                   <td class="hidden" th:text="${project.projectType}"></td>

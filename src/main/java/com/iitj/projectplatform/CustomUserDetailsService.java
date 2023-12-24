@@ -47,9 +47,7 @@ public class CustomUserDetailsService implements UserDetailsService {
             authorities.add(new SimpleGrantedAuthority("ROLE_STUDENT"));
         }
 
-//        System.out.println(user.getUsername());
-//        System.out.println(user.getPassword());
-//        System.out.println(pe.encode(user.getPassword()));
+
         return  org.springframework.security.core.userdetails.User
                 .withUsername(user.getUsername())
                 .password(pe.encode(user.getPassword()))

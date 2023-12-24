@@ -3,8 +3,8 @@ package com.iitj.projectplatform;
 import jakarta.persistence.*;
 
 import java.sql.Date;
-import java.util.HashSet;
-import java.util.Set;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Table(name = "Project")
@@ -17,9 +17,9 @@ public class Project {
     @Column(name = "title")
     private String title;
 
-    @Column(name = "department")
-    @Enumerated(EnumType.STRING)
-    private Departments department;
+//    @Column(name = "department")
+//    @Enumerated(EnumType.STRING)
+//    private Departments department;
 
     @Column(name = "deadline")
     private Date deadline;
@@ -50,13 +50,14 @@ public class Project {
     @Column(name = "isdeleted")
     private Boolean isDeleted = false;
 
+
     public Project() {
     }
 
 
     public Project(String title, Departments department, Date deadline, String description, String preReq, int maxLim, String status) {
         this.title = title;
-        this.department = department;
+//        this.department = department;
         this.deadline = deadline;
         this.description = description;
         this.preReq = preReq;
@@ -118,13 +119,13 @@ public class Project {
         this.title = title;
     }
 
-    public Departments getDepartment() {
-        return department;
-    }
-
-    public void setDepartment(Departments department) {
-        this.department = department;
-    }
+//    public Departments getDepartment() {
+//        return department;
+//    }
+//
+//    public void setDepartment(Departments department) {
+//        this.department = department;
+//    }
 
     public Date getDeadline() {
         return deadline;
@@ -165,4 +166,5 @@ public class Project {
     public void setDeleted(Boolean deleted) {
         isDeleted = deleted;
     }
+
 }
