@@ -45,8 +45,10 @@
             box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2);
         }
         .form-label {
-            display: block;
+            /*display: block;*/
             margin-bottom: 5px;
+            /*border-width: 1px; !* Set the border width to 1 pixel or adjust as needed *!*/
+            /*border-style: solid;*/
         }
 
         .form-input-3 {
@@ -60,7 +62,24 @@
             padding: 8px;
             margin-bottom: 10px;
             background-color: #f2f2f2;
+            border-width: .01px; /* Set the border width to 1 pixel or adjust as needed */
+            /*border-style: thin;*/
         }
+        .button-container {
+            text-align: center;
+        }
+
+        .form-input-5 {
+            background-color: #003566;
+            border: 2px solid #ced4da;
+            border-radius: 25px;
+            padding: 10px 20px;
+            color: white;
+            transition: background-color 0.3s;
+        }
+
+
+
     </style>
 </head>
 <body>
@@ -69,7 +88,7 @@
     <br>
     <div class="row" style="margin-top: auto">
         <div class="col" >
-            <div class="card w-100">
+            <div class="card w-100" style="border-radius: 0px; box-shadow: 0px 0px 5px 0px #888888;">
                 <div class="card-body d-flex justify-content-end align-items-center">
                     <div style="flex: 1;"></div> <!-- Create space to the left -->
                     <button class="btn btn-primary" ><a href="/welcome" style="text-decoration: none; color: black;">Home</a></button>
@@ -86,23 +105,11 @@
         </div>
     </div>
 
-    <div class="center-card" style="margin-top: 70px">
+    <div class="center-card" style="border-radius: 5px; box-shadow: 0px 0px 5px 0px #888888;margin-top: 70px">
         <h2 style="text-align: center;">Create a New Project</h2>
         <form th:action="@{/create/save}" method="post">
             <label class="form-label" for="title">Title:</label>
             <input class="form-input-1" type="text" id="title" name="title" required th:value="${isEdit} ? ${project.getTitle()} : ''">
-<!--            <label class="form-label" for="department">Department:</label>-->
-<!--            <select class="form-input-1" id="department" name="department" required>-->
-<!--                &lt;!&ndash; Default option &ndash;&gt;-->
-<!--                <option value="" disabled selected>Select Department</option>-->
-
-<!--                &lt;!&ndash; Iterate through departmentList and display options &ndash;&gt;-->
-<!--                <option th:each="option : ${departmentList}"-->
-<!--                        th:value="${option}"-->
-<!--                        th:text="${option}"-->
-<!--                        th:selected="${isEdit and option == project.getDepartment()}">-->
-<!--                </option>-->
-<!--            </select>-->
 
             <label class="form-label" for="projectType">Project Type:</label>
             <select class="form-input-1" id="projectType" name="projectType" required>
@@ -129,7 +136,7 @@
             <label class="form-label" for="maxLim">Max People Allowed:</label>
             <input class="form-input-1" type="number" id="maxLim" name="maxLim" required th:value="${isEdit} ? ${project.getMaxLim()} : 0">
 
-            <label class="form-label" for="deadline">Deadline:</label>
+            <label class="form-label" for="deadline">Project Deadline:</label>
             <input class="form-input-1" type="date" id="deadline" name="deadline" required th:value="${isEdit} ? ${project.getDeadline()} : ''">
 
             <label class="form-label" for="stipendOption">Stipend Option:</label>
@@ -142,6 +149,7 @@
                         th:selected="${isEdit and option == project.getStipendOption()}">
                 </option>
             </select>
+
 
             <label class="form-label" for="stipendAmount" id="stipendAmountLabel" style="display: none;">Stipend Amount:</label>
             <input class="form-input-1" type="number" id="stipendAmount" name="stipendAmount" required th:value="${isEdit} ? ${project.getStipendAmount()} : 0" style="display: none;">
@@ -183,8 +191,12 @@
             <th:block th:unless="${isEdit}">
                 <input type="hidden" name="projectId" th:value="-1" />
             </th:block>
-            <button class="form-input-1" type="submit" th:if="${isEdit}">Update Project</button>
-            <button class="form-input-1" type="submit" th:unless="${isEdit}">Create Project</button>
+            <br>
+            <div class="button-container">
+                <button class="form-input-5" type="submit" th:if="${isEdit}">Update Project</button>
+                <button class="form-input-5" type="submit" th:unless="${isEdit}">Create Project</button>
+            </div>
+
         </form>
     </div>
 </div>
