@@ -223,17 +223,16 @@
             <label class="form-label" for="title">Title:</label>
             <input class="form-input-1" type="text" id="title" name="title" required th:value="${isEdit} ? ${project.getTitle()} : ''">
 
-            <label class="form-label" for="projectType">Project Type:</label>
-            <select class="form-input-1" id="projectType" name="projectType" required>
-                <option value="" disabled selected>Select Project Type</option>
-                <!-- Iterate through projectTypeList and display options -->
-                <option th:each="option : ${projectTypeList}"
-                        th:value="${option}"
-                        th:text="${option}"
-                        th:selected="${isEdit and option == project.getProjectType()}">
-                </option>
-            </select>
-
+            <label class="form-label">Project Type:</label>
+            <div>
+                <!-- Iterate through projectTypeList and display checkboxes -->
+                <th:block th:each="option : ${projectTypeList}">
+                    <label>
+                        <input type="checkbox" th:value="${option}" th:name="projectTypesAllowed" th:checked="${isEdit and #lists.contains(project.getProjectType(), option)}">
+                        <span th:text="${option}"></span>
+                    </label>
+                </th:block>
+            </div>
 
 
             <label class="form-label" for="description">Description:</label>

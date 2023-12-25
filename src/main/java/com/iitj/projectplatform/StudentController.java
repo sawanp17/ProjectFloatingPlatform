@@ -241,8 +241,17 @@ public class StudentController {
     public String saveProject(@ModelAttribute("project") Project project,
                               @ModelAttribute("projectId") Long projectId,
                               @ModelAttribute("tagsGiven") String tagsGiven,
+                              @RequestParam("projectTypesAllowed") String[] projectTypesAllowed,
                               @ModelAttribute("isEdit") Boolean isEdit,
                               Authentication authentication){
+
+        System.out.println("alloweed pt "+ projectTypesAllowed.length);
+        List<ProjectType> projectTypes = new ArrayList<>();
+        if (projectTypesAllowed!=null){
+            for (String it: projectTypesAllowed){
+                projectTypes.add(ProjectType.valueOf(it));
+            }
+        }
 
         System.out.println("Editing Project " + projectId);
         UserDetails userDetails = (UserDetails) authentication.getPrincipal();
@@ -270,36 +279,63 @@ public class StudentController {
 
 
 
-        Project toSave ;
-        if (projectId == -1){
-            toSave = new Project();
-        }
-        else toSave = projectRepo.findProjectById(projectId);
+//        Project toSave = new Project();
+//        if (projectId == -1){
+//            toSave = new Project();
+//        }
+//        else toSave = projectRepo.findProjectById(projectId);
+//
+//        toSave.setTitle(project.getTitle());
+////        toSave.setDepartment(project.getDepartment());
+//        toSave.setDeadline(project.getDeadline());
+//        toSave.setDescription(project.getDescription());
+//        toSave.setPreReq(project.getPreReq());
+//        toSave.setMaxLim(project.getMaxLim());
+////        toSave.setStatus(project.getStatus());
+//        toSave.setProjectType(project.getProjectType());
+//        toSave.setStipendOption(project.getStipendOption());
+//        toSave.setStipendAmount(project.getStipendAmount());
 
-        toSave.setTitle(project.getTitle());
+
+        List<Project> projectsFormed = new ArrayList<>();
+        //set status
+        for (ProjectType projectType: projectTypes){
+            Project toSave = new Project();
+            if (projectId == -1){
+                toSave = new Project();
+            }
+            else toSave = projectRepo.findProjectById(projectId);
+
+            toSave.setTitle(project.getTitle());
 //        toSave.setDepartment(project.getDepartment());
-        toSave.setDeadline(project.getDeadline());
-        toSave.setDescription(project.getDescription());
-        toSave.setPreReq(project.getPreReq());
-        toSave.setMaxLim(project.getMaxLim());
-        toSave.setStatus(project.getStatus());
-        toSave.setProjectType(project.getProjectType());
-        toSave.setStipendOption(project.getStipendOption());
-        toSave.setStipendAmount(project.getStipendAmount());
+            toSave.setDeadline(project.getDeadline());
+            toSave.setDescription(project.getDescription());
+            toSave.setPreReq(project.getPreReq());
+            toSave.setMaxLim(project.getMaxLim());
+            toSave.setStatus(project.getStatus());
+            toSave.setProjectType(projectType);
+            toSave.setStipendOption(project.getStipendOption());
+            toSave.setStipendAmount(project.getStipendAmount());
+            toSave = projectRepo.save(toSave);
+            projectsFormed.add(toSave);
+
+        }
 
 
-
-        toSave = projectRepo.save(toSave);
 
         for (Tag tag: tagObjectList){
-            TagMapping tagMapping = new TagMapping(toSave.getId(),tag.getId());
-            tagMappingRepo.save(tagMapping);
+            for (Project toSave: projectsFormed){
+                TagMapping tagMapping = new TagMapping(toSave.getId(),tag.getId());
+                tagMappingRepo.save(tagMapping);
+            }
         }
 
         //cascade add
         if (!isEdit){
-            ProjectCreate projectCreate = new ProjectCreate(username,toSave.getId());
-            projectCreateRepo.save(projectCreate);
+            for (Project toSave: projectsFormed){
+                ProjectCreate projectCreate = new ProjectCreate(username,toSave.getId());
+                projectCreateRepo.save(projectCreate);
+            }
         }
 
         return "redirect:/myProjects";
@@ -569,14 +605,21 @@ public class StudentController {
         return "applyProject";
     }
 
-    @PostMapping("apply/save")
+    @PostMapping("/apply/save")
     public String saveAppliedProject(
             @RequestParam("projectId") Long projectId,
-            @RequestParam("courseCode") CourseCode courseCode,
+            @RequestParam("courseCode") String courseCodeString,
             @RequestParam("resumeLink") String resumeLink,
             Authentication authentication
     ){
-//        System.out.println("RESUME LINK: " + resumeLink);
+//        System.out.println("CourseCode: " + courseCode);
+        CourseCode courseCode;
+        if (courseCodeString.equals("")){
+            courseCode = CourseCode.NA;
+        }
+        else {
+            courseCode = CourseCode.valueOf(courseCodeString);
+        }
 
         Project project = projectRepo.findProjectById(projectId);
         if (project == null){
