@@ -46,6 +46,11 @@ public class CustomUserDetailsService implements UserDetailsService {
 
             authorities.add(new SimpleGrantedAuthority("ROLE_STUDENT"));
         }
+        else if (user.getRole().equals(Role.SuperAdmin)){
+            System.out.println(">>  Assigning role of SuperAdmin to " + user.getUsername());
+
+            authorities.add(new SimpleGrantedAuthority("ROLE_SUPERADMIN"));
+        }
 
 
         return  org.springframework.security.core.userdetails.User

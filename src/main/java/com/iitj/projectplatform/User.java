@@ -31,7 +31,8 @@ public class User implements UserDetails {
     @Enumerated(EnumType.STRING)
     private Role role;
 
-
+    @Column(name="iscoordinator")
+    private Boolean isCoordinator;
 
 
 
@@ -49,6 +50,14 @@ public class User implements UserDetails {
         this.password = password;
         this.accountNonLocked = accountNonLocked;
         this.role = role;
+    }
+
+    public Boolean getCoordinator() {
+        return isCoordinator;
+    }
+
+    public void setCoordinator(Boolean coordinator) {
+        isCoordinator = coordinator;
     }
 
     public Role getRole() {

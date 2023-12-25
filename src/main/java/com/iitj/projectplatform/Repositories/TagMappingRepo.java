@@ -10,5 +10,6 @@ import java.util.Optional;
 public interface TagMappingRepo extends JpaRepository<TagMapping,Long> {
     Optional<TagMapping> findTagMappingByProjectIdAndTagId(Long projectId, Long tagId);
     List<TagMapping> findTagMappingByTagId(Long tagId);
+    List<TagMapping> findTagMappingByProjectId(Long projectId);
 //    List<TagMapping> findTagMappingsByTagId(List<Long> tagIds);
 }
