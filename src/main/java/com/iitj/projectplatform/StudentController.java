@@ -130,6 +130,17 @@ public class StudentController {
                 && currentUser.get().getCoordinator().equals(Boolean.TRUE)){
             model.addAttribute("isCoordinator",true);
         }
+
+        //running projects
+        List<ProjectCreate> myProjectsCreated = projectCreateRepo.findProjectCreateByUserId(username);
+        List<Project> myProjectsRunning = new ArrayList<>();
+        for (ProjectCreate projectCreate: myProjectsCreated){
+            if (projectRepo.findProjectById(projectCreate.getProjectId()).getStatus().equals(ProjectStatus.IN_PROGRESS)){
+                myProjectsRunning.add(projectRepo.findProjectById(projectCreate.getProjectId()));
+            }
+        }
+        model.addAttribute("myProjectsRunning", myProjectsRunning);
+
         return "welcome";
     }
 

@@ -26,5 +26,7 @@ public interface ProjectRepo extends JpaRepository<Project, Long> {
     List<Project> searchProjectByDeadline(@Param("deadline") Date deadline);
 
     List<Project> findProjectsByStipendOption(StipendOption stipendOption);
+
+    List<Project> findProjectsByStatusAndIsDeleted(ProjectStatus projectStatus, Boolean isDeleted);
 }
 
