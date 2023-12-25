@@ -264,7 +264,7 @@
 
 
             <label class="form-label" for="stipendAmount" id="stipendAmountLabel" style="display: none;">Stipend Amount:</label>
-            <input class="form-input-1" type="number" id="stipendAmount" name="stipendAmount" required th:value="${isEdit} ? ${project.getStipendAmount()} : 0" style="display: none;">
+            <input class="form-input-1" type="text" id="stipendAmount" name="stipendAmount" required th:value="${isEdit} ? ${project.getStipendAmount()} : 0" style="display: none;">
 
 
             <script>

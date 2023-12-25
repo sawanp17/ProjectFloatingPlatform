@@ -45,7 +45,7 @@ public class Project {
     private StipendOption stipendOption;
 
     @Column(name = "stipendamount")
-    private Integer stipendAmount;
+    private String stipendAmount;
 
     @Column(name = "isdeleted")
     private Boolean isDeleted = false;
@@ -73,11 +73,11 @@ public class Project {
         this.stipendOption = stipendOption;
     }
 
-    public Integer getStipendAmount() {
+    public String getStipendAmount() {
         return stipendAmount;
     }
 
-    public void setStipendAmount(Integer stipendAmount) {
+    public void setStipendAmount(String stipendAmount) {
         this.stipendAmount = stipendAmount;
     }
 
