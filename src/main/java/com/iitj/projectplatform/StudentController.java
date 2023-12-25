@@ -504,12 +504,16 @@ public class StudentController {
     }
 
     @PostMapping("/apply")
-    public String showFilteredProjects(Model model,
+    public String showFilteredProjects(Model model, Authentication authentication,
                                        @RequestParam("title") String title,
                                        @RequestParam("deadline") String deadline,
                                        @RequestParam("keywords") String keywords,
                                        @RequestParam("stipendOption") String stipendOption) throws ParseException {
 //        System.out.println("here>>>>>>>>>>>>>>>>>>>" + projectFilter.getDeadline());
+
+
+        String username = ((UserDetails)authentication.getPrincipal()).getUsername();
+
         model.addAttribute("stipendOptionsList",StipendOption.values());
         model.addAttribute("courseCodeList", CourseCode.values());
         if (keywords==""){
@@ -535,13 +539,49 @@ public class StudentController {
         projectFilter1.setTitle(title);
 
         List<Project> listProjects = projectFilter1.getFilteredResults();
+
+        List<Project> finalListProjects = new ArrayList<>();
+        for (Project projectIt: listProjects){
+            List<ProjectApply> projectApplyForThis = projectApplyRepo.findProjectApplyByProjectId(projectIt.getId());
+            List<Approved> approvedForThis = approvedRepo.findApprovedByProjectId(projectIt.getId());
+            List<Rejected> rejectedForThis = rejectedRepo.findRejecteddByProjectId(projectIt.getId());
+
+            boolean toAdd = true;
+            for (ProjectApply projectApplyIt: projectApplyForThis){
+                if (projectApplyIt.getUserId().equals(username)){
+                    toAdd=false;
+                    break;
+                }
+            }
+            if (!toAdd){
+                continue;
+            }
+            for (Approved approvedIt: approvedForThis){
+                if (approvedIt.getUserId().equals(username)){
+                    toAdd=false;
+                    break;
+                }
+            }
+            if (!toAdd){
+                continue;
+            }
+            for (Rejected rejectedIt: rejectedForThis){
+                if (rejectedIt.getUserId().equals(username)){
+                    toAdd=false;
+                    break;
+                }
+            }
+            if (toAdd){
+                finalListProjects.add(projectIt);
+            }
+        }
         Map<Long,String> projectToProf = new HashMap<>();
-        for (Project project: listProjects){
+        for (Project project: finalListProjects){
             Long projectID = project.getId();
             String userID = projectCreateRepo.findProjectCreateByProjectId(projectID).getUserId();
             projectToProf.put(projectID, userRepo.findUserByUsername(userID).get().getName());
         }
-        model.addAttribute("floatedProjects", listProjects);
+        model.addAttribute("floatedProjects", finalListProjects );
         model.addAttribute("projectToProf", projectToProf);
 
         return "applyProject";
