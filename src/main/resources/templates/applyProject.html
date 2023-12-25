@@ -10,11 +10,9 @@
         crossorigin="anonymous">
 
   <style>
-
     .hidden {
       display: none;
     }
-
     .card-title{
       color: darkslateblue;
     }
@@ -54,7 +52,6 @@
       color: black;
       border-color: #f2f2f2;
     }
-
 
     .btn.btn-danger.no-hover-effect {
       position: relative;
@@ -118,14 +115,122 @@
       height: 1.2em;
       fill: currentColor;
     }
+    @media only screen and (max-width: 800px) {
+      .container-fluid{
+        margin-top: -20px;
+      }
+      .btn-primary{
+        display: none;
+      }
+      .btn-secondary{
+        display: none;
+      }
 
+      .btn-icon {
+        background-color: transparent;
+        border: none;
+        cursor: pointer;
+        padding: 5px;
+        position: absolute;
+        top: 25px;
+        left: 10px;
+      }
+      .fa-times{
+        margin-left: 10px;
+        cursor: pointer;
+        font-size: 22px;
+        color: black;
+      }
+      .btn-icon i {
+        font-size: 22px;
+        color: black;
+      }
+
+      .nav-page {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 50%;
+        height: 100%;
+        background-color: #fff;
+        box-shadow: 2px 0 5px rgba(0, 0, 0, 0.2);
+        display: flex;
+        flex-direction: column;
+        padding: 20px;
+        z-index: 1000;
+        transform: translateX(-100%);
+        transition: transform 0.3s ease-in-out;
+      }
+
+      .nav-card {
+
+        height: 86px;
+        margin-bottom: 40px;
+        margin-top: 2px;
+      }
+
+      .nav-page a {
+        display: block;
+        margin-bottom: 10px;
+        padding: 10px;
+        text-align: center;
+        text-decoration: none;
+        color: #fff;
+        font-size: 18px;
+        background-color: #003566;
+        border: none;
+        border-radius: 5px;
+        transition: background-color 0.3s ease;
+      }
+
+      .nav-page a:hover {
+        background-color: #003566;
+      }
+
+      .nav-page .card{
+        margin-top: 0px;
+        margin-bottom: 20px;
+      }
+      .card {
+        overflow-x: auto;
+      }
+      .card-table {
+        display: block;
+        width: 100%;
+        overflow: auto;
+      }
+      .card-table th,
+      .card-table td {
+        white-space: nowrap;
+      }
+    }
+
+    @media only screen and (min-width: 801px) {
+      .btn-icon {
+        display: none;
+      }
+      .nav-page{
+        display: none;
+      }
+      .card {
+        overflow-x: auto;
+      }
+      .card-table {
+        display: block;
+        width: 100%;
+        overflow: auto;
+      }
+      .card-table th,
+      .card-table td {
+        width: 100%;
+        white-space: nowrap;
+      }
+    }
 
   </style>
-
 </head>
 
 <body style="background-color: #f2f2f2">
-
 <div style="background-color: #f2f2f2; padding: 20px;">
   <div class="container-fluid">
     <!-- First Row: Navigation Bar with Logo and Buttons -->
@@ -134,7 +239,10 @@
       <div class="col">
         <div class="card w-100" style="border-radius: 0px; box-shadow: 0px 0px 5px 0px #888888;">
           <div class="card-body d-flex justify-content-end align-items-center">
-            <div style="flex: 1;"></div> <!-- Create space to the left -->
+            <div class="nav-menu" style="flex: 1;"></div>
+            <button class="btn btn-icon" onclick="toggleNav()">
+              <i class="fas fa-bars"></i>
+            </button>
             <button class="btn btn-primary" ><a href="/welcome" style="text-decoration: none; color: black;">Home</a></button>
             <button class="btn btn-primary"  th:if="${isStudent}"><a href="/myProjects" style="text-decoration: none; color: black;">My Projects</a></button>
             <button class="btn btn-primary" th:if="${isStudent}"><a href="/apply" style="text-decoration: none; color: black;">Apply for Projects</a></button>
@@ -178,8 +286,8 @@
           <div class="card-body" >
             <h5 class="card-title">List of Available Projects</h5>
             <br>
-            <table class="card-table">
-              <thead>
+            <table class="card-table" >
+              <thead >
               <tr>
                 <th>Title</th>
 <!--                <th>Department</th>-->
@@ -221,8 +329,6 @@
                   <td th:text="${project.stipendOption}"></td>
                   <td th:text="${project.stipendAmount}"></td>
 
-
-
                   <td>
                     <label>
                       <input type="url" name="resumeLink" placeholder="Insert Resume Link" required pattern="https?://.*" />
@@ -258,15 +364,44 @@
               </tr>
               </tbody>
             </table>
-
           </div>
         </div>
       </div>
+    </div>
+    <div class="nav-page">
+      <div class="card nav-card w-100" style="border-radius: 0px; box-shadow: 0px 0px 5px 0px #888888;">
+        <div class="card-body d-flex justify-content-end align-items-center">
+          <div class="nav-menu" style="flex: 1;"></div>
+          <button class="btn btn-icon" onclick="toggleNav()" style="margin-left:auto ">
+            <i class="fas fa-times"></i>
+          </button>
+          <button class="btn btn-columns" ></button>
+        </div>
+      </div>
+      <a href="/welcome">Home</a>
+      <a th:if="${isStudent}" href="/myProjects">My Projects</a>
+      <a th:if="${isStudent}" href="/apply">Apply for Projects</a>
+      <a th:if="${isProfessor}" href="/create">Create</a>
+      <a th:if="${isProfessor}" href="/approve">Approve</a>
+      <a th:if="${isProfessor}" href="/myProjects">My Projects</a>
+      <a th:if="${isCoordinator}" href="/filter">Filter</a>
+      <a href="/logout">Logout</a>
     </div>
   </div>
 </div>
 
 <script>
+  function toggleNav() {
+    var navPage = document.querySelector('.nav-page');
+    var navIcon = document.querySelector('.btn-icon');
+
+    if (navPage.style.transform === 'translateX(-100%)' || navPage.style.transform === '') {
+      navPage.style.transform = 'translateX(0)';
+    } else {
+      navPage.style.transform = 'translateX(-100%)';
+      navIcon.innerHTML = '<i class="fas fa-bars"></i>'; // Change icon back to 'bars'
+    }
+  }
   function showDetails(button) {
     const row = button.closest('tr');
     const table = row.closest('table');

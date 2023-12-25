@@ -11,38 +11,40 @@
           crossorigin="anonymous">
 
     <style>
-        .btn-primary{
+        .btn-primary {
             margin-right: 50px;
             background-color: white;
             color: black;
             border-color: white;
             font-weight: normal;
         }
-        .btn-primary:hover{
+        .btn-primary:hover {
             background-color: #D5DBDB;
             color: black;
-            border-color:#f2f2f2 ;
+            border-color: #f2f2f2;
         }
 
-        .btn-secondary{
+        .btn-secondary {
             margin-right: 40px;
             background-color: white;
             font-weight: normal;
             color: black;
             border-color: white;
         }
-        .btn-secondary:hover{
+
+        .btn-secondary:hover {
             background-color: #D5DBDB;
             color: black;
-            border-color:#f2f2f2 ;
+            border-color: #f2f2f2;
         }
+
         .user-circle {
             margin-left: 110px;
             margin-top: 45px;
             align-self: center;
             width: 140px;
             height: 140px;
-            background-color: #CCCCFF;
+            background-color: #003566;
             border-radius: 50%;
             display: flex;
             justify-content: center;
@@ -54,17 +56,153 @@
             justify-content: center;
             color: #fff; /* Text color inside the circle */
         }
-        .card-text{
+
+        .card-text {
             font-size: 18px;
         }
-        .card-title{
+
+        .card-title {
             color: darkslateblue;
+        }
+
+        @media only screen and (max-width: 800px) {
+
+            .container-fluid{
+                margin-top: -20px;
+            }
+            .btn-primary{
+                display: none;
+            }
+            .btn-secondary{
+                display: none;
+            }
+
+            .btn-icon {
+                background-color: transparent;
+                border: none;
+                cursor: pointer;
+                padding: 5px;
+                position: absolute;
+                top: 25px; /* Adjust as needed */
+                left: 10px; /* Adjust as needed */
+            }
+            .fa-times{
+                margin-left: 10px; /* This will push the close icon to the right */
+                cursor: pointer;
+                font-size: 22px;
+                color: black;
+            }
+            .btn-icon i {
+                font-size: 22px;
+                color: black;
+            }
+            .welcome-text{
+                justify-self: center;
+                color: darkslateblue;
+                font-size: 20px;
+
+            }
+
+            .user-circle {
+                margin-left: auto;
+                margin-right: auto;
+                margin-top: 20px; /* Adjust margin-top as needed */
+                width: 100px;
+                height: 100px;
+                background-color: #003566;
+                border-radius: 50%;
+                display: flex;
+                justify-content: center;
+                align-items: center;
+            }
+
+            .user-initial {
+                font-size: 34px; /* Adjust font size as needed */
+                color: #fff; /* Text color inside the circle */
+            }
+            .nav-page {
+                position: fixed;
+                top: 0;
+                left: 0;
+                width: 50%;
+                height: 100%;
+                background-color: #fff;
+                box-shadow: 2px 0 5px rgba(0, 0, 0, 0.2);
+                display: flex;
+                flex-direction: column;
+                padding: 20px;
+                z-index: 1000;
+                transform: translateX(-100%);
+                transition: transform 0.3s ease-in-out;
+            }
+
+            .nav-card {
+
+                height: 86px;
+                /*box-shadow: 0px 0px 5px 0px #888888;*/
+                margin-bottom: 40px;
+                margin-top: 2px;
+            }
+
+            .nav-page a {
+                /*top: 100px;*/
+                display: block;
+                margin-bottom: 10px;
+                padding: 10px;
+                text-align: center;
+                text-decoration: none;
+                color: #fff;
+                font-size: 18px;
+                background-color: #003566;
+                border: none;
+                border-radius: 5px;
+                transition: background-color 0.3s ease;
+            }
+
+            .nav-page a:hover {
+                background-color: #003566; /* Darker color on hover */
+            }
+
+            .nav-page card{
+                margin-top: -20px;
+
+            }
+
+
+
+        }
+
+        @media only screen and (min-width: 801px) {
+            .btn-icon {
+                display: none;
+            }
+
+            .nav-page {
+                display: none;
+            }
+
+            .user-circle {
+                margin-left: auto;
+                margin-right: auto;
+                margin-top: 20px; /* Adjust margin-top as needed */
+                width: 125px;
+                height: 125px;
+                background-color: #003566;
+                border-radius: 50%;
+                display: flex;
+                justify-content: center;
+                align-items: center;
+            }
+
+            .user-initial {
+                font-size: 34px; /* Adjust font size as needed */
+                color: #fff; /* Text color inside the circle */
+            }
         }
 
     </style>
 
 </head>
-
 
 <body style="background-color: #f2f2f2">
 <div style="background-color: #f2f2f2; padding: 20px;">
@@ -74,10 +212,14 @@
         <div class="row" style="margin-top: auto">
             <div class="col">
                 <div class="card w-100" style="border-radius: 0px; box-shadow: 0px 0px 5px 0px #888888;">
-                    <div class="card-body d-flex justify-content-end align-items-center">
-                        <div style="flex: 1;"></div> <!-- Create space to the left -->
-                        <button class="btn btn-primary" ><a href="/welcome" style="text-decoration: none; color: black;">Home</a></button>
-                        <button class="btn btn-primary"  th:if="${isStudent}"><a href="/myProjects" style="text-decoration: none; color: black;">My Projects</a></button>
+                    <div class="card-body d-flex justify-content-end align-items-center other-btn">
+                        <div class="nav-menu" style="flex: 1;"></div>
+                        <button class="btn btn-icon" onclick="toggleNav()">
+                            <i class="fas fa-bars"></i>
+                        </button>
+
+                        <button class="btn btn-primary"><a href="/welcome" style="text-decoration: none; color: black;">Home</a></button>
+                        <button class="btn btn-primary" th:if="${isStudent}"><a href="/myProjects" style="text-decoration: none; color: black;">My Projects</a></button>
                         <button class="btn btn-primary" th:if="${isStudent}"><a href="/apply" style="text-decoration: none; color: black;">Apply for Projects</a></button>
                         <button class ="btn btn-primary"  th:if="${isProfessor}"><a href="/create" style="text-decoration: none; color: black;">Create</a></button>
                         <button class ="btn btn-primary"  th:if="${isProfessor}"><a href="/approve" style="text-decoration: none; color: black;">Approve</a></button>
@@ -88,25 +230,21 @@
 
                         <img src="https://iitj.ac.in/uploaded_docs/IITJ%20Logo__Smallest.jpg" alt="Your Logo" height="50" style="margin-right: 30px; transform: scale(1.4);" class="ml-2">
                     </div>
+
                 </div>
             </div>
         </div>
-
-
         <br>
-
-
         <!-- Second Row: Two Columns -->
         <div class="row" style="margin-top: 20px">
-            <div class="col-md-7" style="margin-left: 70px" >
+            <div class="col-md-7 col-12 text-center text-md-left mb-3 mb-md-0">
                 <div class="card" style="border-radius: 5px; box-shadow: 0px 0px 5px 0px #888888;">
                     <div class="card-body">
-                        <h3 class="card-title">Welcome <span th:text="${#strings.capitalize(name)}"></span>! </h3>
+                        <h3 class="card-title welcome-text">Welcome <span th:text="${#strings.capitalize(name)}"></span>! </h3>
                     </div>
                 </div>
             </div>
-
-            <div class="col-md-3" style="margin-left: 20px">
+            <div class="col-md-3 col-12 text-center" style="margin-right: auto;">
                 <div class="card" style="border-radius: 5px; box-shadow: 0px 0px 5px 0px #888888;">
                     <div class="card-body">
                         <h5 class="card-title" th:text="${role}">Student</h5>
@@ -114,10 +252,10 @@
                             <p class="user-initial" th:text="${#strings.substring(name,0,1)}">N</p>
                         </div>
                         <p class="card-text" style="text-align: center;"><span th:text="${name}"></span></p>
-                        <p class="card-text" style="text-align: left;">
-                            <i class="fas fa-envelope"></i> <span th:text="${email}"></span>
+                        <p class="card-text" style="text-align: left; font-size: unset">
+                            <i class="fas fa-envelope" ></i> <span th:text="${email}"></span>
                         </p>
-                        <p class="card-text" style="text-align: left;">
+                        <p class="card-text" style="text-align: left; font-size: unset">
                             <i class="fas fa-user"></i> <span th:text="${user_name}"></span>
                         </p>
                     </div>
@@ -125,10 +263,50 @@
             </div>
         </div>
 
+        <div class="nav-page">
+            <div class="card nav-card w-100" style="border-radius: 0px; box-shadow: 0px 0px 5px 0px #888888;">
+                <div class="card-body d-flex justify-content-end align-items-center">
+                    <div class="nav-menu" style="flex: 1;"></div>
+
+                    <button class="btn btn-icon" onclick="toggleNav()" style="margin-left:auto ">
+                        <i class="fas fa-times"></i>
+                    </button>
+                    <button class="btn btn-columns" ></button>
+                </div>
+            </div>
+            <a href="/welcome">Home</a>
+            <a th:if="${isStudent}" href="/myProjects">My Projects</a>
+            <a th:if="${isStudent}" href="/apply">Apply for Projects</a>
+            <a th:if="${isProfessor}" href="/create">Create</a>
+            <a th:if="${isProfessor}" href="/approve">Approve</a>
+            <a th:if="${isProfessor}" href="/myProjects">My Projects</a>
+            <a th:if="${isCoordinator}" href="/filter">Filter</a>
+            <a href="/logout">Logout</a>
         </div>
+
+
     </div>
-
-
 </div>
+
 </body>
+
 </html>
+
+<!-- Updated JavaScript script -->
+<script>
+    function toggleNav() {
+        var navPage = document.querySelector('.nav-page');
+        var navIcon = document.querySelector('.btn-icon');
+
+        if (navPage.style.transform === 'translateX(-100%)' || navPage.style.transform === '') {
+            // Show navigation page
+            navPage.style.transform = 'translateX(0)';
+            // navIcon.innerHTML = '<i class="fas fa-times"></i>'; // Change icon to 'times' (cross)
+        } else {
+            // Hide navigation page
+            navPage.style.transform = 'translateX(-100%)';
+            navIcon.innerHTML = '<i class="fas fa-bars"></i>'; // Change icon back to 'bars'
+        }
+    }
+</script>
+
