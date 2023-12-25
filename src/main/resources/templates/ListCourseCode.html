@@ -92,6 +92,7 @@
             <div style="flex: 1;"></div> <!-- Create space to the left -->
             <button class="btn btn-primary" ><a href="/welcome" style="text-decoration: none; color: black;">Home</a></button>
             <button class="btn btn-primary" ><a href="/filter" style="text-decoration: none; color: black;">Filter</a></button>
+            <button class="btn btn-primary"  th:if="${isCoordinator}"><a href="/welcome" style="text-decoration: none; color: black;">Switch To Professor</a></button>
             <button class="btn btn-secondary" ><a href="/logout" style="text-decoration: none; color: black;">Logout</a></button>
             <img src="https://iitj.ac.in/uploaded_docs/IITJ%20Logo__Smallest.jpg" alt="Your Logo" height="50" style="margin-right: 30px; transform: scale(1.4);" class="ml-2">
           </div>

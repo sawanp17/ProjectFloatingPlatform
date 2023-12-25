@@ -131,7 +131,7 @@
             <textarea class="form-input-3" id="preReq" name="preReq" rows="4" cols="50" required th:text="${isEdit} ? ${project.getPreReq()} : ''"></textarea>
 
             <label class="form-label" for="tagsGiven">Tags (line seperated):</label>
-            <input class="form-input-1" type="text" id="tagsGiven" name="tagsGiven" required th:value="${isEdit} ? ${project.getTags()} : ''">
+            <input class="form-input-1" type="text" id="tagsGiven" name="tagsGiven" required th:value="${isEdit} ? ${projectTags} : ''">
 
             <label class="form-label" for="maxLim">Max People Allowed:</label>
             <input class="form-input-1" type="number" id="maxLim" name="maxLim" required th:value="${isEdit} ? ${project.getMaxLim()} : 0">

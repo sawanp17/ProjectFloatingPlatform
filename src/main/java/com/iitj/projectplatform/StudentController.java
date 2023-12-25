@@ -2,15 +2,21 @@ package com.iitj.projectplatform;
 
 import com.iitj.projectplatform.Repositories.*;
 import com.nimbusds.oauth2.sdk.http.HTTPRequest;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
+import org.apache.poi.ss.usermodel.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.swing.text.html.Option;
+import java.io.IOException;
 import java.sql.Date;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -95,6 +101,10 @@ public class StudentController {
                 model.addAttribute("isStudent", false);
                 model.addAttribute("isProfessor", false);
             }
+            else if (authority.getAuthority().equals("ROLE_SUPERADMIN")){
+                System.out.println("Redirecting to superamdin");
+                return "redirect:/welcomeSuperAdmin";
+            }
             else {
                 System.out.println(
                         ">> adding prof to model"
@@ -115,6 +125,11 @@ public class StudentController {
             break;
         }
 
+        //if user is coordinator also, set it
+        if (currentUser.get().getRole().equals(Role.Professor)
+                && currentUser.get().getCoordinator().equals(Boolean.TRUE)){
+            model.addAttribute("isCoordinator",true);
+        }
         return "welcome";
     }
 
@@ -157,9 +172,9 @@ public class StudentController {
             if (user.getRole().equals(Role.Student)){
                 toSave.setRole(Role.Student);
             }
-            else if (user.getRole().equals(Role.Coordinator)){
-                toSave.setRole(Role.Coordinator);
-            }
+//            else if (user.getRole().equals(Role.Coordinator)){
+//                toSave.setRole(Role.Coordinator);
+//            }
             else {
                 toSave.setRole(Role.Professor);
             }
@@ -308,7 +323,7 @@ public class StudentController {
         }
 
         List<Project> myProjectList = new ArrayList<>();
-        List<Optional<ProjectCreate>> createdProjects = new ArrayList<>();
+        List<ProjectCreate> createdProjects = new ArrayList<>();
         if (currentRole.equals(Role.Professor)) createdProjects = projectCreateRepo.findProjectCreateByUserId(username);
 
         List<Optional<ProjectApply>> applyProjects = new ArrayList<>();
@@ -342,9 +357,9 @@ public class StudentController {
         List<Project> projectList = new ArrayList<>();
 
         if (currentRole.equals(Role.Professor)){
-            for (Optional<ProjectCreate> projectCreateIterator: createdProjects){
-                if (projectCreateIterator.isPresent()){
-                    Optional<Project> foundProject = projectRepo.findById(projectCreateIterator.get().getProjectId());
+            for (ProjectCreate projectCreateIterator: createdProjects){
+                if (projectCreateIterator!=null){
+                    Optional<Project> foundProject = projectRepo.findById(projectCreateIterator.getProjectId());
                     if (foundProject.isPresent() && !(foundProject == null) && foundProject.get().getDeleted().equals(Boolean.FALSE)){
                         projectList.add(foundProject.get());
                     }
@@ -425,6 +440,16 @@ public class StudentController {
 //            model.addAttribute("departmentList", Departments.values());
             model.addAttribute("courseCodeList", CourseCode.values());
             model.addAttribute("projectTypeList", ProjectType.values());
+            List<TagMapping> tagMappings = tagMappingRepo.findTagMappingByProjectId(projectId);
+            String projectTags =  "";
+            for (TagMapping tagMapping: tagMappings){
+                if (tagMapping == tagMappings.get(tagMappings.size()-1)){
+                    projectTags += (tagRepository.findById(tagMapping.getTagId()).get().getName());
+
+                }
+                else projectTags += (tagRepository.findById(tagMapping.getTagId()).get().getName()+",");
+            }
+            model.addAttribute("projectTags", projectTags);
 
         }
 
@@ -466,7 +491,7 @@ public class StudentController {
         Map<Long,String> projectToProf = new HashMap<>();
         for (Project project: listProjects){
             Long projectID = project.getId();
-            String userID = projectCreateRepo.findProjectCreateByProjectId(projectID).get(0).get().getUserId();
+            String userID = projectCreateRepo.findProjectCreateByProjectId(projectID).getUserId();
             projectToProf.put(projectID, userRepo.findUserByUsername(userID).get().getName());
         }
         model.addAttribute("floatedProjects", listProjects);
@@ -524,7 +549,7 @@ public class StudentController {
         Map<Long,String> projectToProf = new HashMap<>();
         for (Project project: floatedProjects){
             Long projectID = project.getId();
-            String userID = projectCreateRepo.findProjectCreateByProjectId(projectID).get(0).get().getUserId();
+            String userID = projectCreateRepo.findProjectCreateByProjectId(projectID).getUserId();
             projectToProf.put(projectID, userRepo.findUserByUsername(userID).get().getName());
         }
 
@@ -571,7 +596,7 @@ public class StudentController {
         String username = userDetails.getUsername();
         Optional<User> user = userRepo.findUserByUsername(username);
         Role role;
-        List<Optional<ProjectCreate>> myprojects = projectCreateRepo.findProjectCreateByUserId(username);
+        List<ProjectCreate> myprojects = projectCreateRepo.findProjectCreateByUserId(username);
         List<Long> projectIds = new ArrayList<>();
         List<ProjectApply> myProjectApplicants = new ArrayList<>();
 
@@ -596,11 +621,11 @@ public class StudentController {
 
 
 
-        for (Optional<ProjectCreate> projectCreate: myprojects){
-            if (projectCreate.isPresent()){
-                if (projectCreate.get().getUserId().equals(username) && projectRepo.findProjectById(projectCreate.get().getProjectId()).getDeleted().equals(Boolean.FALSE)){
-                    projectIds.add(projectCreate.get().getProjectId());
-                    List<ProjectApply> projectApplicants = projectApplyRepo.findProjectApplyByProjectId(projectCreate.get().getProjectId());
+        for (ProjectCreate projectCreate: myprojects){
+            if (projectCreate!=null){
+                if (projectCreate.getUserId().equals(username) && projectRepo.findProjectById(projectCreate.getProjectId()).getDeleted().equals(Boolean.FALSE)){
+                    projectIds.add(projectCreate.getProjectId());
+                    List<ProjectApply> projectApplicants = projectApplyRepo.findProjectApplyByProjectId(projectCreate.getProjectId());
 //                    myProjectApplicants.addAll(projectApplicants);
                     for (ProjectApply projectApplyIterator: projectApplicants){
                         if (projectApplyIterator.getDeleted().equals(Boolean.FALSE)){
@@ -678,19 +703,24 @@ public class StudentController {
 
 
     @GetMapping("/filter")
-    public String getCourseCode(Model model){
+    public String getCourseCode(Model model, Authentication authentication){
+        model.addAttribute("isCoordinator", userRepo.findUserByUsername(((UserDetails)authentication.getPrincipal()).getUsername()).get().getCoordinator());
         model.addAttribute(CourseCode.values());
         return "ListCourseCode";
     }
 
     @PostMapping("/filter/get")
-    public String getListOfStudentWithCourseCode(@RequestParam("courseCode") CourseCode courseCode, Model model){
+    public String getListOfStudentWithCourseCode(@RequestParam("courseCode") CourseCode courseCode, Model model, Authentication authentication){
+        model.addAttribute("isCoordinator", userRepo.findUserByUsername(((UserDetails)authentication.getPrincipal()).getUsername()).get().getCoordinator());
         List<Approved> approvedList =  approvedRepo.findApprovedByCourseCode(courseCode);
 //        System.out.println("the size of list: " + approvedList.size());
+        System.out.println(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>HERE " + approvedList.size());
+
         List<List<Object>> mapOfApproved = new ArrayList<>();
         for (Approved approved: approvedList){
+            System.out.println(approved.toString());
             Project currProject = projectRepo.findProjectById(approved.getProjectId());
-            User professor = userRepo.findUserByUsername(projectCreateRepo.findProjectCreateByProjectId(approved.getProjectId()).get(0).get().getUserId()).orElse(null);
+            User professor = userRepo.findUserByUsername(projectCreateRepo.findProjectCreateByProjectId(approved.getProjectId()).getUserId()).orElse(null);
 
             if (
                     currProject!=null && currProject.getDeleted().equals(Boolean.FALSE)
@@ -700,7 +730,7 @@ public class StudentController {
                                 userRepo.findUserByUsername(approved.getUserId()).get(),
 //                                approved.getUserId(),
                                 projectRepo.findProjectById(approved.getProjectId()),
-                                professor.getName()
+                                professor
                         )
 
 
@@ -787,5 +817,54 @@ public class StudentController {
 //    public String gotApprovedList(@ModelAttribute("mapOfApproved") Map<User,Project> mapOfApproved){
 //        return "courseCodeApproved";
 //    }
+
+
+
+    @GetMapping("/welcomeSuperAdmin")
+    public String superAdminWelcome(){
+        return "welcomeSuperAdmin";
+    }
+
+    @PostMapping("/superadmin/save")
+    public String superAdminSave(@RequestParam("file") MultipartFile file){
+
+        try {
+            Workbook workbook = WorkbookFactory.create(file.getInputStream());
+            Sheet sheet = workbook.getSheetAt(0); // Assuming the first sheet is being read
+
+            // Iterating through rows and cells
+            List<String> listUsernames = new ArrayList<>();
+            for (Row row : sheet) {
+                for (Cell cell : row) {
+                    // Process cell content (example: printing cell value)
+                    //System.out.print(cell.getStringCellValue() + "\t");
+                    listUsernames.add(row.getCell(1).getStringCellValue());
+                }
+//                System.out.println(); // Move to the next line after each row
+            }
+
+            System.out.println("File Received>>>>>>>>>");
+            userRepo.setAllCoordinatorsFalse();
+            for (String username: listUsernames){
+//                User currUser = userRepo.findUserByUsername(username).orElse(null);
+//                if (currUser != null){
+//                    currUser.setCoordinator(true);
+//                    userRepo.save(currUser);
+//                }
+//                else continue;
+                userRepo.setAsCoordinator(username);
+            }
+
+            workbook.close();
+//            return "redirect:/welcomeSuperAdmin";
+        }
+        catch (Exception e1) {
+            e1.printStackTrace();
+        }
+        finally {
+            return "redirect:/welcomeSuperAdmin";
+        }
+
+    }
 
 }

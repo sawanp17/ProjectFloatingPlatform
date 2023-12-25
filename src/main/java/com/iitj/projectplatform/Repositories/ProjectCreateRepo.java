@@ -9,7 +9,7 @@ import java.util.Optional;
 
 @Repository
 public interface ProjectCreateRepo extends JpaRepository<ProjectCreate,Long> {
-    List<Optional<ProjectCreate>> findProjectCreateByUserId(String username);
-    List<Optional<ProjectCreate>> findProjectCreateByProjectId(Long projectId);
+    List<ProjectCreate> findProjectCreateByUserId(String username);
+    ProjectCreate findProjectCreateByProjectId(Long projectId);
 
 }

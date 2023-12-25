@@ -5,5 +5,6 @@ import jakarta.persistence.Column;
 public enum Role {
     Student,
     Professor,
-    Coordinator
+    Coordinator,
+    SuperAdmin;
 }
