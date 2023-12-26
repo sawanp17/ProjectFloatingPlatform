@@ -381,6 +381,9 @@ public class StudentController {
                 model.addAttribute("isStudent", false);
                 model.addAttribute("isProfessor", true);
                 currentRole = Role.Professor;
+                if (userRepo.findUserByUsername(username).get().getCoordinator()){
+                    model.addAttribute("isCcordinator",true);
+                }
             }
             break;
         }
