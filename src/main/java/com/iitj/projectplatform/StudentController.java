@@ -135,7 +135,7 @@ public class StudentController {
         List<ProjectCreate> myProjectsCreated = projectCreateRepo.findProjectCreateByUserId(username);
         List<Project> myProjectsRunning = new ArrayList<>();
         for (ProjectCreate projectCreate: myProjectsCreated){
-            if (projectRepo.findProjectById(projectCreate.getProjectId()).getStatus().equals(ProjectStatus.IN_PROGRESS)){
+            if (projectRepo.findProjectById(projectCreate.getProjectId()).getStatus().equals(ProjectStatus.IN_PROGRESS.toString())){
                 myProjectsRunning.add(projectRepo.findProjectById(projectCreate.getProjectId()));
             }
         }
