@@ -233,6 +233,8 @@
             <button class ="btn btn-primary"  th:if="${isProfessor}"><a href="/create" style="text-decoration: none; color: black;">Create</a></button>
             <button class ="btn btn-primary"  th:if="${isProfessor}"><a href="/approve" style="text-decoration: none; color: black;">Approve</a></button>
             <button class="btn btn-primary"  th:if="${isProfessor}"><a href="/myProjects" style="text-decoration: none; color: black;">My Projects</a></button>
+            <button class="btn btn-primary"  th:if="${isCoordinator}"><a href="/filter" style="text-decoration: none; color: black;">Switch To Coordinator</a></button>
+
             <button class="btn btn-secondary" ><a href="/logout" style="text-decoration: none; color: black;">Logout</a></button>
             <img src="https://iitj.ac.in/uploaded_docs/IITJ%20Logo__Smallest.jpg" alt="Your Logo" height="50" style="margin-right: 30px; transform: scale(1.4);" class="ml-2">
           </div>
@@ -277,6 +279,7 @@
                   <td class="hidden" th:text="${project.getMaxLim()}"></td>
                   <td class="hidden" th:text="${project.getStipendOption()}"></td>
                   <td class="hidden" th:text="${project.getStipendAmount()}"></td>
+
 
                   <td>
                     <div class="button-group" style="display: flex;margin-left: auto; margin-right: auto">
