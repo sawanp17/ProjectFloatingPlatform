@@ -224,17 +224,21 @@ public class StudentController {
         model.addAttribute("courseCodeList", CourseCode.values());
         model.addAttribute("projectTypeList", ProjectType.values());
 
-
-        Boolean isStudent=false, isProfessor=false;
+        Boolean isStudent=false, isProfessor=false, isCoordinator = false;
         if (user.isPresent()){
             role = user.get().getRole();
             if (role.equals(Role.Student)){
                 isStudent = true;
                 isProfessor = false;
-            }
-            else {
+                isCoordinator = false;
+            } else if (role.equals(Role.Coordinator)) {
+                isStudent=false;
+                isProfessor = false;
+                isCoordinator = true;
+            } else {
                 isStudent = false;
                 isProfessor = true;
+                isCoordinator = false;
             }
         }
         else {
@@ -243,6 +247,13 @@ public class StudentController {
 
         model.addAttribute("isStudent", isStudent);
         model.addAttribute("isProf", isProfessor);
+        model.addAttribute("isCoordinator", isCoordinator);
+
+
+        if (user.get().getRole().equals(Role.Professor)
+                && user.get().getCoordinator().equals(Boolean.TRUE)){
+            model.addAttribute("isCoordinator",true);
+        }
 
 
 
@@ -356,6 +367,7 @@ public class StudentController {
 
         return "redirect:/myProjects";
     }
+
 
     @GetMapping("/myProjects")
     public String getMyProjects(Model model, Authentication authentication){
@@ -483,7 +495,7 @@ public class StudentController {
         String username = userDetails.getUsername();
         Optional<User> user = userRepo.findUserByUsername(username);
         Role role;
-        Boolean isStudent=false, isProfessor=false;
+        Boolean isStudent=false, isProfessor=false, isCoordinator = false;
         if (project == null){
             System.out.println(">> Project does not exist.");
         }
@@ -492,13 +504,17 @@ public class StudentController {
             if (role.equals(Role.Student)){
                 isStudent = true;
                 isProfessor = false;
+                isCoordinator = false;
             }
             else {
                 isStudent = false;
                 isProfessor = true;
+                isCoordinator = false;
             }
             model.addAttribute("isStudent", isStudent);
             model.addAttribute("isProf", isProfessor);
+            model.addAttribute("isCoordinator", isCoordinator);
+
             model.addAttribute("project", project);
             model.addAttribute("isEdit", true);
             model.addAttribute("projectId", projectId);
@@ -531,7 +547,28 @@ public class StudentController {
 //        System.out.println("here>>>>>>>>>>>>>>>>>>>" + projectFilter.getDeadline());
 
 
-        String username = ((UserDetails)authentication.getPrincipal()).getUsername();
+        UserDetails userDetails = (UserDetails) authentication.getPrincipal();
+        String username = userDetails.getUsername();
+        Optional<User> user = userRepo.findUserByUsername(username);
+        Role role;
+        Boolean isStudent=false, isProfessor=false;
+        if (user.isPresent()){
+            role = user.get().getRole();
+            if (role.equals(Role.Student)){
+                isStudent = true;
+                isProfessor = false;
+            }
+            else {
+                isStudent = false;
+                isProfessor = true;
+            }
+        }
+        else {
+            System.out.println("User not found");
+        }
+
+        model.addAttribute("isStudent", isStudent);
+        model.addAttribute("isProf", isProfessor);
 
         model.addAttribute("stipendOptionsList",StipendOption.values());
         model.addAttribute("courseCodeList", CourseCode.values());
@@ -603,6 +640,7 @@ public class StudentController {
         model.addAttribute("floatedProjects", finalListProjects );
         model.addAttribute("projectToProf", projectToProf);
 
+
         return "applyProject";
     }
 
@@ -649,8 +687,6 @@ public class StudentController {
             }
         }
         floatedProjects.removeAll(toRemove);
-        floatedProjects.sort(Comparator.comparing(Project::getDeadline));
-
 
         Map<Long,String> projectToProf = new HashMap<>();
         for (Project project: floatedProjects){
@@ -661,6 +697,8 @@ public class StudentController {
 
         model.addAttribute("floatedProjects", floatedProjects);
         model.addAttribute("projectToProf", projectToProf);
+        floatedProjects.sort(Comparator.comparing(Project::getDeadline));
+
         return "applyProject";
     }
 
@@ -713,16 +751,21 @@ public class StudentController {
         List<Long> projectIds = new ArrayList<>();
         List<ProjectApply> myProjectApplicants = new ArrayList<>();
 
-        Boolean isStudent=false, isProfessor=false;
+        Boolean isStudent=false, isProfessor=false, isCoordinator = false;
         if (user.isPresent()){
             role = user.get().getRole();
             if (role.equals(Role.Student)){
                 isStudent = true;
                 isProfessor = false;
-            }
-            else {
+                isCoordinator = false;
+            } else if (role.equals(Role.Coordinator)) {
+                isStudent = false;
+                isProfessor = false;
+                isCoordinator=true;
+            } else {
                 isStudent = false;
                 isProfessor = true;
+                isCoordinator = false;
             }
         }
         else {
@@ -731,6 +774,13 @@ public class StudentController {
 
         model.addAttribute("isStudent", isStudent);
         model.addAttribute("isProf", isProfessor);
+        model.addAttribute("isCoordinator", isCoordinator);
+
+
+        if (user.get().getRole().equals(Role.Professor)
+                && user.get().getCoordinator().equals(Boolean.TRUE)){
+            model.addAttribute("isCoordinator",true);
+        }
 
 
 

@@ -11,6 +11,21 @@
           crossorigin="anonymous">
 
     <style>
+        .hidden{
+            display: none;
+        }
+        .card-table th,
+        .card-table td{
+            border: 1px solid #ddd;
+            padding: 15px;
+            text-align: left;
+            width: 600px;
+        }
+        .card-table th, .card-table td {
+            border: 1px solid #ddd;
+            padding: 15px;
+            text-align: left;
+        }
         .btn-primary {
             margin-right: 50px;
             background-color: white;
@@ -65,6 +80,25 @@
             color: darkslateblue;
         }
 
+        .view-icon-group {
+            display: flex;
+            align-items: center;
+            border: none;
+            background-color:white;;
+        }
+        .fa-eye {
+            border: none;
+        }
+        .fa-eye {
+            width: 1.2em;
+            height: 1.2em;
+            fill: currentColor;
+        }
+        .view-btn-2 {
+            border: none;
+            background-color: white;
+        }
+
         @media only screen and (max-width: 800px) {
 
             .container-fluid{
@@ -95,12 +129,6 @@
             .btn-icon i {
                 font-size: 22px;
                 color: black;
-            }
-            .welcome-text{
-                justify-self: center;
-                color: darkslateblue;
-                font-size: 20px;
-
             }
 
             .user-circle {
@@ -218,13 +246,16 @@
                             <i class="fas fa-bars"></i>
                         </button>
 
-                        <button class="btn btn-primary"><a href="/welcome" style="text-decoration: none; color: black;">Home</a></button>
+                        <button class="btn btn-primary" th:if="${isStudent}"><a href="/welcome" style="text-decoration: none; color: black;">Home</a></button>
+                        <button class="btn btn-primary" th:if="${isProfessor and not isCoordinator}"><a href="/welcome" style="text-decoration: none; color: black;">Home</a></button>
                         <button class="btn btn-primary" th:if="${isStudent}"><a href="/myProjects" style="text-decoration: none; color: black;">My Projects</a></button>
                         <button class="btn btn-primary" th:if="${isStudent}"><a href="/apply" style="text-decoration: none; color: black;">Apply for Projects</a></button>
                         <button class ="btn btn-primary"  th:if="${isProfessor}"><a href="/create" style="text-decoration: none; color: black;">Create</a></button>
                         <button class ="btn btn-primary"  th:if="${isProfessor}"><a href="/approve" style="text-decoration: none; color: black;">Approve</a></button>
                         <button class="btn btn-primary"  th:if="${isProfessor}"><a href="/myProjects" style="text-decoration: none; color: black;">My Projects</a></button>
-                        <button class="btn btn-primary"  th:if="${isCoordinator}"><a href="/filter" style="text-decoration: none; color: black;">Filter</a></button>
+<!--                        <button class="btn btn-primary" th:if="${isCoordinator and not isProfessor}""><a href="/welcome" style="display: none;">My Projects</a></button>-->
+                        <!--
+    <button class="btn btn-primary"  th:if="${isCoordinator}"><a href="/filter" style="text-decoration: none; color: black;">Filter</a></button>-->
                         <button class="btn btn-primary"  th:if="${isCoordinator}"><a href="/filter" style="text-decoration: none; color: black;">Switch To Coordinator</a></button>
                         <button class="btn btn-secondary" ><a href="/logout" style="text-decoration: none; color: black;">Logout</a></button>
 
@@ -238,12 +269,57 @@
         <!-- Second Row: Two Columns -->
         <div class="row" style="margin-top: 20px">
             <div class="col-md-7 col-12 text-center text-md-left mb-3 mb-md-0">
-                <div class="card" style="border-radius: 5px; box-shadow: 0px 0px 5px 0px #888888;">
+                <div class="card mt-4">
                     <div class="card-body">
-                        <h3 class="card-title welcome-text">Welcome <span th:text="${#strings.capitalize(name)}"></span>! </h3>
+                        <h5 class="card-title">My Running Projects</h5>
+                        <table class="table">
+                            <thead>
+                            <tr>
+                                <th></th>
+                                <th>Project Name</th>
+                                <th th:if="${isStudent}">Professor</th>
+                                <th th:if="${isProfessor}">Students</th>
+
+                                <th class="hidden">Project Deadline</th>
+                                <th class="hidden">Type</th>
+                                <th class="hidden">Description</th>
+                                <th class="hidden">Prerequisite</th>
+                                <th class="hidden" th:if="${isStudent}"> Course Code </th>
+                                <th class="hidden">Stipend</th>
+                                <th class="hidden">Amount</th>
+<!--students                -->
+                                <!-- Add more columns for additional information -->
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <!-- Iterate through the running projects -->
+                            <tr th:each="project : ${myProjectsRunning}">
+                                <td><button type="button" class="view-btn-2" onclick="showDetails(this)">
+                                    <div class="view-icon-group-2">
+                                        <i class="fa fa-eye" aria-hidden="true"></i>
+                                    </div>
+                                </button>
+                                </td>
+                                <td th:text="${project.getTitle()}"></td>
+<!--                                <td th:tel="${project.getProfessorName}"></td>-->
+                                <td class="hidden" th:text="${project.getDeadline()}"></td>
+
+                                <td class="hidden" th:text="${project.getProjectType()}"></td>
+                                <td class="hidden" th:text="${project.getDescription()}"></td>
+                                <td class="hidden" th:text="${project.getPreReq()}"></td>
+<!--                                <td class="hidden" th:text = "${project.getCourseCode}"></td>-->
+                                <td class="hidden" th:text="${project.getStipendOption()}"></td>
+                                <td class="hidden" th:text="${project.getStipendAmount()}"></td>
+
+                                <!-- Add more columns for additional information -->
+                            </tr>
+                            </tbody>
+                        </table>
                     </div>
                 </div>
+
             </div>
+
             <div class="col-md-3 col-12 text-center" style="margin-right: auto;">
                 <div class="card" style="border-radius: 5px; box-shadow: 0px 0px 5px 0px #888888;">
                     <div class="card-body">
@@ -298,6 +374,7 @@
         var navPage = document.querySelector('.nav-page');
         var navIcon = document.querySelector('.btn-icon');
 
+
         if (navPage.style.transform === 'translateX(-100%)' || navPage.style.transform === '') {
             // Show navigation page
             navPage.style.transform = 'translateX(0)';
@@ -308,5 +385,57 @@
             navIcon.innerHTML = '<i class="fas fa-bars"></i>'; // Change icon back to 'bars'
         }
     }
+
+    function showDetails(button) {
+        const row = button.closest('tr');
+        const table = row.closest('table');
+
+        const popupWidth = 1220;
+        const popupHeight = 800;
+        const left = (window.innerWidth - popupWidth) / 2;
+        const top = (window.innerHeight - popupHeight) / 2;
+
+        const popupWindow = window.open('', 'ProjectDetails', `width=${popupWidth},height=${popupHeight},left=${left},top=${top}`);
+
+        // Create a new table for the popup
+        const popupTable = document.createElement('table');
+        popupTable.className = 'card-table';
+
+        // Add a header row to the popup table
+        const headerRow = document.createElement('tr');
+        table.querySelector('thead').querySelectorAll('th.hidden').forEach((hiddenTh) => {
+            const newTh = document.createElement('th');
+            newTh.textContent = hiddenTh.textContent;
+            headerRow.appendChild(newTh);
+        });
+        popupTable.appendChild(headerRow);
+
+        // Add the clicked row's hidden cell data to the popup table
+        const newRow = document.createElement('tr');
+        row.querySelectorAll('td.hidden').forEach((hiddenCell) => {
+            const newCell = document.createElement('td');
+            newCell.textContent = hiddenCell.textContent;
+            newRow.appendChild(newCell);
+        });
+        popupTable.appendChild(newRow);
+
+        // Add the popup table to the popup window
+        popupWindow.document.write(`
+      <html lang="">
+      <head>
+        <title>Project Details</title>
+        <style>
+          /* Add any additional styling here */
+          ${document.head.innerHTML}
+        </style>
+      </head>
+      <body>
+        <h2>Project Details</h2>
+        ${popupTable.outerHTML}
+      </body>
+      </html>
+    `);
+    }
+
 </script>
 
