@@ -132,13 +132,29 @@ public class StudentController {
         }
 
         //running projects
-        List<ProjectCreate> myProjectsCreated = projectCreateRepo.findProjectCreateByUserId(username);
+        List<ProjectCreate> myProjectsCreated = new ArrayList<>();
+        List<Approved> myApprovedProjects = new ArrayList<>();
+
+        if (currentUser.get().getRole().equals(Role.Professor))  myProjectsCreated = projectCreateRepo.findProjectCreateByUserId(username);
+        else if (currentUser.get().getRole().equals(Role.Student)){
+            myApprovedProjects = approvedRepo.findApprovedByUserId(username);
+        }
         List<Project> myProjectsRunning = new ArrayList<>();
-        for (ProjectCreate projectCreate: myProjectsCreated){
-            if (projectRepo.findProjectById(projectCreate.getProjectId()).getStatus().equals(ProjectStatus.IN_PROGRESS.toString())){
-                myProjectsRunning.add(projectRepo.findProjectById(projectCreate.getProjectId()));
+        if (currentUser.get().getRole().equals(Role.Professor)){
+            for (ProjectCreate projectCreate: myProjectsCreated){
+                if (projectRepo.findProjectById(projectCreate.getProjectId()).getStatus().equals(ProjectStatus.IN_PROGRESS.toString())){
+                    myProjectsRunning.add(projectRepo.findProjectById(projectCreate.getProjectId()));
+                }
             }
         }
+        else if (currentUser.get().getRole().equals(Role.Student)){
+            for (Approved projectCreate: myApprovedProjects){
+                if (projectRepo.findProjectById(projectCreate.getProjectId()).getStatus().equals(ProjectStatus.IN_PROGRESS.toString())){
+                    myProjectsRunning.add(projectRepo.findProjectById(projectCreate.getProjectId()));
+                }
+            }
+        }
+
         model.addAttribute("myProjectsRunning", myProjectsRunning);
 
         return "welcome";
