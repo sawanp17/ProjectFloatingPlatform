@@ -1,14 +1,293 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
+  <meta charset="UTF-8">
   <title>Upload Excel File</title>
-</head>
-<body>
-<h1>Upload Excel File</h1>
 
-<form action="/superadmin/save" method="post" enctype="multipart/form-data">
-  <input type="file" name="file" accept=".xlsx, .xls">
-  <button type="submit">Upload</button>
-</form>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css"
+        rel="stylesheet"
+        integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC"
+        crossorigin="anonymous">
+
+  <head>
+  <style>
+    .hidden {
+      display: none;
+    }
+    .card-title{
+      color: darkslateblue;
+    }
+    .card-table th,
+    .card-table td{
+      border: 1px solid #ddd;
+      padding: 15px;
+      text-align: left;
+      width: 600px;
+    }
+    .card-table th, .card-table td {
+      border: 1px solid #ddd;
+      padding: 15px;
+      text-align: left;
+    }
+
+    .btn-primary{
+      margin-right: 50px;
+      background-color: white;
+      color: black;
+      border-color: white;
+      font-weight: normal;
+    }
+    .btn-primary:hover{
+      background-color: #D5DBDB;
+      color: black;
+      border-color:#f2f2f2 ;
+    }
+    .btn-secondary{
+      margin-right: 40px;
+      background-color: white;
+      font-weight: normal;
+      color: black;
+      border-color: white;
+    }
+    .btn-secondary:hover {
+      background-color: #D5DBDB;
+      color: black;
+      border-color: #f2f2f2;
+    }
+
+    .btn-btn-danger {
+      width: 90px;
+      height: 40px;
+      padding: 10px 20px;
+      font-size: 16px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background-color: #db222a;
+      border: none;
+      border-radius: 5px;
+      color: white;
+    }
+
+    .btn-success{
+      width: 90px;
+      height: 40px;
+      position: relative;
+      padding: 10px 20px;
+      font-size: 16px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background-color: #73a942;
+      border: none;
+      border-radius: 5px;
+      color: white;
+    }
+    .view-btn {
+      width: 90px;
+      height: 40px;
+      position: relative;
+      padding: 10px 20px;
+      font-size: 16px;
+      display: flex;
+      align-items: center;
+      background-color: #003566;
+      border: none;
+      border-radius: 5px;
+      color: white;
+    }
+    .view-icon-group {
+      display: flex;
+      align-items: center;
+    }
+    .view-text {
+      margin-right: 5px;
+    }
+    .fa-eye {
+      width: 1.2em;
+      height: 1.2em;
+      fill: currentColor;
+    }
+
+
+    @media only screen and (max-width: 800px) {
+      .container-fluid{
+        margin-top: -20px;
+      }
+      .btn-primary{
+        display: none;
+      }
+      .btn-secondary{
+        display: none;
+      }
+
+      .btn-icon {
+        background-color: transparent;
+        border: none;
+        cursor: pointer;
+        padding: 5px;
+        position: absolute;
+        top: 25px;
+        left: 10px;
+      }
+      .fa-times{
+        margin-left: 10px;
+        cursor: pointer;
+        font-size: 22px;
+        color: black;
+      }
+      .btn-icon i {
+        font-size: 22px;
+        color: black;
+      }
+
+      .nav-page {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 50%;
+        height: 100%;
+        background-color: #fff;
+        box-shadow: 2px 0 5px rgba(0, 0, 0, 0.2);
+        display: flex;
+        flex-direction: column;
+        padding: 20px;
+        z-index: 1000;
+        transform: translateX(-100%);
+        transition: transform 0.3s ease-in-out;
+      }
+
+      .nav-card {
+
+        height: 86px;
+        margin-bottom: 40px;
+        margin-top: 2px;
+      }
+
+
+      .nav-page a {
+        display: block;
+        margin-bottom: 10px;
+        padding: 10px;
+        text-align: center;
+        text-decoration: none;
+        color: #fff;
+        font-size: 18px;
+        background-color: #003566;
+        border: none;
+        border-radius: 5px;
+        transition: background-color 0.3s ease;
+      }
+
+      .nav-page a:hover {
+        background-color: #003566;
+      }
+
+      .nav-page .card{
+        margin-top: 0px;
+        margin-bottom: 20px;
+      }
+
+    }
+    @media only screen and (max-width: 600px) {
+
+      .card {
+        width: auto;
+        margin: auto;
+        overflow: auto;
+      }
+
+      .card-table th, .card-table td {
+        width: 100%; overflow: auto;
+      }
+    }
+
+    @media only screen and (min-width: 800px) {
+      .btn-icon {
+        display: none;
+      }
+      .nav-page{
+        display: none;
+      }
+    }
+  </style>
+</head>
+
+<body style="background-color: #f2f2f2">
+<div style="background-color: #f2f2f2; padding: 20px;">
+  <div class="container-fluid">
+    <br>
+    <div class="row" style="margin-top: auto">
+      <div class="col">
+        <div class="card w-100" style="border-radius: 0px; box-shadow: 0px 0px 5px 0px #888888;">
+          <div class="card-body d-flex justify-content-end align-items-center">
+            <div class="nav-menu" style="flex: 1;"></div>
+            <button class="btn btn-icon" onclick="toggleNav()">
+              <i class="fas fa-bars"></i>
+            </button>
+            <button class="btn btn-primary" ><a href="/welcome" style="text-decoration: none; color: black;">Home</a></button>
+<!--            <button class="btn btn-primary" ><a href="/filter" style="text-decoration: none; color: black;">Filter</a></button>-->
+            <button class="btn btn-secondary" ><a href="/logout" style="text-decoration: none; color: black;">Logout</a></button>
+            <!--                        <button class="btn btn-primary"  th:if="${isCoordinator}"><a href="/welcome" style="text-decoration: none; color: black;">Switch To Coordinator</a></button>-->
+            <img src="https://iitj.ac.in/uploaded_docs/IITJ%20Logo__Smallest.jpg" alt="Your Logo" height="50" style="margin-right: 30px; transform: scale(1.4);" class="ml-2">
+          </div>
+        </div>
+      </div>
+    </div>
+    <br>
+
+    <div class="row" style="margin-top: 20px">
+      <div class="col-md-9" style="margin-left: auto; margin-right: auto">
+        <div class="card" style="border-radius: 5px; box-shadow: 0px 0px 5px 0px #888888;">
+          <div class="card-body">
+            <h3 class="card-title">Upload Excel File</h3>
+
+            <!-- File Upload Form -->
+            <form action="/superadmin/save" method="post" enctype="multipart/form-data">
+              <input type="file" name="file" accept=".xlsx, .xls">
+              <button type="submit">Upload</button>
+            </form>
+
+          </div>
+        </div>
+        <br>
+
+        <div class="card" style="border-radius: 5px; box-shadow: 0px 0px 5px 0px #888888;">
+          <!-- Your other card content -->
+        </div>
+      </div>
+    </div>
+    <div class="nav-page">
+      <div class="card nav-card w-100" style="border-radius: 0px; box-shadow: 0px 0px 5px 0px #888888;">
+        <div class="card-body d-flex justify-content-end align-items-center">
+          <div class="nav-menu" style="flex: 1;"></div>
+          <button class="btn btn-icon" onclick="toggleNav()" style="margin-left:auto ">
+            <i class="fas fa-times"></i>
+          </button>
+          <button class="btn btn-columns" ></button>
+        </div>
+      </div>
+      <a href="/welcome">Home</a>
+<!--      <a href="/filter">Filter</a>-->
+      <a href="/logout">Logout</a>
+    </div>
+  </div>
+</div>
+<script>
+  function toggleNav() {
+    var navPage = document.querySelector('.nav-page');
+    var navIcon = document.querySelector('.btn-icon');
+
+    if (navPage.style.transform === 'translateX(-100%)' || navPage.style.transform === '') {
+      navPage.style.transform = 'translateX(0)';
+    } else {
+      navPage.style.transform = 'translateX(-100%)';
+      navIcon.innerHTML = '<i class="fas fa-bars"></i>'; // Change icon back to 'bars'
+    }
+  }
+
+</script>
+
 </body>
-</html>
+
