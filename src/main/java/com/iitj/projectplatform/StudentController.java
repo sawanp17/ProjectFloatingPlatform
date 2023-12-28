@@ -48,6 +48,8 @@ public class StudentController {
     private TagRepository tagRepository;
 
 
+
+
     @GetMapping("/welcome")
     public String greeting(Model model, Authentication authentication) {
         UserDetails userDetails = (UserDetails) authentication.getPrincipal();
@@ -303,6 +305,13 @@ public class StudentController {
             }
         }
 
+        //Delete older tagMappings if some exist
+
+        List<TagMapping> tagMappingsToBeDeleted = tagMappingRepo.findTagMappingByProjectId(projectId);
+        for (TagMapping tmIt: tagMappingsToBeDeleted){
+            tagMappingRepo.deleteById(tmIt.getId());
+        }
+
 
 
 
@@ -322,6 +331,8 @@ public class StudentController {
 //        toSave.setProjectType(project.getProjectType());
 //        toSave.setStipendOption(project.getStipendOption());
 //        toSave.setStipendAmount(project.getStipendAmount());
+
+
 
 
         List<Project> projectsFormed = new ArrayList<>();
@@ -455,7 +466,7 @@ public class StudentController {
                     }
                 }
             }
-        }
+        }           
 //        applyProjects.sort(Comparator.comparing(Project::getDeadline));
         approvedProjects.sort(Comparator.comparing(Project::getDeadline));
         rejectedProjects.sort(Comparator.comparing(Project::getDeadline));
