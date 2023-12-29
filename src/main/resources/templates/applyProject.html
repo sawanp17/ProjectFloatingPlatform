@@ -374,7 +374,7 @@
                     <label>
                       <select name="courseCode">
                         <option value="" selected>Select Course Code</option>
-                        <option th:each="courseCode : ${courseCodeList}" th:value="${courseCode}" th:text="${courseCode}"></option>
+                        <option th:each="courseCode : ${courseCodeList}" th:value="${courseCode.getCode()}" th:text="${courseCode.getCode()}"></option>
                       </select>
                     </label>
                   </td>

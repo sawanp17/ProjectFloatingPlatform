@@ -19,8 +19,10 @@ public class ProjectApply {
     @Column(name = "resumelink")
     private String resumeLink;
 
-    @Column(name="coursecode")
-    @Enumerated(EnumType.STRING)
+//    @Column(name="coursecode")
+//    @Enumerated(EnumType.STRING)
+    @OneToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "coursecode_id", referencedColumnName = "id")
     private CourseCode courseCode;
 
     @Column(name="isdeleted")
