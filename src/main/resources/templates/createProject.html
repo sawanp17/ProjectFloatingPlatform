@@ -202,7 +202,7 @@
                     <button class="btn btn-icon" onclick="toggleNav()">
                         <i class="fas fa-bars"></i>
                     </button>
-                    <button class="btn btn-primary" th:if="${isStudent}"><a href="/welcome" style="text-decoration: none; color: black;">Home</a></button>
+                    <button class="btn btn-primary" th:if="${isStudent or isProf}"><a href="/welcome" style="text-decoration: none; color: black;">Home</a></button>
                     <button class="btn btn-primary" th:if="${isProf and not isCoordinator}"><a href="/welcome" style="text-decoration: none; color: black;">Home</a></button>
                     <button class="btn btn-primary" th:if="${isStudent}"><a href="/myProjects" style="text-decoration: none; color: black;">My Projects</a></button>
                     <button class="btn btn-primary"  th:if="${isStudent}"><a href="/apply" style="text-decoration: none; color: black;">Apply for Projects</a></button>

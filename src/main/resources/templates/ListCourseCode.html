@@ -216,7 +216,7 @@
 
                 <select class="form-control" id="courseCode" name="courseCode">
                   <option value="" disabled selected>Select</option>
-                  <option th:each="code : ${courseCodeList}" th:value="${code}" th:text="${code}"></option>
+                  <option th:each="code : ${courseCodeList}" th:value="${code.getCode()}" th:text="${code.getCode()}"></option>
                 </select>
               </div>
               <div class="col-md-6 form-group">

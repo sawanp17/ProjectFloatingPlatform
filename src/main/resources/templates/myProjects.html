@@ -227,13 +227,13 @@
             <button class="btn btn-icon" onclick="toggleNav()">
               <i class="fas fa-bars"></i>
             </button>
-            <button class="btn btn-primary" th:if="${isStudent}"><a href="/welcome" style="text-decoration: none; color: black;">Home</a></button>
-<!--            <button class="btn btn-primary" th:if="${not isCoordinator}"><a href="/welcome" style="text-decoration: none; color: black;">Home</a></button>-->
+<!--            <button class="btn btn-primary" th:if="${isStudent or isProfessor}"><a href="/welcome" style="text-decoration: none; color: black;">Home</a></button>-->
+            <button class="btn btn-primary" th:if="${isProfessor or isStudent}"><a href="/welcome" style="text-decoration: none; color: black;">Home</a></button>
             <button class="btn btn-primary"  th:if="${isStudent}"><a href="/myProjects" style="text-decoration: none; color: black;">My Projects</a></button>
             <button class="btn btn-primary" th:if="${isStudent}"><a href="/apply" style="text-decoration: none; color: black;">Apply for Projects</a></button>
             <button class ="btn btn-primary"  th:if="${isProfessor}"><a href="/create" style="text-decoration: none; color: black;">Create</a></button>
             <button class ="btn btn-primary"  th:if="${isProfessor}"><a href="/approve" style="text-decoration: none; color: black;">Approve</a></button>
-            <button class="btn btn-primary"  th:if="${isProfessor}"><a href="/myProjects" style="text-decoration: none; color: black;">My Projects</a></button>
+            <button class="btn btn-primary"  th:if="${isProfessor or isStudent}"><a href="/myProjects" style="text-decoration: none; color: black;">My Projects</a></button>
             <button class="btn btn-primary"  th:if="${isCoordinator}"><a href="/filter" style="text-decoration: none; color: black;">Switch To Coordinator</a></button>
 
             <button class="btn btn-secondary" ><a href="/logout" style="text-decoration: none; color: black;">Logout</a></button>
@@ -462,11 +462,11 @@
         </div>
       </div>
       <a href="/welcome">Home</a>
-      <a th:if="${isStudent}" href="/myProjects">My Projects</a>
+      <a th:if="${isStudent or isProfessor}" href="/myProjects">My Projects</a>
       <a th:if="${isStudent}" href="/apply">Apply for Projects</a>
       <a th:if="${isProfessor}" href="/create">Create</a>
       <a th:if="${isProfessor}" href="/approve">Approve</a>
-      <a th:if="${isProfessor}" href="/myProjects">My Projects</a>
+<!--      <a th:if="${isProfessor or isStudent}" href="/myProjects">My Projects</a>-->
       <a th:if="${isCoordinator}" href="/filter">Filter</a>
       <a href="/logout">Logout</a>
     </div>

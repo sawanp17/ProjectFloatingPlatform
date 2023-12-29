@@ -2,6 +2,7 @@
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 
 <head>
+    <script src="https://code.jquery.com/jquery-1.10.2.js"></script>
     <meta charset="UTF-8">
     <title>Welcome Page</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
@@ -246,14 +247,14 @@
                             <i class="fas fa-bars"></i>
                         </button>
 
-                        <button class="btn btn-primary" th:if="${isStudent}"><a href="/welcome" style="text-decoration: none; color: black;">Home</a></button>
-                        <button class="btn btn-primary" th:if="${isProfessor and not isCoordinator}"><a href="/welcome" style="text-decoration: none; color: black;">Home</a></button>
-                        <button class="btn btn-primary" th:if="${isStudent}"><a href="/myProjects" style="text-decoration: none; color: black;">My Projects</a></button>
+                        <button class="btn btn-primary" ><a href="/welcome" style="text-decoration: none; color: black;">Home</a></button>
+                        <!--                        <button class="btn btn-primary" ><a href="/welcome" style="text-decoration: none; color: black;">Home</a></button>-->
+                        <button class="btn btn-primary" th:if="${isStudent or isProfessor}"><a href="/myProjects" style="text-decoration: none; color: black;">My Projects</a></button>
                         <button class="btn btn-primary" th:if="${isStudent}"><a href="/apply" style="text-decoration: none; color: black;">Apply for Projects</a></button>
                         <button class ="btn btn-primary"  th:if="${isProfessor}"><a href="/create" style="text-decoration: none; color: black;">Create</a></button>
                         <button class ="btn btn-primary"  th:if="${isProfessor}"><a href="/approve" style="text-decoration: none; color: black;">Approve</a></button>
-                        <button class="btn btn-primary"  th:if="${isProfessor}"><a href="/myProjects" style="text-decoration: none; color: black;">My Projects</a></button>
-<!--                        <button class="btn btn-primary" th:if="${isCoordinator and not isProfessor}""><a href="/welcome" style="display: none;">My Projects</a></button>-->
+                        <!--                        <button class="btn btn-primary"  th:if="${isStudent or isProfessor}"><a href="/myProjects" style="text-decoration: none; color: black;">My Projects</a></button>-->
+                        <!--                        <button class="btn btn-primary" th:if="${isCoordinator and not isProfessor}""><a href="/welcome" style="display: none;">My Projects</a></button>-->
                         <!--
     <button class="btn btn-primary"  th:if="${isCoordinator}"><a href="/filter" style="text-decoration: none; color: black;">Filter</a></button>-->
                         <button class="btn btn-primary"  th:if="${isCoordinator}"><a href="/filter" style="text-decoration: none; color: black;">Switch To Coordinator</a></button>
@@ -266,6 +267,7 @@
             </div>
         </div>
         <br>
+
         <!-- Second Row: Two Columns -->
         <div class="row" style="margin-top: 20px">
             <div class="col-md-7 col-12 text-center text-md-left mb-3 mb-md-0">
@@ -347,26 +349,25 @@
             </div>
         </div>
 
-        <div class="nav-page">
-            <div class="card nav-card w-100" style="border-radius: 0px; box-shadow: 0px 0px 5px 0px #888888;">
-                <div class="card-body d-flex justify-content-end align-items-center">
-                    <div class="nav-menu" style="flex: 1;"></div>
+<!--        <div class="nav-page">-->
+<!--            <div class="card nav-card w-100" style="border-radius: 0px; box-shadow: 0px 0px 5px 0px #888888;">-->
+<!--                <div class="card-body d-flex justify-content-end align-items-center">-->
+<!--                    <div class="nav-menu" style="flex: 1;"></div>-->
 
-                    <button class="btn btn-icon" onclick="toggleNav()" style="margin-left:auto ">
-                        <i class="fas fa-times"></i>
-                    </button>
-                    <button class="btn btn-columns" ></button>
-                </div>
-            </div>
-            <a href="/welcome">Home</a>
-            <a th:if="${isStudent}" href="/myProjects">My Projects</a>
-            <a th:if="${isStudent}" href="/apply">Apply for Projects</a>
-            <a th:if="${isProfessor}" href="/create">Create</a>
-            <a th:if="${isProfessor}" href="/approve">Approve</a>
-            <a th:if="${isProfessor}" href="/myProjects">My Projects</a>
-            <a th:if="${isCoordinator}" href="/filter">Filter</a>
-            <a href="/logout">Logout</a>
-        </div>
+<!--                    <button class="btn btn-icon" onclick="toggleNav()" style="margin-left:auto ">-->
+<!--                        <i class="fas fa-times"></i>-->
+<!--                    </button>-->
+<!--                    <button class="btn btn-columns" ></button>-->
+<!--                </div>-->
+<!--            </div>-->
+<!--            <a href="/welcome">Home</a>-->
+<!--            <a th:if="${isStudent or isProfessor}" href="/myProjects">My Projects</a>-->
+<!--            <a th:if="${isStudent}" href="/apply">Apply for Projects</a>-->
+<!--            <a th:if="${isProfessor}" href="/create">Create</a>-->
+<!--            <a th:if="${isProfessor}" href="/approve">Approve</a>-->
+<!--            <a th:if="${isCoordinator}" href="/filter">Filter</a>-->
+<!--            <a href="/logout">Logout</a>-->
+<!--        </div>-->
 
 
     </div>
@@ -443,6 +444,10 @@
       </body>
       </html>
     `);
+    }
+
+    function load_home() {
+     document.getElementById("content").innerHTML='<object type="text/html" data="navbar.html" ></object>';
     }
 
 </script>

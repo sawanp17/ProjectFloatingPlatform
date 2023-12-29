@@ -80,31 +80,31 @@ public class StudentController {
 
                 model.addAttribute("isStudent", true);
                 model.addAttribute("isProfessor", false);
-                model.addAttribute("isCoordinator", false);
+//                model.addAttribute("isCoordinator", false);
 
             }
-            else if (authority.getAuthority().equals("ROLE_COORDINATOR")){
-                System.out.println(
-                        ">> adding coordinator to model"
-                );
-
-                String role = currentUser.get().getRole().name();
-                String user_name = currentUser.get().getUsername();
-                String name = currentUser.get().getName();
-                String email = currentUser.get().getEmail();
-
-                model.addAttribute("role", role);
-                model.addAttribute("user_name", user_name);
-                model.addAttribute("name", name);
-                model.addAttribute("email", email);
-
-
-                model.addAttribute("isCoordinator", true);
-                model.addAttribute("isStudent", false);
-                model.addAttribute("isProfessor", false);
-            }
+//            else if (authority.getAuthority().equals("ROLE_COORDINATOR")){
+//                System.out.println(
+//                        ">> adding coordinator to model"
+//                );
+//
+//                String role = currentUser.get().getRole().name();
+//                String user_name = currentUser.get().getUsername();
+//                String name = currentUser.get().getName();
+//                String email = currentUser.get().getEmail();
+//
+//                model.addAttribute("role", role);
+//                model.addAttribute("user_name", user_name);
+//                model.addAttribute("name", name);
+//                model.addAttribute("email", email);
+//
+//
+//                model.addAttribute("isCoordinator", true);
+//                model.addAttribute("isStudent", false);
+//                model.addAttribute("isProfessor", false);
+//            }
             else if (authority.getAuthority().equals("ROLE_SUPERADMIN")){
-                System.out.println("Redirecting to superamdin");
+                System.out.println("Redirecting to superadmin");
                 return "redirect:/welcomeSuperAdmin";
             }
             else {
@@ -120,7 +120,7 @@ public class StudentController {
                 model.addAttribute("user_name", user_name);
                 model.addAttribute("name", name);
                 model.addAttribute("email", email);
-                model.addAttribute("isCoordinator", false);
+//                model.addAttribute("isCoordinator", false);
                 model.addAttribute("isStudent", false);
                 model.addAttribute("isProfessor", true);
             }
@@ -131,6 +131,9 @@ public class StudentController {
         if (currentUser.get().getRole().equals(Role.Professor)
                 && currentUser.get().getCoordinator().equals(Boolean.TRUE)){
             model.addAttribute("isCoordinator",true);
+        }
+        else {
+            model.addAttribute("isCoordinator",false);
         }
 
         //running projects
@@ -425,6 +428,8 @@ public class StudentController {
 
                 model.addAttribute("isStudent", true);
                 model.addAttribute("isProfessor", false);
+                model.addAttribute("isCoordinator", false);
+
                 currentRole = Role.Student;
             }
             else {
@@ -436,6 +441,10 @@ public class StudentController {
                 currentRole = Role.Professor;
                 if (userRepo.findUserByUsername(username).get().getCoordinator()){
                     model.addAttribute("isCcordinator",true);
+                }
+                else {
+                    model.addAttribute("isCoordinator", false);
+
                 }
             }
             break;
@@ -914,11 +923,11 @@ public class StudentController {
     }
 
     @PostMapping("/filter/get")
-    public String getListOfStudentWithCourseCode(@RequestParam("courseCode") CourseCode courseCode, Model model, Authentication authentication){
+    public String getListOfStudentWithCourseCode(@RequestParam("courseCode") String courseCode, Model model, Authentication authentication){
         model.addAttribute("isCoordinator", userRepo.findUserByUsername(((UserDetails)authentication.getPrincipal()).getUsername()).get().getCoordinator());
-        List<Approved> approvedList =  approvedRepo.findApprovedByCourseCode(courseCode);
+        List<Approved> approvedList =  approvedRepo.findApprovedByCourseCode(courseCodeRepository.findCourseCodeByCode(courseCode).get());
 //        System.out.println("the size of list: " + approvedList.size());
-        System.out.println(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>HERE " + approvedList.size());
+//        System.out.println(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>HERE " + approvedList.size());
 
         List<List<Object>> mapOfApproved = new ArrayList<>();
         for (Approved approved: approvedList){
@@ -928,6 +937,7 @@ public class StudentController {
 
             if (
                     currProject!=null && currProject.getDeleted().equals(Boolean.FALSE)
+                            && (currProject.getStatus().equals(ProjectStatus.FLOATED.toString()) || currProject.getStatus().equals(ProjectStatus.IN_PROGRESS.toString()))
                     && userRepo.findUserByUsername(approved.getUserId())!=null && professor != null ){
                 mapOfApproved.add(
                         List.of(
@@ -1075,7 +1085,14 @@ public class StudentController {
     @PostMapping("/addCourseCode")
     String addCourseCode(@RequestParam("courseCodeToAdd") String courseCode){
         CourseCode courseCodeObject = new CourseCode();
-        courseCodeObject.setCode(courseCode);
+        Optional<CourseCode> courseCodeOptional = courseCodeRepository.findCourseCodeByCode(courseCode);
+        if (courseCodeOptional.isPresent()){
+            courseCodeObject = courseCodeOptional.get();
+            courseCodeObject.setCode(courseCode);
+        }
+        else {
+            courseCodeObject.setCode(courseCode);
+        }
         courseCodeObject = courseCodeRepository.save(courseCodeObject);
         return "redirect:/welcomeSuperAdmin";
     }

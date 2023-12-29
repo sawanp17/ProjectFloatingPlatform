@@ -432,7 +432,7 @@
           <button class="btn btn-columns" ></button>
         </div>
       </div>
-      <a href="/welcome">Home</a>
+      <a th:if="${isStudent}" href="/welcome">Home</a>
       <a th:if="${isStudent}" href="/myProjects">My Projects</a>
       <a th:if="${isStudent}" href="/apply">Apply for Projects</a>
       <a th:if="${isProfessor}" href="/create">Create</a>
