@@ -46,8 +46,8 @@ public class StudentController {
 
     @Autowired
     private TagRepository tagRepository;
-
-
+    @Autowired
+    private CourseCodeRepository courseCodeRepository;
 
 
     @GetMapping("/welcome")
@@ -142,22 +142,52 @@ public class StudentController {
             myApprovedProjects = approvedRepo.findApprovedByUserId(username);
         }
         List<Project> myProjectsRunning = new ArrayList<>();
+        HashMap<Project,CourseCode> mapOfProjectAndCourseCode = new HashMap<>();
+        HashMap<Project,User> mapOfProjectAndProf = new HashMap<>();
+        HashMap<Project,List<User>> mapOfProjectAndStudents = new HashMap<>();
+
+
         if (currentUser.get().getRole().equals(Role.Professor)){
             for (ProjectCreate projectCreate: myProjectsCreated){
                 if (projectRepo.findProjectById(projectCreate.getProjectId()).getStatus().equals(ProjectStatus.IN_PROGRESS.toString())){
                     myProjectsRunning.add(projectRepo.findProjectById(projectCreate.getProjectId()));
+                    List<User> studentList = new ArrayList<>();
+                    List<Approved> approvedList = approvedRepo.findApprovedByProjectId(projectCreate.getProjectId());
+                    for (Approved approvedIt: approvedList){
+                        studentList.add(userRepo.findUserByUsername(approvedIt.getUserId()).get());
+                    }
+                    mapOfProjectAndStudents.put(
+                            projectRepo.findProjectById((projectCreate.getProjectId())),
+                            studentList
+                    );
                 }
+
             }
         }
         else if (currentUser.get().getRole().equals(Role.Student)){
-            for (Approved projectCreate: myApprovedProjects){
-                if (projectRepo.findProjectById(projectCreate.getProjectId()).getStatus().equals(ProjectStatus.IN_PROGRESS.toString())){
-                    myProjectsRunning.add(projectRepo.findProjectById(projectCreate.getProjectId()));
+            for (Approved projectApproved: myApprovedProjects){
+                if (projectRepo.findProjectById(projectApproved.getProjectId()).getStatus().equals(ProjectStatus.IN_PROGRESS.toString())){
+                    mapOfProjectAndCourseCode.put(
+                            projectRepo.findProjectById((projectApproved.getProjectId())),
+                            projectApproved.getCourseCode()
+                    );
+                    mapOfProjectAndProf.put(
+                            projectRepo.findProjectById((projectApproved.getProjectId())),
+                            userRepo.findUserByUsername(projectCreateRepo.findProjectCreateByProjectId(projectApproved.getProjectId()).getUserId()).get()
+                    );
+                    myProjectsRunning.add(projectRepo.findProjectById(projectApproved.getProjectId()));
                 }
+
             }
         }
 
         model.addAttribute("myProjectsRunning", myProjectsRunning);
+        model.addAttribute("mapOfProjectAndCourseCode", mapOfProjectAndCourseCode);
+        model.addAttribute("mapOfProjectAndProf", mapOfProjectAndProf);
+        model.addAttribute("mapOfProjectAndStudents", mapOfProjectAndStudents);
+
+
+
 
         return "welcome";
     }
@@ -223,7 +253,7 @@ public class StudentController {
 
         model.addAttribute("stipendOptionsList", StipendOption.values());
 //        model.addAttribute("departmentList", Departments.values());
-        model.addAttribute("courseCodeList", CourseCode.values());
+        model.addAttribute("courseCodeList", courseCodeRepository.findAll());
         model.addAttribute("projectTypeList", ProjectType.values());
 
         Boolean isStudent=false, isProfessor=false, isCoordinator = false;
@@ -531,7 +561,7 @@ public class StudentController {
             model.addAttribute("projectId", projectId);
             model.addAttribute("stipendOptionsList", StipendOption.values());
 //            model.addAttribute("departmentList", Departments.values());
-            model.addAttribute("courseCodeList", CourseCode.values());
+            model.addAttribute("courseCodeList", courseCodeRepository);
             model.addAttribute("projectTypeList", ProjectType.values());
             List<TagMapping> tagMappings = tagMappingRepo.findTagMappingByProjectId(projectId);
             String projectTags =  "";
@@ -582,7 +612,7 @@ public class StudentController {
         model.addAttribute("isProf", isProfessor);
 
         model.addAttribute("stipendOptionsList",StipendOption.values());
-        model.addAttribute("courseCodeList", CourseCode.values());
+        model.addAttribute("courseCodeList", courseCodeRepository.findAll());
         if (keywords==""){
             keywords = null;
         }
@@ -658,7 +688,7 @@ public class StudentController {
     @GetMapping("/apply")
     public String applyProject(Model model, Authentication authentication){
         model.addAttribute("stipendOptionsList",StipendOption.values());
-        model.addAttribute("courseCodeList",CourseCode.values());
+        model.addAttribute("courseCodeList",courseCodeRepository.findAll());
         UserDetails userDetails = (UserDetails) authentication.getPrincipal();
         String username = userDetails.getUsername();
         Optional<User> user = userRepo.findUserByUsername(username);
@@ -681,7 +711,7 @@ public class StudentController {
 
         model.addAttribute("isStudent", isStudent);
         model.addAttribute("isProf", isProfessor);
-        model.addAttribute("courseCodeList", CourseCode.values());
+        model.addAttribute("courseCodeList", courseCodeRepository.findAll());
 
 
 
@@ -723,10 +753,10 @@ public class StudentController {
 //        System.out.println("CourseCode: " + courseCode);
         CourseCode courseCode;
         if (courseCodeString.equals("")){
-            courseCode = CourseCode.NA;
+            courseCode = courseCodeRepository.findCourseCodeByCode("NA").get();
         }
         else {
-            courseCode = CourseCode.valueOf(courseCodeString);
+            courseCode = courseCodeRepository.findCourseCodeByCode(courseCodeString).get();
         }
 
         Project project = projectRepo.findProjectById(projectId);
@@ -879,7 +909,7 @@ public class StudentController {
     @GetMapping("/filter")
     public String getCourseCode(Model model, Authentication authentication){
         model.addAttribute("isCoordinator", userRepo.findUserByUsername(((UserDetails)authentication.getPrincipal()).getUsername()).get().getCoordinator());
-        model.addAttribute(CourseCode.values());
+        model.addAttribute("courseCodeList",courseCodeRepository.findAll());
         return "ListCourseCode";
     }
 
@@ -1040,5 +1070,15 @@ public class StudentController {
         }
 
     }
+
+
+    @PostMapping("/addCourseCode")
+    String addCourseCode(@RequestParam("courseCodeToAdd") String courseCode){
+        CourseCode courseCodeObject = new CourseCode();
+        courseCodeObject.setCode(courseCode);
+        courseCodeObject = courseCodeRepository.save(courseCodeObject);
+        return "redirect:/welcomeSuperAdmin";
+    }
+
 
 }

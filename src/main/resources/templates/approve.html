@@ -241,7 +241,7 @@
               <tr th:each="projectApply : ${entry.value}">
                 <td th:text="${projectApply.getUserId()}"></td>
                 <td th:text="${projectApply.getResumeLink()}"></td>
-                <td th:text="${projectApply.getCourseCode()}"></td>
+                <td th:text="${projectApply.getCourseCode().getCode()}"></td>
                 <td>
                   <!-- Approve button -->
                   <div style="display: inline-block; margin-right: auto;">
