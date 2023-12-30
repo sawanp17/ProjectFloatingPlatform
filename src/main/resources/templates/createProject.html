@@ -10,45 +10,57 @@
           crossorigin="anonymous">
     <style>
 
-        .btn-primary{
-            margin-right: 50px;
+        body {
+            margin: 0;
+            font-family: Arial, Helvetica, sans-serif;
+            background-color: #f2f2f2;
+        }
+        .hidden {
+            display: none;
+        }
+
+        .topnav {
+            overflow: hidden;
+            background-color: white;
+            padding: 20px;
+        }
+
+        .topnav a {
+            float: left;
+            display: block;
             background-color: white;
             color: black;
-            border-color: white;
-            font-weight: normal;
+            text-align: center;
+            padding: 14px 26px;
+            text-decoration: none;
+            font-size: 17px;
         }
-        .btn-primary:hover{
+        img{
+            float: right;
+        }
+        .topnav .icon {
+            display: none;
+        }
+
+        .topnav a:hover {
             background-color: #D5DBDB;
             color: black;
-            border-color:#f2f2f2 ;
-        }
-        .btn-secondary{
-            margin-right: 40px;
-            background-color: white;
-            font-weight: normal;
-            color: black;
-            border-color: white;
-        }
-        .btn-secondary:hover{
-            background-color: #D5DBDB;
-            color: black;
-            border-color:#f2f2f2 ;
         }
 
         .center-card {
-            width: 600px;
+            width: 40%;
+            height: 80%;
+            margin-left: auto;
+            margin-right: auto;
+            align-content: center;
             background-color: white;
-            margin: 0 auto;
             padding: 60px;
             border: 1.5px solid #ccc;
             border-radius: 80px;
             box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2);
         }
         .form-label {
-            /*display: block;*/
             margin-bottom: 5px;
-            /*border-width: 1px; !* Set the border width to 1 pixel or adjust as needed *!*/
-            /*border-style: solid;*/
         }
 
         .form-input-3 {
@@ -62,8 +74,7 @@
             padding: 8px;
             margin-bottom: 10px;
             background-color: #f2f2f2;
-            border-width: .01px; /* Set the border width to 1 pixel or adjust as needed */
-            /*border-style: thin;*/
+            border-width: .01px;
         }
         .button-container {
             text-align: center;
@@ -78,149 +89,89 @@
             transition: background-color 0.3s;
         }
         @media only screen and (max-width: 810px) {
-            .container-fluid{
-                margin-top: -20px;
-            }
-            .btn-primary{
-                display: none;
-            }
-            .btn-secondary{
+            .topnav a {
                 display: none;
             }
 
-            .btn-icon {
-                background-color: transparent;
-                border: none;
-                cursor: pointer;
-                padding: 5px;
-                position: absolute;
-                top: 25px; /* Adjust as needed */
-                left: 10px; /* Adjust as needed */
+            .topnav a.icon {
+                float: left;
+                display: block;
             }
-            .fa-times{
-                margin-left: 10px; /* This will push the close icon to the right */
-                cursor: pointer;
-                font-size: 22px;
-                color: black;
-            }
+
             .btn-icon i {
                 font-size: 22px;
                 color: black;
             }
 
-            .nav-page {
-                position: fixed;
-                top: 0;
-                left: 0;
-                width: 50%;
-                height: 100%;
-                background-color: #fff;
-                box-shadow: 2px 0 5px rgba(0, 0, 0, 0.2);
-                display: flex;
-                flex-direction: column;
-                padding: 20px;
-                z-index: 1000;
-                transform: translateX(-100%);
-                transition: transform 0.3s ease-in-out;
-            }
-
-            .nav-card {
-
-                height: 86px;
-                /*box-shadow: 0px 0px 5px 0px #888888;*/
-                margin-bottom: 40px;
-                margin-top: 2px;
-            }
-
-            .nav-card .card-body {
-                /*padding: 30px;*/
-            }
-            .nav-page a {
-                /*top: 100px;*/
-                display: block;
-                margin-bottom: 10px;
-                padding: 10px;
-                text-align: center;
-                text-decoration: none;
-                color: #fff;
-                font-size: 18px;
-                background-color: #003566;
-                border: none;
-                border-radius: 5px;
-                transition: background-color 0.3s ease;
-            }
-
-            .nav-page a:hover {
-                background-color: #003566; /* Darker color on hover */
-            }
-
-            .nav-page card{
-                margin-top: -20px;
-            }
-            .card {
-                overflow-x: auto;
-            }
-
-            .card-table th,
-            .card-table td {
-                white-space: nowrap;
-            }
             .center-card {
-                margin-top: 20px; /* Adjust the top margin as needed */
-                width: 90%; /* Adjust the width as needed */
+                width: 70%;
+                height: 80%;
                 margin-left: auto;
                 margin-right: auto;
+                align-content: center;
+                background-color: white;
+
+                padding: 60px;
+                border: 1.5px solid #ccc;
+                border-radius: 80px;
+                box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
             }
 
 
+            @media only screen and (max-width: 800px) {
+                .topnav.responsive {
+                    position: relative;
+                }
+
+                .topnav.responsive .icon {
+                    position: absolute;
+                    left: 0;
+                    top: 0;
+                }
+
+                .topnav a:not(.icon):hover {
+                    background-color: #D5DBDB;
+                    color: black;
+                    width: 70%;
+                    margin-right: auto;
+                    margin-left: auto;
+                }
+
+                .topnav .icon:hover {
+                    background-color: transparent; /* Set the background color to transparent for the icon */
+                }
+
+
+                .topnav.responsive a {
+                    float: none;
+                    display: block;
+                }
+
+            }
         }
-
-        @media only screen and (min-width: 811px) {
-            .btn-icon {
-                display: none;
-            }
-            .nav-page{
-                display: none;
-            }
-        }
-
-
-
-
 
     </style>
 </head>
 <body>
-<div class="container-fluid" style="background-color: #f2f2f2; padding: 20px">
-    <!-- First Row: Navigation Bar with Logo and Buttons -->
-    <br>
-    <div class="row" style="margin-top: auto">
-        <div class="col" >
-            <div class="card w-100" style="border-radius: 0px; box-shadow: 0px 0px 5px 0px #888888;">
-                <div class="card-body d-flex justify-content-end align-items-center">
-                    <div class="nav-menu" style="flex: 1;"></div>
-                    <button class="btn btn-icon" onclick="toggleNav()">
-                        <i class="fas fa-bars"></i>
-                    </button>
-                    <button class="btn btn-primary" th:if="${isStudent or isProf}"><a href="/welcome" style="text-decoration: none; color: black;">Home</a></button>
-                    <button class="btn btn-primary" th:if="${isProf and not isCoordinator}"><a href="/welcome" style="text-decoration: none; color: black;">Home</a></button>
-                    <button class="btn btn-primary" th:if="${isStudent}"><a href="/myProjects" style="text-decoration: none; color: black;">My Projects</a></button>
-                    <button class="btn btn-primary"  th:if="${isStudent}"><a href="/apply" style="text-decoration: none; color: black;">Apply for Projects</a></button>
-                    <button class ="btn btn-primary"  th:if="${isProf}"><a href="/create" style="text-decoration: none; color: black;">Create</a></button>
-                    <button class ="btn btn-primary"  th:if="${isProf}"><a href="/approve" style="text-decoration: none; color: black;">Approve</a></button>
+<div class="topnav" id="myTopnav">
+    <a href="javascript:void(0);" class="icon" onclick="myFunction()">
+        <i class="fa fa-bars"></i>
+    </a>
+    <img id="logo" src="https://iitj.ac.in/uploaded_docs/IITJ%20Logo__Smallest.jpg" alt="Your Logo" height="50" style="margin-right: 30px; transform: scale(1.4);" class="ml-2">
 
-                    <button class="btn btn-primary"  th:if="${isProf}"><a href="/myProjects" style="text-decoration: none; color: black;">My Projects</a></button>
-                    <button class="btn btn-primary"  th:if="${isCoordinator}"><a href="/filter" style="text-decoration: none; color: black;">Switch To Coordinator</a></button>
+    <div class="topnav-content">
+        <a href="/welcome" class="active">Home</a>
+        <a href="/create" style="text-decoration: none; color: black;">Create</a>
+        <a href="/approve" style="text-decoration: none; color: black;">Approve</a>
+        <a href="/myProjects" style="text-decoration: none; color: black;">My Projects</a>
+        <a th:if="${isCoordinator}" href="/filter" style="text-decoration: none; color: black;">Switch To Coordinator</a>
 
-                    <button class="btn btn-secondary" ><a href="/logout" style="text-decoration: none; color: black;">Logout</a></button>
-                    <img src="https://iitj.ac.in/uploaded_docs/IITJ%20Logo__Smallest.jpg" alt="Your Logo" height="50" style="margin-right: 30px; transform: scale(1.4);" class="ml-2">
-                </div>
-            </div>
+        <a href="/logout" class="other-btn">Logout</a>
 
-        </div>
     </div>
+</div>
 
-    <div class="center-card" style="border-radius: 5px; box-shadow: 0px 0px 5px 0px #888888;margin-top: 70px">
+    <div class="center-card col-md-8 col-sm-10 col-xs-12" style="border-radius: 5px; box-shadow: 0px 0px 5px 0px #888888;margin-top: 70px">
         <h2 style="text-align: center;margin-top: auto">Create a New Project</h2>
         <form th:action="@{/create/save}" method="post">
             <label class="form-label" for="title">Title:</label>
@@ -268,29 +219,6 @@
             <label class="form-label" for="stipendAmount" id="stipendAmountLabel" style="display: none;">Stipend Amount:</label>
             <input class="form-input-1" type="text" id="stipendAmount" name="stipendAmount" required th:value="${isEdit} ? ${project.getStipendAmount()} : 0" style="display: none;">
 
-
-            <script>
-                function toggleStipendAmount() {
-                    var stipendOption = document.getElementById("stipendOption");
-                    var stipendAmountLabel = document.getElementById("stipendAmountLabel");
-                    var stipendAmountInput = document.getElementById("stipendAmount");
-
-                    if (stipendOption.value === "YES") {
-                        stipendAmountLabel.style.display = "block";
-                        stipendAmountInput.style.display = "block";
-                        stipendAmountInput.readOnly = false; // Make the input editable
-                    } else {
-                        stipendAmountLabel.style.display = "none";
-                        stipendAmountInput.style.display = "none";
-                        stipendAmountInput.value = "0";
-                        stipendAmountInput.readOnly = true; // Make the input read-only
-                    }
-                }
-
-            </script>
-
-
-
             <label class="form-label" for="status">Status:</label>
             <select class="form-input-1" id="status" name="status" required>
                 <option value="">select</option>
@@ -298,8 +226,6 @@
                 <option value="IN_PROGRESS" th:selected="${isEdit} and ${project.getStatus() == 'IN_PROGRESS'}">IN PROGRESS</option>
                 <option value="COMPLETED" th:selected="${isEdit} and ${project.getStatus() == 'COMPLETED'}">COMPLETED</option>
             </select>
-
-
 
             <input type="hidden" name="isEdit" th:value="${isEdit}" />
             <th:block th:if="${isEdit}">
@@ -315,44 +241,40 @@
             </div>
 
         </form>
-        <div class="nav-page">
-            <div class="card nav-card w-100" style="border-radius: 0px; box-shadow: 0px 0px 5px 0px #888888;">
-                <div class="card-body d-flex justify-content-end align-items-center">
-                    <div class="nav-menu" style="flex: 1;"></div>
 
-                    <button class="btn btn-icon" onclick="toggleNav()" style="margin-left:auto ">
-                        <i class="fas fa-times"></i>
-                    </button>
-                    <button class="btn btn-columns" ></button>
-                </div>
-            </div>
-            <a href="/welcome">Home</a>
-            <a th:if="${isStudent}" href="/create">My Projects</a>
-            <a th:if="${isStudent}" href="/apply">Apply for Projects</a>
-            <a th:if="${isProf}" href="/create">Create</a>
-            <a th:if="${isProf}" href="/approve">Approve</a>
-            <a th:if="${isProf}" href="/myProjects">My Projects</a>
-            <a th:if="${isCoordinator}" href="/filter">Filter</a>
-            <a href="/logout">Logout</a>
-        </div>
     </div>
 </div>
 <script>
-    function toggleNav() {
-        var navPage = document.querySelector('.nav-page');
-        var navIcon = document.querySelector('.btn-icon');
-
-        if (navPage.style.transform === 'translateX(-100%)' || navPage.style.transform === '') {
-            // Show navigation page
-            navPage.style.transform = 'translateX(0)';
-            // navIcon.innerHTML = '<i class="fas fa-times"></i>'; // Change icon to 'times' (cross)
+    function myFunction() {
+        var x = document.getElementById("myTopnav");
+        var logo = document.getElementById("logo");
+        if (x.className === "topnav") {
+            x.className += " responsive";
+            logo.classList.add("hidden");
         } else {
-            // Hide navigation page
-            navPage.style.transform = 'translateX(-100%)';
-            navIcon.innerHTML = '<i class="fas fa-bars"></i>'; // Change icon back to 'bars'
+            x.className = "topnav";
+            logo.classList.remove("hidden");
+        }
+    }
+    function toggleStipendAmount() {
+        var stipendOption = document.getElementById("stipendOption");
+        var stipendAmountLabel = document.getElementById("stipendAmountLabel");
+        var stipendAmountInput = document.getElementById("stipendAmount");
+
+        if (stipendOption.value === "YES") {
+            stipendAmountLabel.style.display = "block";
+            stipendAmountInput.style.display = "block";
+            stipendAmountInput.readOnly = false; // Make the input editable
+        } else {
+            stipendAmountLabel.style.display = "none";
+            stipendAmountInput.style.display = "none";
+            stipendAmountInput.value = "0";
+            stipendAmountInput.readOnly = true; // Make the input read-only
         }
     }
 </script>
 </body>
 </html>
+
+
 

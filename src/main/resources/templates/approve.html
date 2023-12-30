@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -11,6 +12,44 @@
         integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC"
         crossorigin="anonymous">
   <style>
+    .hidden{
+      display: none;
+    }
+    body {
+      margin: 0;
+      font-family: Arial, Helvetica, sans-serif;
+      background-color: #f2f2f2;
+    }
+
+    .topnav {
+      overflow: hidden;
+      background-color: white;
+      padding: 20px;
+    }
+
+
+    .topnav a {
+      float: left;
+      display: block;
+      background-color: white;
+      color: black;
+      text-align: center;
+      padding: 14px 26px;
+      text-decoration: none;
+      font-size: 17px;
+    }
+    img{
+      float: right;
+    }
+    .topnav .icon {
+      display: none;
+    }
+
+    .topnav a:hover {
+      background-color: #D5DBDB;
+      color: black;
+    }
+
     .card-table {
       width: 100%;
       border-collapse: collapse;
@@ -22,33 +61,6 @@
       text-align: left;
       width: auto;
 
-
-    }
-
-    .btn-primary{
-      margin-right: 50px;
-      background-color: white;
-      color: black;
-      border-color: white;
-      font-weight: normal;
-    }
-    .btn-primary:hover{
-      background-color: #D5DBDB;
-      color: black;
-      border-color:#f2f2f2 ;
-    }
-
-    .btn-secondary{
-      margin-right: 40px;
-      background-color: white;
-      font-weight: normal;
-      color: black;
-      border-color: white;
-    }
-    .btn-secondary:hover {
-      background-color: #D5DBDB;
-      color: black;
-      border-color: #f2f2f2;
     }
 
     .btn-danger {
@@ -80,229 +92,152 @@
       color: white;
     }
 
-    @media only screen and (max-width: 820px) {
-      .container-fluid{
-        margin-top: -20px;
-        overflow: hidden;
-      }
-      .btn-primary{
-        display: none;
-      }
-      .btn-secondary{
-        display: none;
+    @media only screen and (max-width: 800px) {
+
+      .topnav a {display: none;}
+      .topnav a.icon {
+        float: left;
+        display: block;
       }
 
-      .btn-icon {
-        background-color: transparent;
-        border: none;
-        cursor: pointer;
-        padding: 5px;
-        position: absolute;
-        top: 25px; /* Adjust as needed */
-        left: 10px; /* Adjust as needed */
-      }
-      .fa-times{
-        margin-left: 10px; /* This will push the close icon to the right */
-        cursor: pointer;
-        font-size: 22px;
-        color: black;
-      }
       .btn-icon i {
         font-size: 22px;
         color: black;
       }
 
-      .nav-page {
-        position: fixed;
-        top: 0;
+    }
+    @media only screen and (max-width: 800px) {
+      .topnav.responsive {position: relative;}
+      .topnav.responsive .icon {
+        position: absolute;
         left: 0;
-        width: 50%;
-        height: 100%;
-        background-color: #fff;
-        box-shadow: 2px 0 5px rgba(0, 0, 0, 0.2);
-        display: flex;
-        flex-direction: column;
-        padding: 20px;
-        z-index: 1000;
-        transform: translateX(-100%);
-        transition: transform 0.3s ease-in-out;
+        top: 0;
+      }
+      .topnav a:not(.icon):hover {
+        background-color: #D5DBDB;
+        color: black;
+        width: 70%;
+        margin-right: auto;
+        margin-left: auto;
       }
 
-      .nav-card {
-
-        height: 86px;
-        /*box-shadow: 0px 0px 5px 0px #888888;*/
-        margin-bottom: 40px;
-        margin-top: 2px;
+      .topnav .icon:hover {
+        background-color: transparent; /* Set the background color to transparent for the icon */
       }
 
-      .nav-card .card-body {
-        /*padding: 30px;*/
-      }
-      .nav-page a {
-        /*top: 100px;*/
+
+      .topnav.responsive a {
+        float: none;
         display: block;
-        margin-bottom: 10px;
-        padding: 10px;
-        text-align: center;
-        text-decoration: none;
-        color: #fff;
-        font-size: 18px;
-        background-color: #003566;
-        border: none;
-        border-radius: 5px;
-        transition: background-color 0.3s ease;
+      }
+      body{
+        overflow: hidden;
       }
 
-      .nav-page a:hover {
-        background-color: #003566; /* Darker color on hover */
-      }
-
-      .nav-page card{
-        margin-top: -20px;
-      }
-
-
-
-    }
-    @media only screen and (max-width: 600px){
-      .card {
-        border-radius: 0;
-        margin-bottom: 20px;
-
-      }
-      .card-table {
-        display: block;
-        width: 100%;
-        overflow: auto;
-      }
-      .card-table th,
-      .card-table td {
-        width: 100%;
-        white-space: nowrap;
+      .card{
+        margin-top: 20px;
+        width: 95%;
+        margin-left: auto;
+        margin-right: auto;
       }
     }
 
-
-    @media only screen and (min-width: 820px) {
-      .btn-icon {
-        display: none;
-      }
-      .nav-page{
-        display: none;
-      }
-    }
   </style>
 
 </head>
 <body style="background-color: #f2f2f2">
-<div style="background-color: #f2f2f2; padding: 20px;">
-  <div class="container-fluid">
-    <br>
-    <div class="row" style="margin-top: auto">
-      <div class="col">
-        <div class="card w-100" style="border-radius: 0px; box-shadow: 0px 0px 5px 0px #888888;">
-          <div class="card-body d-flex justify-content-end align-items-center">
-            <div class="nav-menu" style="flex: 1;"></div>
-            <button class="btn btn-icon" onclick="toggleNav()">
-              <i class="fas fa-bars"></i>
-            </button>
-            <button class="btn btn-primary" th:if="${isStudent}"><a href="/welcome" style="text-decoration: none; color: black;">Home</a></button>
-            <button class="btn btn-primary" th:if="${isProf and not isCoordinator}"><a href="/welcome" style="text-decoration: none; color: black;">Home</a></button>
+<div class="topnav" id="myTopnav">
+  <a href="javascript:void(0);" class="icon" onclick="myFunction()">
+    <i class="fa fa-bars"></i>
+  </a>
+  <img id="logo" src="https://iitj.ac.in/uploaded_docs/IITJ%20Logo__Smallest.jpg" alt="Your Logo" height="50" style="margin-right: 30px; transform: scale(1.4);" class="ml-2">
 
-            <button class ="btn btn-primary" ><a href="/create" style="text-decoration: none; color: black;">Create</a></button>
-            <button class ="btn btn-primary"  ><a href="/approve" style="text-decoration: none; color: black;">Approve</a></button>
-            <button class="btn btn-primary"  ><a href="/myProjects" style="text-decoration: none; color: black;">My Projects</a></button>
-            <button class="btn btn-primary" th:if="${isCoordinator}"><a href="/filter" style="text-decoration: none; color: black;">Switch To Coordinator</a></button>
+  <div class="topnav-content">
+    <a href="/welcome" class="active">Home</a>
+    <a href="/create" style="text-decoration: none; color: black;">Create</a>
+    <a href="/approve" style="text-decoration: none; color: black;">Approve</a>
+    <a href="/myProjects" style="text-decoration: none; color: black;">My Projects</a>
+    <a th:if="${isCoordinator}" href="/filter" style="text-decoration: none; color: black;">Switch To Coordinator</a>
 
-            <button class="btn btn-secondary" ><a href="/logout" style="text-decoration: none; color: black;">Logout</a></button>
-            <img src="https://iitj.ac.in/uploaded_docs/IITJ%20Logo__Smallest.jpg" alt="Your Logo" height="50" style="margin-right: 30px; transform: scale(1.4);" class="ml-2">
-          </div>
-        </div>
+    <a href="/logout" class="other-btn">Logout</a>
+
+  </div>
+</div>
+
+
+<div class="row" style="margin-top: 20px">
+  <div class="col-md-9" style="margin-left: auto; margin-right: auto">
+    <div class="card" style="border-radius: 5px; box-shadow: 0px 0px 5px 0px #888888;">
+      <div th:each="entry : ${MapOfProjectApplicants}" class="card-body">
+        <h4 style="color: darkslateblue; font-weight: normal" th:text="${entry.key}"></h4>
+        <table class="card-table" >
+          <thead>
+          <tr>
+            <th>User ID</th>
+            <th>Resume Link</th>
+            <th>Course Code</th>
+            <th>Actions</th>
+          </tr>
+          </thead>
+          <tbody>
+          <tr th:each="projectApply : ${entry.value}">
+            <td th:text="${projectApply.getUserId()}"></td>
+            <td th:text="${projectApply.getResumeLink()}"></td>
+            <td th:text="${projectApply.getCourseCode()}"></td>
+            <td>
+              <!-- Approve button -->
+              <div style="display: inline-block; margin-right: auto;">
+                <form th:action="@{/approve/save}" method="post">
+                  <input type="hidden" name="userId" th:value="${projectApply.getUserId()}" />
+                  <input type="hidden" name="projectId" th:value="${projectApply.getProjectId()}" />
+                  <button type="submit" class="btn-outline-success">Approve</button>
+                </form>
+              </div>
+
+              <!-- Reject button -->
+              <div style="display: inline-block;">
+                <form th:action="@{/reject/save}" method="post">
+                  <input type="hidden" name="userId" th:value="${projectApply.getUserId()}" />
+                  <input type="hidden" name="projectId" th:value="${projectApply.getProjectId()}" />
+                  <button type="submit" class="btn-danger">Reject</button>
+                </form>
+              </div>
+            </td>
+
+          </tr>
+          </tbody>
+        </table>
       </div>
-    </div>
-    <br>
-
-    <div class="row" style="margin-top: 20px">
-      <div class="col-md-9" style="margin-left: auto; margin-right: auto">
-        <div class="card" style="border-radius: 5px; box-shadow: 0px 0px 5px 0px #888888;">
-          <div th:each="entry : ${MapOfProjectApplicants}" class="card-body">
-            <h4 style="color: darkslateblue; font-weight: normal" th:text="${entry.key}"></h4>
-            <table class="card-table" >
-              <thead>
-              <tr>
-                <th>User ID</th>
-                <th>Resume Link</th>
-                <th>Course Code</th>
-                <th>Actions</th>
-              </tr>
-              </thead>
-              <tbody>
-              <tr th:each="projectApply : ${entry.value}">
-                <td th:text="${projectApply.getUserId()}"></td>
-                <td th:text="${projectApply.getResumeLink()}"></td>
-                <td th:text="${projectApply.getCourseCode().getCode()}"></td>
-                <td>
-                  <!-- Approve button -->
-                  <div style="display: inline-block; margin-right: auto;">
-                    <form th:action="@{/approve/save}" method="post">
-                      <input type="hidden" name="userId" th:value="${projectApply.getUserId()}" />
-                      <input type="hidden" name="projectId" th:value="${projectApply.getProjectId()}" />
-                      <button type="submit" class="btn-outline-success">Approve</button>
-                    </form>
-                  </div>
-
-                  <!-- Reject button -->
-                  <div style="display: inline-block;">
-                    <form th:action="@{/reject/save}" method="post">
-                      <input type="hidden" name="userId" th:value="${projectApply.getUserId()}" />
-                      <input type="hidden" name="projectId" th:value="${projectApply.getProjectId()}" />
-                      <button type="submit" class="btn-danger">Reject</button>
-                    </form>
-                  </div>
-                </td>
-
-              </tr>
-              </tbody>
-            </table>
-          </div>
-        </div>
-      </div>
-    </div>
-    <br>
-
-    <div class="nav-page">
-      <div class="card nav-card w-100" style="border-radius: 0px; box-shadow: 0px 0px 5px 0px #888888;">
-        <div class="card-body d-flex justify-content-end align-items-center">
-          <div class="nav-menu" style="flex: 1;"></div>
-
-          <button class="btn btn-icon" onclick="toggleNav()" style="margin-left:auto ">
-            <i class="fas fa-times"></i>
-          </button>
-          <button class="btn btn-columns" ></button>
-        </div>
-      </div>
-      <a href="/welcome">Home</a>
-      <a href="/create">Create</a>
-      <a href="/approve">Approve</a>
-      <a href="/myProjects">My Projects</a>
-      <a href="/logout">Logout</a>
     </div>
   </div>
 </div>
 
 <script>
-  function toggleNav() {
-    var navPage = document.querySelector('.nav-page');
-    var navIcon = document.querySelector('.btn-icon');
-
-    if (navPage.style.transform === 'translateX(-100%)' || navPage.style.transform === '') {
-      navPage.style.transform = 'translateX(0)';
+  function myFunction() {
+    var x = document.getElementById("myTopnav");
+    var logo = document.getElementById("logo");
+    if (x.className === "topnav") {
+      x.className += " responsive";
+      logo.classList.add("hidden");
     } else {
-      navPage.style.transform = 'translateX(-100%)';
-      navIcon.innerHTML = '<i class="fas fa-bars"></i>'; // Change icon back to 'bars'
+      x.className = "topnav";
+      logo.classList.remove("hidden");
     }
   }
+  window.addEventListener('resize', function() {
+    var switchToCoordinatorButton = document.querySelector('.btn-coordinator');
+    var textLarge = switchToCoordinatorButton.querySelector('.text-large');
+    var textSmall = switchToCoordinatorButton.querySelector('.text-small');
+
+    if (window.innerWidth < 1000) {
+      textLarge.style.display = 'none';
+      textSmall.style.display = 'inline';
+    } else {
+      textLarge.style.display = 'inline';
+      textSmall.style.display = 'none';
+    }
+  });
+
 </script>
 </body>
 </html>
