@@ -138,7 +138,7 @@
                 }
 
                 .topnav .icon:hover {
-                    background-color: transparent; /* Set the background color to transparent for the icon */
+                    background-color: transparent;
                 }
 
 
@@ -207,7 +207,6 @@
             <label class="form-label" for="stipendOption">Stipend Option:</label>
             <select class="form-input-1" id="stipendOption" name="stipendOption" required onchange="toggleStipendAmount()">
                 <option value="" disabled selected>Select </option>
-                <!-- Iterate through projectTypeList and display options -->
                 <option th:each="option : ${stipendOptionsList}"
                         th:value="${option}"
                         th:text="${option}"
@@ -264,12 +263,12 @@
         if (stipendOption.value === "YES") {
             stipendAmountLabel.style.display = "block";
             stipendAmountInput.style.display = "block";
-            stipendAmountInput.readOnly = false; // Make the input editable
+            stipendAmountInput.readOnly = false;
         } else {
             stipendAmountLabel.style.display = "none";
             stipendAmountInput.style.display = "none";
             stipendAmountInput.value = "0";
-            stipendAmountInput.readOnly = true; // Make the input read-only
+            stipendAmountInput.readOnly = true;
         }
     }
 </script>
