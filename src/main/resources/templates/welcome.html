@@ -207,7 +207,7 @@
                         <table class="table">
                             <thead>
                             <tr>
-                                <th></th>
+<!--                                <th></th>-->
                                 <th>Project Name</th>
                                 <th th:if="${isStudent}">Professor</th>
                                 <th th:if="${isProfessor}">Students</th>
@@ -229,7 +229,14 @@
                                 </button>
                                 </td>
                                 <td th:text="${project.getTitle()}"></td>
-                                <td th:if="${isProfessor}" th:tel="${project.getProfessorName}"></td>
+                                <td th:if="${isProfessor}">
+                                    <span th:each="student : ${mapOfProjectAndStudents.get(project)}">
+                                        <span th:text="${student.getName()}"></span><br> <!-- Assuming 'name' is a property of the user -->
+                                        <!--                                        <span th:text="${student.email}"></span> &lt;!&ndash; Assuming 'email' is a property of the user &ndash;&gt;-->
+                                        <!-- Add additional spans for other user properties as needed -->
+                                    </span>
+                                </td>
+                                <td th:if="${isStudent}" th:text="${mapOfProjectAndProf.get(project).getName()}"></td>
                                 <td class="hidden" th:text="${project.getDeadline()}"></td>
 
                                 <td class="hidden" th:text="${project.getProjectType()}"></td>

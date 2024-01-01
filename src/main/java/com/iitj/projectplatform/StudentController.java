@@ -144,6 +144,7 @@ public class StudentController {
         else if (currentUser.get().getRole().equals(Role.Student)){
             myApprovedProjects = approvedRepo.findApprovedByUserId(username);
         }
+
         List<Project> myProjectsRunning = new ArrayList<>();
         HashMap<Project,CourseCode> mapOfProjectAndCourseCode = new HashMap<>();
         HashMap<Project,User> mapOfProjectAndProf = new HashMap<>();
@@ -153,6 +154,7 @@ public class StudentController {
         if (currentUser.get().getRole().equals(Role.Professor)){
             for (ProjectCreate projectCreate: myProjectsCreated){
                 if (projectRepo.findProjectById(projectCreate.getProjectId()).getStatus().equals(ProjectStatus.IN_PROGRESS.toString())){
+                    myProjectsRunning.add(projectRepo.findProjectById(projectCreate.getProjectId()));
                     myProjectsRunning.add(projectRepo.findProjectById(projectCreate.getProjectId()));
                     List<User> studentList = new ArrayList<>();
                     List<Approved> approvedList = approvedRepo.findApprovedByProjectId(projectCreate.getProjectId());
@@ -187,6 +189,7 @@ public class StudentController {
         model.addAttribute("myProjectsRunning", myProjectsRunning);
         model.addAttribute("mapOfProjectAndCourseCode", mapOfProjectAndCourseCode);
         model.addAttribute("mapOfProjectAndProf", mapOfProjectAndProf);
+        System.out.println(mapOfProjectAndProf);
         model.addAttribute("mapOfProjectAndStudents", mapOfProjectAndStudents);
 
 
@@ -682,11 +685,39 @@ public class StudentController {
             }
         }
         Map<Long,String> projectToProf = new HashMap<>();
+        List<Project> floatedProjectsNotAppliedOrApprovedOrRejected = new ArrayList<>();
         for (Project project: finalListProjects){
+            boolean addProjectToFinalList = true;
+            List<ProjectApply> projectApplies = projectApplyRepo.findProjectApplyByProjectId(project.getId());
+            for (ProjectApply projectApply: projectApplies){
+                if (projectApply.getUserId().equals(username)){
+                    addProjectToFinalList = false;
+                    break;
+                }
+            }
+            List<Approved> approvedList = approvedRepo.findApprovedByProjectId(project.getId());
+            for (Approved approved: approvedList){
+                if (approved.getUserId().equals(username)){
+                    addProjectToFinalList = false;
+                    break;
+                }
+            }
+            List<Rejected> rejectedList = rejectedRepo.findRejecteddByProjectId(project.getId());
+            for (Rejected rejected: rejectedList){
+                if (rejected.getUserId().equals(username)){
+                    addProjectToFinalList = false;
+                    break;
+                }
+            }
+
+            if (addProjectToFinalList == false){
+                continue;
+            }
             Long projectID = project.getId();
             String userID = projectCreateRepo.findProjectCreateByProjectId(projectID).getUserId();
             projectToProf.put(projectID, userRepo.findUserByUsername(userID).get().getName());
         }
+
         model.addAttribute("floatedProjects", finalListProjects );
         model.addAttribute("projectToProf", projectToProf);
 
