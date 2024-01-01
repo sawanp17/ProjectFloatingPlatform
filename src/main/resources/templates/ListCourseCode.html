@@ -1,61 +1,56 @@
+
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<html>
 <head>
-  <meta charset="UTF-8">
-  <title>Course Code Dropdown</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css"
-        rel="stylesheet"
-        integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC"
-        crossorigin="anonymous">
+  rel="stylesheet"  integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC"
+  crossorigin="anonymous">
 
   <style>
+    .hidden{
+      display: none;
+    }
 
+    body {
+      margin: 0;
+      font-family: Arial, Helvetica, sans-serif;
+      background-color: #f2f2f2;
+    }
+
+    .topnav {
+      overflow: hidden;
+      background-color: white;
+      padding: 20px;
+    }
+
+
+    .topnav a {
+      float: left;
+      display: block;
+      background-color: white;
+      color: black;
+      text-align: center;
+      padding: 14px 26px;
+      text-decoration: none;
+      font-size: 17px;
+    }
+    img{
+      float: right;
+    }
+
+    .topnav a:hover {
+      background-color: #D5DBDB;
+      color: black;
+    }
+
+
+    .topnav .icon {
+      display: none;
+    }
     .form-group {
       margin-bottom: 20px;
-    }
-
-    .submit-button {
-      background-color: #B2B2B2;
-      color: black;
-      border-color: #B2B2B2;
-    }
-
-    .submit-button:hover {
-      background-color: #B2B2B2;
-      color: black;
-      border-color: #B2B2B2;
-    }
-
-    .btn-primary{
-      margin-right: 50px;
-      background-color: white;
-      color: black;
-      border-color: white;
-      font-weight: normal;
-
-    }
-    .btn-primary:hover{
-      background-color: #D5DBDB;
-      color: black;
-      border-color:#f2f2f2 ;
-    }
-
-    .btn-secondary{
-      margin-right: 40px;
-      background-color: white;
-      font-weight: normal;
-      color: black;
-      border-color: white;
-    }
-    .btn-secondary:hover{
-      background-color: #D5DBDB;
-      color: black;
-      border-color:#f2f2f2 ;
-    }
-
-    .card-title{
-      color: darkslateblue;
     }
 
     .submit-button{
@@ -64,6 +59,7 @@
       border-radius: 25px;
       padding: 10px 20px;
       color: white;
+      cursor: pointer;
     }
     .submit-button.no-hover-effect {
       position: relative;
@@ -76,190 +72,125 @@
       justify-content: center;
       border: none;
     }
-    @media only screen and (max-width: 600px) {
-      .container-fluid{
-        margin-top: -20px;
-      }
-      .btn-primary{
-        display: none;
-      }
-      .btn-secondary{
-        display: none;
-      }
+    .card-title{
+      color: darkslateblue;
+    }
 
-      .btn-icon {
-        background-color: transparent;
-        border: none;
-        cursor: pointer;
-        padding: 5px;
-        position: absolute;
-        top: 25px;
-        left: 10px;
-      }
-      .fa-times{
-        margin-left: 10px;
-        cursor: pointer;
-        font-size: 22px;
-        color: black;
-      }
-      .btn-icon i {
-        font-size: 22px;
-        color: black;
-      }
+    .card-table th, .card-table td {
+      border: 1px solid #ddd;
+      padding: 8px;
+      text-align: left;
+    }
 
-      .nav-page {
-        position: fixed;
-        top: 0;
-        left: 0;
-        width: 50%;
-        height: 100%;
-        background-color: #fff;
-        box-shadow: 2px 0 5px rgba(0, 0, 0, 0.2);
-        display: flex;
-        flex-direction: column;
-        padding: 20px;
-        z-index: 1000;
-        transform: translateX(-100%);
-        transition: transform 0.3s ease-in-out;
-      }
+    .card-table th {
+      background-color: #f2f2f2;
+    }
 
-      .nav-card {
-
-        height: 86px;
-        margin-bottom: 40px;
-        margin-top: 2px;
-      }
-
-
-      .nav-page a {
+    @media screen and (max-width: 600px) {
+      .topnav a {display: none;}
+      .topnav a.icon {
+        float: left;
         display: block;
-        margin-bottom: 10px;
-        padding: 10px;
-        text-align: center;
-        text-decoration: none;
-        color: #fff;
-        font-size: 18px;
-        background-color: #003566;
-        border: none;
-        border-radius: 5px;
-        transition: background-color 0.3s ease;
-      }
-
-      .nav-page a:hover {
-        background-color: #003566;
-      }
-
-      .nav-page card{
-        margin-top: -20px;
-      }
-      .card {
-        overflow-x: auto;
-      }
-
-      .card-table th,
-      .card-table td {
-        white-space: nowrap;
       }
 
     }
 
-    @media only screen and (min-width: 601px) {
-      .btn-icon {
-        display: none;
+    @media screen and (max-width: 600px) {
+      .topnav.responsive {position: relative;}
+      .topnav.responsive .icon {
+        position: absolute;
+        left: 0;
+        top: 0;
       }
-      .nav-page{
-        display: none;
+      .topnav a:not(.icon):hover {
+        background-color: #D5DBDB;
+        color: black;
+        width: 70%;
+        margin-right: auto;
+        margin-left: auto;
       }
+
+      .topnav .icon:hover {
+        background-color: transparent; /* Set the background color to transparent for the icon */
+      }
+
+
+      .topnav.responsive a {
+        float: none;
+        display: block;
+      }
+
     }
+
+
   </style>
-
 </head>
 
-<body style="background-color: #f2f2f2">
-<div style="background-color: #f2f2f2; padding: 20px;">
-  <div class="container-fluid">
-    <br>
-    <div class="row" style="margin-top: auto">
-      <div class="col">
-        <div class="card w-100" style="border-radius: 0px; box-shadow: 0px 0px 5px 0px #888888;">
-          <div class="card-body d-flex justify-content-end align-items-center">
-            <div class="nav-menu" style="flex: 1;"></div>
-            <button class="btn btn-icon" onclick="toggleNav()">
-              <i class="fas fa-bars"></i>
-            </button>
-<!--            <button class="btn btn-primary" ><a href="/welcome" style="text-decoration: none; color: black;">Home</a></button>-->
-            <button class="btn btn-primary" ><a href="/filter" style="text-decoration: none; color: black;"><Filter></Filter></a></button>
-            <button class="btn btn-primary"  th:if="${isCoordinator}"><a href="/welcome" style="text-decoration: none; color: black;">Switch To Professor</a></button>
-            <button class="btn btn-secondary" ><a href="/logout" style="text-decoration: none; color: black;">Logout</a></button>
-            <img src="https://iitj.ac.in/uploaded_docs/IITJ%20Logo__Smallest.jpg" alt="Your Logo" height="50" style="margin-right: 30px; transform: scale(1.4);" class="ml-2">
-          </div>
-        </div>
-      </div>
-    </div>
-    <br>
+<body>
 
-    <div class="row" style="margin-top: 20px">
-      <div class="col-md-9" style="margin-left: auto; margin-right: auto">
-        <div class="card" style="border-radius: 5px; box-shadow: 0px 0px 5px 0px #888888;">
-          <div class="card-body">
-            <h5 class="card-title">Listed Projects</h5>
-          </div>
-        </div>
-        <br>
+<div class="topnav" id="myTopnav">
+  <a href="javascript:void(0);" class="icon" onclick="myFunction()">
+    <i class="fa fa-bars"></i>
+  </a>
+  <img id="logo" src="https://iitj.ac.in/uploaded_docs/IITJ%20Logo__Smallest.jpg" alt="Your Logo" height="50" style="margin-right: 30px; transform: scale(1.4);" class="ml-2">
 
-        <div class="card" style="border-radius: 5px; box-shadow: 0px 0px 5px 0px #888888;">
-          <div class="card-body">
-            <form action="/filter/get" method="post" class="row g-3">
-              <label for="courseCode">Select Course Code:</label>
-              <div class="col-md-6 form-group">
+  <div class="topnav-content">
+    <a href="/welcome" class="active">Home</a>
+    <a href="/filter" class="other-btn">Filter</a>
+    <a href="/logout" class="other-btn">Logout</a>
 
-
-                <select class="form-control" id="courseCode" name="courseCode">
-                  <option value="" disabled selected>Select</option>
-                  <option th:each="code : ${courseCodeList}" th:value="${code.getCode()}" th:text="${code.getCode()}"></option>
-                </select>
-              </div>
-              <div class="col-md-6 form-group">
-                <input type="submit" class="submit-button no-hover-effect" value="Submit">
-              </div>
-            </form>
-          </div>
-
-        </div>
-      </div>
-
-    </div>
-    <div class="nav-page">
-      <div class="card nav-card w-100" style="border-radius: 0px; box-shadow: 0px 0px 5px 0px #888888;">
-        <div class="card-body d-flex justify-content-end align-items-center">
-          <div class="nav-menu" style="flex: 1;"></div>
-
-          <button class="btn btn-icon" onclick="toggleNav()" style="margin-left:auto ">
-            <i class="fas fa-times"></i>
-          </button>
-          <button class="btn btn-columns" ></button>
-        </div>
-      </div>
-      <a href="/welcome">Home</a>
-      <a href="/filter">Filter</a>
-      <a href="/logout">Logout</a>
-    </div>
 
   </div>
+
+  <!-- <a href="#about">About</a> -->
+
+
+</div>
+<br>
+
+<div class="col-md-12" style="margin-left: auto; background-color: white; margin-right: auto">
+  <div class="card" style="border-radius: 5px; box-shadow: 0px 0px 5px 0px #888888; padding: 10px;">
+    <div class="card-body">
+      <h2 class="card-title" style="text-align: center">Listed Projects</h2>
+    </div>
+  </div>
+</div>
+<br>
+
+<div class="card col-md-9" style="border-radius: 5px; margin-left: auto; margin-right: auto; box-shadow: 0px 0px 5px 0px #888888;">
+  <div class="card-body">
+    <form action="/filter/get" method="post" class="row g-3" style="align-content: center">
+      <label for="courseCode">Select Course Code:</label>
+      <div class="col-md-6 form-group">
+
+        <select class="form-control" id="courseCode" name="courseCode">
+          <option value="" disabled selected>Select</option>
+          <option th:each="code : ${courseCodeList}" th:value="${code}" th:text="${code}"></option>
+        </select>
+      </div>
+      <div class="col-md-6 form-group">
+        <input type="submit" class="submit-button no-hover-effect" value="Submit">
+      </div>
+    </form>
+  </div>
+
 </div>
 
 <script>
-  function toggleNav() {
-    var navPage = document.querySelector('.nav-page');
-    var navIcon = document.querySelector('.btn-icon');
-
-    if (navPage.style.transform === 'translateX(-100%)' || navPage.style.transform === '') {
-      navPage.style.transform = 'translateX(0)';
+  function myFunction() {
+    var x = document.getElementById("myTopnav");
+    var logo = document.getElementById("logo");
+    if (x.className === "topnav") {
+      x.className += " responsive";
+      logo.classList.add("hidden");
     } else {
-      navPage.style.transform = 'translateX(-100%)';
-      navIcon.innerHTML = '<i class="fas fa-bars"></i>';
+      x.className = "topnav";
+      logo.classList.remove("hidden");
     }
   }
+
+
 </script>
+
 </body>
 </html>

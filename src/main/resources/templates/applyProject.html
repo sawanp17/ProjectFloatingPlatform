@@ -13,6 +13,40 @@
     .hidden {
       display: none;
     }
+    body {
+      margin: 0;
+      font-family: Arial, Helvetica, sans-serif;
+      background-color: #f2f2f2;
+      overflow-x: hidden;
+    }
+    .topnav {
+      overflow: hidden;
+      background-color: white;
+      padding: 20px;
+    }
+
+
+    .topnav a {
+      float: left;
+      display: block;
+      background-color: white;
+      color: black;
+      text-align: center;
+      padding: 14px 26px;
+      text-decoration: none;
+      font-size: 17px;
+    }
+    img{
+      float: right;
+    }
+    .topnav .icon {
+      display: none;
+    }
+
+    .topnav a:hover {
+      background-color: #D5DBDB;
+      color: black;
+    }
     .card-title{
       color: darkslateblue;
     }
@@ -27,43 +61,6 @@
       text-align: left;
     }
 
-    .btn-primary{
-      margin-right: 50px;
-      background-color: white;
-      color: black;
-      border-color: white;
-      font-weight: normal;
-    }
-    .btn-primary:hover{
-      background-color: #D5DBDB;
-      color: black;
-      border-color:#f2f2f2 ;
-    }
-
-    .btn-secondary{
-      margin-right: 40px;
-      background-color: white;
-      font-weight: normal;
-      color: black;
-      border-color: white;
-    }
-    .btn-secondary:hover {
-      background-color: #D5DBDB;
-      color: black;
-      border-color: #f2f2f2;
-    }
-
-    .btn.btn-danger.no-hover-effect {
-      position: relative;
-      height: 40px;
-      width: 90px;
-      background-color: #003566;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      border: none;
-    }
-
     .apply-icon-group {
       display: flex;
       align-items: center;
@@ -72,19 +69,19 @@
 
     .apply-text {
       margin-right: 5px;
-      color: #fff; /* Adjust the text color */
+      color: #fff;
     }
 
     .arrow-icon {
       font-size: 1.2em;
-      color: #fff; /* Adjust the color as needed */
+      color: #fff;
     }
     .view-btn {
       width: 90px;
       height: 40px;
       position: relative;
-      padding: 10px 20px; /* Adjust padding as needed for button size */
-      font-size: 16px; /* Adjust font size as needed */
+      padding: 10px 20px;
+      font-size: 16px;
       display: flex;
       align-items: center;
       background-color: #003566;
@@ -98,8 +95,8 @@
       width: 90px;
       background-color: #003566;
       border: #003566;
-      padding: 10px 20px; /* Adjust padding as needed for button size */
-      font-size: 16px; /* Adjust font size as needed */
+      padding: 10px 20px;
+      font-size: 16px;
       display: flex;
     }
 
@@ -108,239 +105,168 @@
       align-items: center;
     }
     .view-text {
-      margin-right: 5px; /* Adjust the spacing between text and icon */
+      margin-right: 5px;
     }
     .fa-eye {
       width: 1.2em;
       height: 1.2em;
       fill: currentColor;
     }
-    .btn-search {
-      background-color: transparent;
-      border: none;
-      cursor: pointer;
-      padding: 5px;
-      position: absolute;
-      top: 25px;
-      left: 10px;
-    }
-    .fa-search{
-      margin-left: 10px;
-      cursor: pointer;
 
-    }
 
     .filter-panel {
-      position: fixed;
-      bottom: -100%;
-      left: 0;
+      position: relative;
       width: 100%;
-      background-color: #fff;
-      box-shadow: 0px 0px 5px 0px #888888;
-      transition: bottom 0.3s ease-in-out;
-      padding: 20px;
-      z-index: 1000;
+      float: left;
+      background-color: white;
+      padding: 10px;
+      box-sizing: border-box;
+    }
+    .filter-panel label{
+      padding: 10px;
+      font-size: 14px;
+      float: left;
 
     }
+    .filter-panel input{
+      padding: 10px;
+      font-size: 14px;
+      border: 1px solid grey;
+      float: left;
+      width: 12%;
+      height: 2%;
+      background: #f1f1f1;
+    }
+    .filter-panel select{
+      padding: 10px;
+      font-size: 14px;
+      border: 1px solid grey;
+      float: left;
+      width: 10%;
+      height: 2%;
+      background: #f1f1f1;
+    }
+    .filter-panel button {
+      margin-right:auto;
+      margin-top: 0px;
+    }
 
-    .close-icon {
-      position: absolute;
-      top: 10px;
-      right: 10px;
-      cursor: pointer;
-      font-size: 20px;
-    }
-    .title-cls {
-      margin-left: auto;
-    }
-    .deadline-cls {
-      margin-left:20px;
-    }
-    input {
-      height: auto;
-    }
-      .keywords-cls {
-      margin-left: 20px;
-    }
-
-    .sOption-cls {
-      margin-left: 20px;
-    }
-    select{
-      height: auto;
-    }
-    .btn-filter {
-      margin-left:60px;
-      width: 60px;
-      height: auto;
-      /*height: 30px;*/
-      font-size: 16px;
-      /*display: flex;*/
-      align-items: center;
-      background-color: #73a942;
-      border: none;
-      border-radius: 5px;
-      color: white;
-    }
     @media only screen and (max-width: 800px) {
-      .container-fluid{
-        margin-top: -20px;
+      .topnav a {display: none;}
+      .topnav a.icon {
+        float: left;
+        display: block;
       }
-      .btn-primary{
-        display: none;
-      }
-      .btn-secondary{
-        display: none;
-      }
-      .btn-icon {
-        background-color: transparent;
-        border: none;
-        cursor: pointer;
-        padding: 5px;
-        position: absolute;
-        top: 25px;
-        left: 10px;
-      }
-      .btn-search {
-        top: 25px;
-        left: 60px;
-      }
-
-      .fa-times{
-        margin-left: 10px;
-        cursor: pointer;
-        font-size: 22px;
-        color: black;
-      }
-
       .btn-icon i {
         font-size: 22px;
         color: black;
       }
 
-      .nav-page {
-        position: fixed;
-        top: 0;
+      .card {
+        overflow-x: auto;
+        margin-top: auto;
+      }
+      .card-table {
+        display: block;
+        width: 100%;
+        overflow: auto;
+      }
+      .card-table th,
+      .card-table td {
+        white-space: nowrap;
+      }
+    }
+
+    @media only screen and (max-width: 800px) {
+      display: none;
+      .topnav.responsive {position: relative;}
+      .topnav.responsive .icon {
+        position: absolute;
         left: 0;
-        width: 50%;
-        height: 100%;
-        background-color: #fff;
-        box-shadow: 2px 0 5px rgba(0, 0, 0, 0.2);
-        display: flex;
-        flex-direction: column;
-        padding: 20px;
-        z-index: 1000;
-        transform: translateX(-100%);
-        transition: transform 0.3s ease-in-out;
+        top: 0;
+      }
+      .topnav a:not(.icon):hover {
+        background-color: #D5DBDB;
+        color: black;
+        width: 70%;
+        margin-right: auto;
+        margin-left: auto;
       }
 
-      .nav-card {
-
-        height: 86px;
-        margin-bottom: 40px;
-        margin-top: 2px;
+      .topnav .icon:hover {
+        background-color: transparent;
       }
 
-      .nav-page a {
+      .topnav.responsive a {
+        float: none;
         display: block;
-        margin-bottom: 10px;
-        padding: 10px;
-        text-align: center;
-        text-decoration: none;
-        color: #fff;
-        font-size: 18px;
-        background-color: #003566;
-        border: none;
-        border-radius: 5px;
-        transition: background-color 0.3s ease;
+      }
+      .btn-icon i {
+        font-size: 22px;
+        color: black;
       }
 
-      .nav-page a:hover {
-        background-color: #003566;
-      }
-
-      .nav-page .card{
-        margin-top: 0px;
-        margin-bottom: 20px;
-      }
-      .card {
-        overflow-x: auto;
-      }
-      .card-table {
-        display: block;
-        width: 100%;
-        overflow: auto;
-      }
-      .card-table th,
-      .card-table td {
-        white-space: nowrap;
-      }
-      form {
-        flex-direction: column; /* Set flex direction to column for screens less than 600 pixels */
-        align-items: stretch; ; /* Allow the form to take up the full width on smaller screens */
-      }
     }
-
-    @media only screen and (min-width: 800px) {
-      .btn-icon {
-        display: none;
-      }
-      .nav-page{
-        display: none;
-      }
-      .card {
-        overflow-x: auto;
-      }
-      .card-table {
-        display: block;
-        width: 100%;
-        overflow: auto;
-      }
-      .card-table th,
-      .card-table td {
-        width: 100%;
-        white-space: nowrap;
-      }
-    }
-
   </style>
 </head>
 
 <body style="background-color: #f2f2f2">
-<div style="background-color: #f2f2f2; padding: 20px;">
-  <div class="container-fluid">
-    <!-- First Row: Navigation Bar with Logo and Buttons -->
-    <br>
-    <div class="row" style="margin-top: auto">
-      <div class="col">
-        <div class="card w-100" style="border-radius: 0px; box-shadow: 0px 0px 5px 0px #888888;">
-          <div class="card-body d-flex justify-content-end align-items-center">
-            <div class="nav-menu" style="flex: 1;"></div>
-            <button class="btn btn-icon" onclick="toggleNav()">
-              <i class="fas fa-bars"></i>
-            </button>
-            <button class="btn btn-search" onclick="toggleFilterPanel()">
-              <i class="fa fa-search"></i>
-            </button>
-            <button class="btn btn-primary" ><a href="/welcome" style="text-decoration: none; color: black;">Home</a></button>
-            <button class="btn btn-primary"  th:if="${isStudent}"><a href="/myProjects" style="text-decoration: none; color: black;">My Projects</a></button>
-            <button class="btn btn-primary" th:if="${isStudent}"><a href="/apply" style="text-decoration: none; color: black;">Apply for Projects</a></button>
-            <button class ="btn btn-primary"  th:if="${isProf}"><a href="/create" style="text-decoration: none; color: black;">Create</a></button>
-            <button class="btn btn-primary"  th:if="${isProf}"><a href="/myProjects" style="text-decoration: none; color: black;">My Projects</a></button>
-            <button class="btn btn-secondary" ><a href="/logout" style="text-decoration: none; color: black;">Logout</a></button>
-            <img src="https://iitj.ac.in/uploaded_docs/IITJ%20Logo__Smallest.jpg" alt="Your Logo" height="50" style="margin-right: 30px; transform: scale(1.4);" class="ml-2">
-          </div>
-        </div>
-      </div>
-    </div>
-    <br>
+<div class="topnav" id="myTopnav">
+  <a href="javascript:void(0);" class="icon" onclick="myFunction()">
+    <i class="fa fa-bars"></i>
+  </a>
+  <img id="logo" src="https://iitj.ac.in/uploaded_docs/IITJ%20Logo__Smallest.jpg" alt="Your Logo" height="50" style="margin-right: 30px; transform: scale(1.4);" class="ml-2">
 
-    <div class="row" style="margin-top: 20px">
+  <div class="topnav-content">
+    <a href="/welcome" class="active">Home</a>
+    <a th:if="${isStudent}" href="/myProjects" style="text-decoration: none; color: black;">My Projects</a></button>
+    <a th:if="${isStudent}" href="/apply" style="text-decoration: none; color: black;">Apply for Projects</a></button>
+    <a th:if="${isProfessor}" href="/create" style="text-decoration: none; color: black;">Create</a></button>
+    <a  th:if="${isProfessor}" href="/approve" style="text-decoration: none; color: black;">Approve</a></button>
+    <a  th:if="${isProfessor}" href="/myProjects" style="text-decoration: none; color: black;">My Projects</a></button>
+    <a th:if="${isCoordinator}" href="/filter" style="text-decoration: none; color: black;">switch to coordinate</a></button>
+
+    <a href="/logout" class="other-btn">Logout</a>
+
+  </div>
+</div>
+<br>
+  <div class="filter-panel"  id="filterPanel">
+    <form action="/apply" method="post">
+      <label class="title-cls" for="title">Title:</label>
+      <input type="text"  id="title" name="title" />
+
+      <label class="deadline-cls" for="deadline">Deadline:</label>
+      <input type="date" id="deadline" name="deadline" />
+
+      <label class="keywords-cls" for="keywords">Keywords:</label>
+      <input type="text" id="keywords" name="keywords" />
+
+      <label class="sOption-cls" for="stipendOption">Stipend Option:</label>
+      <select id="stipendOption" name="stipendOption">
+        <option value="">Select </option>
+        <option th:each="option : ${stipendOptionsList}"
+                th:value="${option}"
+                th:text="${option}" >
+        </option>
+      </select>
+
+
+      <button class="btn btn-filter" type="submit">Filter</button>
+    </form>
+    <p style="color: darkred; ">NOTE: To clear filter click on filter when no filter-value is selected</p>
+
+  </div>
+<br>
+
+
+<div class="row" style="margin-top: 20px">
       <div class="col-md-12" >
         <div class="card" style="border-radius: 5px; box-shadow: 0px 0px 5px 0px #888888;">
           <div class="card-body" >
             <h5 class="card-title">List of Available Projects</h5>
             <br>
+
             <table class="card-table" >
               <thead >
               <tr>
@@ -374,7 +300,7 @@
                     <label>
                       <select name="courseCode">
                         <option value="" selected>Select Course Code</option>
-                        <option th:each="courseCode : ${courseCodeList}" th:value="${courseCode.getCode()}" th:text="${courseCode.getCode()}"></option>
+                        <option th:each="courseCode : ${courseCodeList}" th:value="${courseCode}" th:text="${courseCode}"></option>
                       </select>
                     </label>
                   </td>
@@ -388,10 +314,7 @@
                     </label>
                   </td>
                   <td>
-<!--                    <button class="btn btn-primary-1" onclick="showDetails(this)">-->
-<!--                      View-->
-<!--                      <span class="eye-icon">&#10148;</span>-->
-<!--                    </button>-->
+
                     <button type="button" class="view-btn" onclick="showDetails(this)">
                       <div class="view-icon-group">
                         <span class="view-text">View</span>
@@ -422,81 +345,20 @@
       </div>
     </div>
 
-    <div class="nav-page">
-      <div class="card nav-card w-100" style="border-radius: 0px; box-shadow: 0px 0px 5px 0px #888888;">
-        <div class="card-body d-flex justify-content-end align-items-center">
-          <div class="nav-menu" style="flex: 1;"></div>
-          <button class="btn btn-icon" onclick="toggleNav()" style="margin-left:auto ">
-            <i class="fas fa-times"></i>
-          </button>
-          <button class="btn btn-columns" ></button>
-        </div>
-      </div>
-      <a th:if="${isStudent}" href="/welcome">Home</a>
-      <a th:if="${isStudent}" href="/myProjects">My Projects</a>
-      <a th:if="${isStudent}" href="/apply">Apply for Projects</a>
-      <a th:if="${isProfessor}" href="/create">Create</a>
-      <a th:if="${isProfessor}" href="/approve">Approve</a>
-      <a th:if="${isProfessor}" href="/myProjects">My Projects</a>
-      <a th:if="${isCoordinator}" href="/filter">Filter</a>
-      <a href="/logout">Logout</a>
-    </div>
-
-    <div class="filter-panel" style="background-color: rgba(211, 211, 210, 0.9)" id="filterPanel">
-      <i class="fas fa-times close-icon" onclick="toggleFilterPanel()"></i>
-      <form action="/apply" method="post">
-        <!-- Your filter form elements go here -->
-        <label class="title-cls" for="title">Title:</label>
-        <input type="text" id="title" name="title" />
-
-        <label class="deadline-cls" for="deadline">Deadline:</label>
-        <input type="date" id="deadline" name="deadline" />
-
-        <label class="keywords-cls" for="keywords">Keywords:</label>
-        <input type="text" id="keywords" name="keywords" />
-
-        <label class="sOption-cls" for="stipendOption">Stipend Option:</label>
-        <select id="stipendOption" name="stipendOption">
-          <option value="">Select </option>
-          <!-- Iterate through projectTypeList and display options -->
-          <option th:each="option : ${stipendOptionsList}"
-                  th:value="${option}"
-                  th:text="${option}" >
-          </option>
-        </select>
-
-        
-        <button class="btn btn-filter" type="submit">Filter</button>
-        <p style="color: darkred; margin-top: auto">NOTE: To clear filter click on filter when no filter-value is selected</p>
-      </form>
-    </div>
-
-  </div>
-</div>
-
 <script>
 
-  function toggleFilterPanel() {
-    var filterPanel = document.getElementById('filterPanel');
-
-    // Toggle the filter panel's visibility
-    if (filterPanel.style.bottom === '-100%' || filterPanel.style.bottom === '') {
-      filterPanel.style.bottom = '0';
+  function myFunction() {
+    var x = document.getElementById("myTopnav");
+    var logo = document.getElementById("logo");
+    if (x.className === "topnav") {
+      x.className += " responsive";
+      logo.classList.add("hidden");
     } else {
-      filterPanel.style.bottom = '-100%';
+      x.className = "topnav";
+      logo.classList.remove("hidden");
     }
   }
-  function toggleNav() {
-    var navPage = document.querySelector('.nav-page');
-    var navIcon = document.querySelector('.btn-icon');
 
-    if (navPage.style.transform === 'translateX(-100%)' || navPage.style.transform === '') {
-      navPage.style.transform = 'translateX(0)';
-    } else {
-      navPage.style.transform = 'translateX(-100%)';
-      navIcon.innerHTML = '<i class="fas fa-bars"></i>'; // Change icon back to 'bars'
-    }
-  }
   function showDetails(button) {
     const row = button.closest('tr');
     const table = row.closest('table');
