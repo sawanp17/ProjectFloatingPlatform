@@ -164,84 +164,83 @@
         <a href="/create" style="text-decoration: none; color: black;">Create</a>
         <a href="/approve" style="text-decoration: none; color: black;">Approve</a>
         <a href="/myProjects" style="text-decoration: none; color: black;">My Projects</a>
-        <a th:if="${isCoordinator}" href="/filter" style="text-decoration: none; color: black;">Switch To Coordinator</a>
+        <a th:if="${isCoordinator}" href="/filter" style="text-decoration: none; color: black;">Switch to Coordinator</a>
 
         <a href="/logout" class="other-btn">Logout</a>
 
     </div>
 </div>
 
-    <div class="center-card col-md-8 col-sm-10 col-xs-12" style="border-radius: 5px; box-shadow: 0px 0px 5px 0px #888888;margin-top: 70px">
-        <h2 style="text-align: center;margin-top: auto">Create a New Project</h2>
-        <form th:action="@{/create/save}" method="post">
-            <label class="form-label" for="title">Title:</label>
-            <input class="form-input-1" type="text" id="title" name="title" required th:value="${isEdit} ? ${project.getTitle()} : ''">
+<div class="center-card col-md-8 col-sm-10 col-xs-12" style="border-radius: 5px; box-shadow: 0px 0px 5px 0px #888888;margin-top: 70px">
+    <h2 style="text-align: center;margin-top: auto">Create a New Project</h2>
+    <form th:action="@{/create/save}" method="post">
+        <label class="form-label" for="title">Title:</label>
+        <input class="form-input-1" type="text" id="title" name="title" required th:value="${isEdit} ? ${project.getTitle()} : ''">
 
-            <label class="form-label">Project Type:</label>
-            <div>
-                <!-- Iterate through projectTypeList and display checkboxes -->
-                <th:block th:each="option : ${projectTypeList}">
-                    <label>
-                        <input type="checkbox" th:value="${option}" th:name="projectTypesAllowed" th:checked="${isEdit and #lists.contains(project.getProjectType(), option)}">
-                        <span th:text="${option}"></span>
-                    </label>
-                </th:block>
-            </div>
-
-
-            <label class="form-label" for="description">Description:</label>
-            <textarea class="form-input-3" id="description" name="description" rows="4" cols="50" required th:text="${isEdit} ? ${project.getDescription()} : ''"></textarea>
-
-            <label class="form-label" for="preReq">Pre-Requisites:</label>
-            <textarea class="form-input-3" id="preReq" name="preReq" rows="4" cols="50" required th:text="${isEdit} ? ${project.getPreReq()} : ''"></textarea>
-
-            <label class="form-label" for="tagsGiven">Tags (comma seperated):</label>
-            <input class="form-input-1" type="text" id="tagsGiven" name="tagsGiven" required th:value="${isEdit} ? ${projectTags} : ''">
-
-            <label class="form-label" for="maxLim">Max People Allowed:</label>
-            <input class="form-input-1" type="number" id="maxLim" name="maxLim" required th:value="${isEdit} ? ${project.getMaxLim()} : 0">
-
-            <label class="form-label" for="deadline">Project Deadline:</label>
-            <input class="form-input-1" type="date" id="deadline" name="deadline" required th:value="${isEdit} ? ${project.getDeadline()} : ''">
-
-            <label class="form-label" for="stipendOption">Stipend Option:</label>
-            <select class="form-input-1" id="stipendOption" name="stipendOption" required onchange="toggleStipendAmount()">
-                <option value="" disabled selected>Select </option>
-                <option th:each="option : ${stipendOptionsList}"
-                        th:value="${option}"
-                        th:text="${option}"
-                        th:selected="${isEdit and option == project.getStipendOption()}">
-                </option>
-            </select>
-
-
-            <label class="form-label" for="stipendAmount" id="stipendAmountLabel" style="display: none;">Stipend Amount:</label>
-            <input class="form-input-1" type="text" id="stipendAmount" name="stipendAmount" required th:value="${isEdit} ? ${project.getStipendAmount()} : 0" style="display: none;">
-
-            <label class="form-label" for="status">Status:</label>
-            <select class="form-input-1" id="status" name="status" required>
-                <option value="">select</option>
-                <option value="FLOATED" th:selected="${isEdit} and ${project.getStatus() == 'FLOATED'}">FLOATED</option>
-                <option value="IN_PROGRESS" th:selected="${isEdit} and ${project.getStatus() == 'IN_PROGRESS'}">IN PROGRESS</option>
-                <option value="COMPLETED" th:selected="${isEdit} and ${project.getStatus() == 'COMPLETED'}">COMPLETED</option>
-            </select>
-
-            <input type="hidden" name="isEdit" th:value="${isEdit}" />
-            <th:block th:if="${isEdit}">
-                <input type="hidden" name="projectId" th:value="${projectId}" />
+        <label class="form-label">Project Type:</label>
+        <div>
+            <th:block th:each="option : ${projectTypeList}">
+                <label>
+                    <input type="checkbox" th:value="${option}" th:name="projectTypesAllowed" th:checked="${isEdit and #lists.contains(project.getProjectType(), option)}">
+                    <span th:text="${option}"></span>
+                </label>
             </th:block>
-            <th:block th:unless="${isEdit}">
-                <input type="hidden" name="projectId" th:value="-1" />
-            </th:block>
-            <br>
-            <div class="button-container">
-                <button class="form-input-5" type="submit" th:if="${isEdit}">Update Project</button>
-                <button class="form-input-5" type="submit" th:unless="${isEdit}">Create Project</button>
-            </div>
+        </div>
 
-        </form>
 
-    </div>
+        <label class="form-label" for="description">Description:</label>
+        <textarea class="form-input-3" id="description" name="description" rows="4" cols="50" required th:text="${isEdit} ? ${project.getDescription()} : ''"></textarea>
+
+        <label class="form-label" for="preReq">Pre-Requisites:</label>
+        <textarea class="form-input-3" id="preReq" name="preReq" rows="4" cols="50" required th:text="${isEdit} ? ${project.getPreReq()} : ''"></textarea>
+
+        <label class="form-label" for="tagsGiven">Tags (comma seperated):</label>
+        <input class="form-input-1" type="text" id="tagsGiven" name="tagsGiven" required th:value="${isEdit} ? ${projectTags} : ''">
+
+        <label class="form-label" for="maxLim">Max People Allowed:</label>
+        <input class="form-input-1" type="number" id="maxLim" name="maxLim" required th:value="${isEdit} ? ${project.getMaxLim()} : 0">
+
+        <label class="form-label" for="deadline">Project Deadline:</label>
+        <input class="form-input-1" type="date" id="deadline" name="deadline" required th:value="${isEdit} ? ${project.getDeadline()} : ''">
+
+        <label class="form-label" for="stipendOption">Stipend Option:</label>
+        <select class="form-input-1" id="stipendOption" name="stipendOption" required onchange="toggleStipendAmount()">
+            <option value="" disabled selected>Select </option>
+            <option th:each="option : ${stipendOptionsList}"
+                    th:value="${option}"
+                    th:text="${option}"
+                    th:selected="${isEdit and option == project.getStipendOption()}">
+            </option>
+        </select>
+
+
+        <label class="form-label" for="stipendAmount" id="stipendAmountLabel" >Stipend Amount:</label>
+        <input class="form-input-1" type="text" id="stipendAmount" name="stipendAmount" required th:value="${isEdit} ? ${project.getStipendAmount()} : 0" >
+
+        <label class="form-label" for="status">Status:</label>
+        <select class="form-input-1" id="status" name="status" required>
+            <option value="">select</option>
+            <option value="FLOATED" th:selected="${isEdit} and ${project.getStatus() == 'FLOATED'}">FLOATED</option>
+            <option value="IN_PROGRESS" th:selected="${isEdit} and ${project.getStatus() == 'IN_PROGRESS'}">IN PROGRESS</option>
+            <option value="COMPLETED" th:selected="${isEdit} and ${project.getStatus() == 'COMPLETED'}">COMPLETED</option>
+        </select>
+
+        <input type="hidden" name="isEdit" th:value="${isEdit}" />
+        <th:block th:if="${isEdit}">
+            <input type="hidden" name="projectId" th:value="${projectId}" />
+        </th:block>
+        <th:block th:unless="${isEdit}">
+            <input type="hidden" name="projectId" th:value="-1" />
+        </th:block>
+        <br>
+        <div class="button-container">
+            <button class="form-input-5" type="submit" th:if="${isEdit}">Update Project</button>
+            <button class="form-input-5" type="submit" th:unless="${isEdit}">Create Project</button>
+        </div>
+
+    </form>
+
+</div>
 </div>
 <script>
     function myFunction() {

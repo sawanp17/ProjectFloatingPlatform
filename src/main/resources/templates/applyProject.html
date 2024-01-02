@@ -137,6 +137,18 @@
       height: 2%;
       background: #f1f1f1;
     }
+    .btn-filter{
+        width: auto;
+        margin-left: 20px;
+        padding: 10px 20px;
+        font-size: 16px;
+        cursor: pointer;
+        background-color: #73a942;
+        border: none;
+        border-radius: 5px;
+        color: white;
+      }
+
     .filter-panel select{
       padding: 10px;
       font-size: 14px;
@@ -254,6 +266,7 @@
 
       <button class="btn btn-filter" type="submit">Filter</button>
     </form>
+    <br>
     <p style="color: darkred; ">NOTE: To clear filter click on filter when no filter-value is selected</p>
 
   </div>
@@ -289,7 +302,6 @@
               <tr th:each="project : ${floatedProjects}">
                 <form method="post" th:action="@{'/apply/save'}">
                   <td th:text="${project.title}"></td>
-<!--                  <td th:text="${project.department}"></td>-->
                   <td th:text="${projectToProf.get(project.getId())}"></td>
                   <td th:text="${project.deadline}"></td>
                   <td th:text="${project.projectType}"></td>

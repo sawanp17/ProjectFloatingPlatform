@@ -190,7 +190,7 @@
         <a th:if="${isProfessor}" href="/create" style="text-decoration: none; color: black;">Create</a>
         <a  th:if="${isProfessor}" href="/approve" style="text-decoration: none; color: black;">Approve</a>
         <a  th:if="${isProfessor}" href="/myProjects" style="text-decoration: none; color: black;">My Projects</a>
-        <a th:if="${isCoordinator}" href="/filter" style="text-decoration: none; color: black;">Switch to coordinate</a>
+        <a th:if="${isCoordinator}" href="/filter" style="text-decoration: none; color: black;">Switch to Coordinator</a>
 
         <a href="/logout" class="other-btn">Logout</a>
 
@@ -207,7 +207,7 @@
                         <table class="table">
                             <thead>
                             <tr>
-<!--                                <th></th>-->
+                                <th></th>
                                 <th>Project Name</th>
                                 <th th:if="${isStudent}">Professor</th>
                                 <th th:if="${isProfessor}">Students</th>
@@ -238,7 +238,6 @@
                                 </td>
                                 <td th:if="${isStudent}" th:text="${mapOfProjectAndProf.get(project).getName()}"></td>
                                 <td class="hidden" th:text="${project.getDeadline()}"></td>
-
                                 <td class="hidden" th:text="${project.getProjectType()}"></td>
                                 <td class="hidden" th:text="${project.getDescription()}"></td>
                                 <td class="hidden" th:text="${project.getPreReq()}"></td>

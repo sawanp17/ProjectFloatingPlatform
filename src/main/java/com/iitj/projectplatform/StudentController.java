@@ -155,7 +155,7 @@ public class StudentController {
             for (ProjectCreate projectCreate: myProjectsCreated){
                 if (projectRepo.findProjectById(projectCreate.getProjectId()).getStatus().equals(ProjectStatus.IN_PROGRESS.toString())){
                     myProjectsRunning.add(projectRepo.findProjectById(projectCreate.getProjectId()));
-                    myProjectsRunning.add(projectRepo.findProjectById(projectCreate.getProjectId()));
+//                    myProjectsRunning.add(projectRepo.findProjectById(projectCreate.getProjectId()));
                     List<User> studentList = new ArrayList<>();
                     List<Approved> approvedList = approvedRepo.findApprovedByProjectId(projectCreate.getProjectId());
                     for (Approved approvedIt: approvedList){
@@ -412,6 +412,7 @@ public class StudentController {
             }
         }
 
+
         return "redirect:/myProjects";
     }
 
@@ -422,6 +423,7 @@ public class StudentController {
         String username = userDetails.getUsername();
         Collection<? extends GrantedAuthority> authorities = authentication.getAuthorities();
         Role currentRole = Role.Student;
+        boolean isCoordinator = false;
         for (GrantedAuthority authority: authorities){
             if (authority.getAuthority().equals("ROLE_STUDENT")){
                 System.out.println(
@@ -434,22 +436,39 @@ public class StudentController {
                 model.addAttribute("isCoordinator", false);
 
                 currentRole = Role.Student;
-            }
-            else {
-                System.out.println(
-                        ">> (myProjects) adding prof to model"
-                );
+            } else if (authority.getAuthority().equals("ROLE_PROFESSOR")) {
+                System.out.println(">> (myProjects) adding prof to model");
                 model.addAttribute("isStudent", false);
                 model.addAttribute("isProfessor", true);
                 currentRole = Role.Professor;
+
                 if (userRepo.findUserByUsername(username).get().getCoordinator()){
-                    model.addAttribute("isCcordinator",true);
+                    model.addAttribute("isCoordinator",true);
+                    isCoordinator = true;
                 }
                 else {
                     model.addAttribute("isCoordinator", false);
 
                 }
+
+
+
             }
+//            else {
+//                System.out.println(
+//                        ">> (myProjects) adding prof to model"
+//                );
+//                model.addAttribute("isStudent", false);
+//                model.addAttribute("isProfessor", true);
+//                currentRole = Role.Professor;
+//                if (userRepo.findUserByUsername(username).get().getCoordinator()){
+//                    model.addAttribute("isCcordinator",true);
+//                }
+//                else {
+//                    model.addAttribute("isCoordinator", false);
+//
+//                }
+//            }
             break;
         }
 
