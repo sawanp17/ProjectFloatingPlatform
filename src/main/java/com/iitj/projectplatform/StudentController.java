@@ -500,8 +500,31 @@ public class StudentController {
                 }
             }
 
+            HashMap<Long,List<Tag>> projectToTagMap = new HashMap<>();
+            for (Project projectIt: approvedProjects){
+                List<TagMapping> getTagMappings = tagMappingRepo.findTagMappingByProjectId(projectIt.getId());
+                List<Tag> projectTags = new ArrayList<>();
+                for (TagMapping tm: getTagMappings){
+                    projectTags.add(tagRepository.findById(tm.getTagId()).get());
+                }
+                projectToTagMap.put(projectIt.getId(), projectTags);
+            }
+
+            for (Project projectIt: rejectedProjects){
+                List<TagMapping> getTagMappings = tagMappingRepo.findTagMappingByProjectId(projectIt.getId());
+                List<Tag> projectTags = new ArrayList<>();
+                for (TagMapping tm: getTagMappings){
+                    projectTags.add(tagRepository.findById(tm.getTagId()).get());
+                }
+                projectToTagMap.put(projectIt.getId(), projectTags);
+            }
+
+
+
             model.addAttribute("approvedList", approvedProjects);
             model.addAttribute("rejectedList", rejectedProjects);
+            model.addAttribute("projectToTagMap", projectToTagMap);
+
         }
 
 
