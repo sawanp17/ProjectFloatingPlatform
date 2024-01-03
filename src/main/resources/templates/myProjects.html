@@ -142,7 +142,7 @@
       }
 
       .topnav .icon:hover {
-        background-color: transparent; /* Set the background color to transparent for the icon */
+        background-color: transparent;
       }
 
       .topnav.responsive a {
@@ -173,7 +173,7 @@
     <a th:if="${isProfessor}" href="/create" style="text-decoration: none; color: black;">Create</a></button>
     <a  th:if="${isProfessor}" href="/approve" style="text-decoration: none; color: black;">Approve</a></button>
     <a  th:if="${isProfessor}" href="/myProjects" style="text-decoration: none; color: black;">My Projects</a></button>
-    <a th:if="${isCoordinator}" href="/filter" style="text-decoration: none; color: black;">switch to coordinate</a></button>
+    <a th:if="${isCoordinator}" href="/filter" style="text-decoration: none; color: black;">Switch to Coordinator</a></button>
 
     <a href="/logout" class="other-btn">Logout</a>
 
@@ -193,8 +193,8 @@
             <tr>
               <th>Title</th>
               <th>Project Deadline</th>
+              <th>Project Type</th>
               <th>Status</th>
-              <th class="hidden">Type of Project</th>
               <th class="hidden">Description</th>
               <th class="hidden">Prerequisite</th>
               <th class="hidden">Max People Allowed</th>
@@ -210,8 +210,8 @@
             <tr th:each="project : ${listOfProjects}">
               <td th:text="${project.getTitle()}"></td>
               <td th:text="${project.getDeadline()}"></td>
+              <td th:text="${project.getProjectType()}"></td>
               <td th:text="${project.getStatus()}"></td>
-              <td class="hidden" th:text="${project.getProjectType()}"></td>
               <td class="hidden" th:text="${project.getDescription()}"></td>
               <td class="hidden" th:text="${project.getPreReq()}"></td>
               <td class="hidden" th:text="${project.getMaxLim()}"></td>
@@ -256,8 +256,9 @@
           <tr>
             <th>Title</th>
             <th>Project Deadline</th>
+            <th>Project Type</th>
+
             <th>Status</th>
-            <th class="hidden">Project Type</th>
             <th class="hidden">Description</th>
             <th class="hidden">Prerequisite</th>
             <th class="hidden">Max People Allowed</th>
@@ -271,8 +272,8 @@
           <tr th:each="project : ${approvedList}">
             <td th:text="${project.getTitle()}"></td>
             <td th:text="${project.getDeadline()}"></td>
+            <td th:text="${project.getProjectType()}"></td>
             <td th:text="${project.getStatus()}"></td>
-            <td class="hidden" th:text="${project.getProjectType()}"></td>
             <td class="hidden" th:text="${project.getDescription()}"></td>
             <td class="hidden" th:text="${project.getPreReq()}"></td>
             <td class="hidden" th:text="${project.getMaxLim()}"></td>
@@ -302,8 +303,8 @@
           <tr>
             <th>Title</th>
             <th>Project Deadline</th>
+            <th >Project Type</th>
             <th>Status</th>
-            <th class="hidden">Project Type</th>
             <th class="hidden">Description</th>
             <th class="hidden">Prerequisite</th>
             <th class="hidden">Max People Allowed</th>
@@ -317,8 +318,8 @@
           <tr th:each="project : ${rejectedList}">
             <td th:text="${project.getTitle()}"></td>
             <td th:text="${project.getDeadline()}"></td>
+            <td th:text="${project.getProjectType()}"></td>
             <td th:text="${project.getStatus()}"></td>
-            <td class="hidden" th:text="${project.getProjectType()}"></td>
             <td class="hidden" th:text="${project.getDescription()}"></td>
             <td class="hidden" th:text="${project.getPreReq()}"></td>
             <td class="hidden" th:text="${project.getMaxLim()}"></td>
@@ -349,8 +350,8 @@
           <tr>
             <th>Title</th>
             <th>Project Deadline</th>
+            <th>Project Type</th>
             <th>Status</th>
-            <th class="hidden">Project Type</th>
             <th class="hidden">Description</th>
             <th class="hidden">Prerequisite</th>
             <th class="hidden">Max People Allowed</th>
@@ -363,8 +364,8 @@
           <tr th:each="project : ${listOfProjects}">
             <td th:text="${project.getTitle()}"></td>
             <td th:text="${project.getDeadline()}"></td>
+            <td th:text="${project.getProjectType()}"></td>
             <td th:text="${project.getStatus()}"></td>
-            <td class="hidden" th:text="${project.getProjectType()}"></td>
             <td class="hidden" th:text="${project.getDescription()}"></td>
             <td class="hidden" th:text="${project.getPreReq()}"></td>
             <td class="hidden" th:text="${project.getMaxLim()}"></td>
