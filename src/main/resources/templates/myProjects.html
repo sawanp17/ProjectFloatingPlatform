@@ -198,6 +198,7 @@
               <th class="hidden">Description</th>
               <th class="hidden">Prerequisite</th>
               <th class="hidden">Max People Allowed</th>
+              <th class="hidden">Tags</th>
               <th class="hidden">Stipend</th>
               <th class="hidden">Amount</th>
               <th style="justify-content: center">Action</th>
@@ -215,30 +216,39 @@
               <td class="hidden" th:text="${project.getDescription()}"></td>
               <td class="hidden" th:text="${project.getPreReq()}"></td>
               <td class="hidden" th:text="${project.getMaxLim()}"></td>
-              <td class="hidden" th:text="${project.getStipendOption()}"></td>
-              <td class="hidden" th:text="${project.getStipendAmount()}"></td>
+              <!--              <td class="hidden" th:text="${projectToTagMap}"></td>-->
+              <td class="hidden" >
 
-
-              <td>
-                <div class="button-group" style="display: flex;margin-left: auto; margin-right: auto">
-                  <button type="button" class="view-btn" onclick="showDetails(this)">
-                    <div class="view-icon-group">
-                      <span class="view-text">View</span>
-                      <i class="fa fa-eye" aria-hidden="true"></i>
-                    </div>
-                  </button>
-
-                  <form method="post" action="/edit" style="margin-right: auto; margin-left: auto">
-                    <input type="hidden" name="projectId" th:value="${project.getId()}" />
-                    <button type="submit" class="btn btn-success">Edit</button>
-                  </form>
-
-                  <form method="post" action="/delete" style=" margin-right: auto">
-                    <input type="hidden" name="projectId" th:value="${project.getId()}" />
-                    <button type="submit" class="btn btn-btn-danger">Delete</button>
-                  </form>
-                </div>
+                    <span th:each="tag : ${projectToTagMap.get(project.getId())}">
+                        <span th:text="${tag.getName()}"></span><br>
+                    </span>
               </td>
+
+
+            <td class="hidden" th:text="${project.getStipendOption()}"></td>
+            <td class="hidden" th:text="${project.getStipendAmount()}"></td>
+
+
+            <td>
+              <div class="button-group" style="display: flex;margin-left: auto; margin-right: auto">
+                <button type="button" class="view-btn" onclick="showDetails(this)">
+                  <div class="view-icon-group">
+                    <span class="view-text">View</span>
+                    <i class="fa fa-eye" aria-hidden="true"></i>
+                  </div>
+                </button>
+
+                <form method="post" action="/edit" style="margin-right: auto; margin-left: auto">
+                  <input type="hidden" name="projectId" th:value="${project.getId()}" />
+                  <button type="submit" class="btn btn-success">Edit</button>
+                </form>
+
+                <form method="post" action="/delete" style=" margin-right: auto">
+                  <input type="hidden" name="projectId" th:value="${project.getId()}" />
+                  <button type="submit" class="btn btn-btn-danger">Delete</button>
+                </form>
+              </div>
+            </td>
             </tr>
             </tbody>
           </table>
@@ -246,7 +256,7 @@
       </div>
     </div>
 
-<!--     Approved Projects    -->
+    <!--     Approved Projects    -->
     <div th:if="${isStudent}" class="card justify-content-center" style="border-radius: 5px; box-shadow: 0px 0px 5px 0px #888888;">
       <div class="card-body">
         <h5 class="card-title">Approved Projects</h5>
@@ -292,8 +302,8 @@
         </table>
       </div>
     </div>
-<br>
-<!--     Rejected Projects       -->
+    <br>
+    <!--     Rejected Projects       -->
     <div th:if="${isStudent}" class="card" style="border-radius: 5px; box-shadow: 0px 0px 5px 0px #888888;">
       <div class="card-body">
         <h5 class="card-title">Rejected Projects</h5>
@@ -339,8 +349,8 @@
         </table>
       </div>
     </div>
-<br>
-<!--     Applied Projects        -->
+    <br>
+    <!--     Applied Projects        -->
     <div th:if="${isStudent}" class="card" style="border-radius: 5px; box-shadow: 0px 0px 5px 0px #888888;">
       <div class="card-body">
         <h5 class="card-title">Applied Projects</h5>
@@ -385,7 +395,7 @@
         </table>
       </div>
     </div>
-  <br>
+    <br>
   </div>
 </div>
 
@@ -456,10 +466,3 @@
 </script>
 </body>
 </html>
-
-
-
-
-
-
-

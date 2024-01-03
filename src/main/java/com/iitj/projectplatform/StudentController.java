@@ -480,6 +480,7 @@ public class StudentController {
         List<Optional<ProjectApply>> applyProjects = new ArrayList<>();
         List<Project> approvedProjects = new ArrayList<>();
         List<Project> rejectedProjects = new ArrayList<>();
+        HashMap<Long,List<Tag>> projectToTagMap = new HashMap<>();
 
         if (currentRole.equals(Role.Student)){
             applyProjects = projectApplyRepo.findProjectApplyByUserId(username);
@@ -500,7 +501,6 @@ public class StudentController {
                 }
             }
 
-            HashMap<Long,List<Tag>> projectToTagMap = new HashMap<>();
             for (Project projectIt: approvedProjects){
                 List<TagMapping> getTagMappings = tagMappingRepo.findTagMappingByProjectId(projectIt.getId());
                 List<Tag> projectTags = new ArrayList<>();
@@ -516,14 +516,15 @@ public class StudentController {
                 for (TagMapping tm: getTagMappings){
                     projectTags.add(tagRepository.findById(tm.getTagId()).get());
                 }
+                System.out.println("Tags for htis::: " + projectTags);
                 projectToTagMap.put(projectIt.getId(), projectTags);
             }
+            System.out.println("Project to Tags Map: " + projectToTagMap);
 
 
 
             model.addAttribute("approvedList", approvedProjects);
             model.addAttribute("rejectedList", rejectedProjects);
-            model.addAttribute("projectToTagMap", projectToTagMap);
 
         }
 
@@ -556,6 +557,19 @@ public class StudentController {
         approvedProjects.sort(Comparator.comparing(Project::getDeadline));
         rejectedProjects.sort(Comparator.comparing(Project::getDeadline));
         projectList.sort(Comparator.comparing(Project::getDeadline));
+
+        for (Project projectIt: projectList){
+            List<TagMapping> getTagMappings = tagMappingRepo.findTagMappingByProjectId(projectIt.getId());
+            List<Tag> projectTags = new ArrayList<>();
+            for (TagMapping tm: getTagMappings){
+                projectTags.add(tagRepository.findById(tm.getTagId()).get());
+            }
+//            System.out.println("Tags for htis::: " + projectTags);
+            projectToTagMap.put(projectIt.getId(), projectTags);
+        }
+
+        System.out.println("project to tag Maps: " + projectToTagMap);
+        model.addAttribute("projectToTagMap", projectToTagMap);
 
         model.addAttribute("listOfProjects", projectList);
         return "myProjects";
@@ -1168,6 +1182,19 @@ public class StudentController {
             courseCodeObject.setCode(courseCode);
         }
         courseCodeObject = courseCodeRepository.save(courseCodeObject);
+        return "redirect:/welcomeSuperAdmin";
+    }
+
+    @PostMapping("/deleteCourseCode")
+    String deleteCourseCode(@RequestParam("courseCodeToDelete") String courseCode, Model model){
+        Optional<CourseCode> courseCodeOptional = courseCodeRepository.findCourseCodeByCode(courseCode);
+        if (courseCodeOptional.isPresent()){
+            courseCodeRepository.deleteById(courseCodeOptional.get().getId());
+        }
+        else {
+            model.addAttribute("courseCodeNotFound", true);
+            return "redirect:/welcomeSuperAdmin"; // Redirect to the view
+        }
         return "redirect:/welcomeSuperAdmin";
     }
 

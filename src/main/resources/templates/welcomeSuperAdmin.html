@@ -166,6 +166,25 @@
       </div>
     </div>
 
+<div class="row" style="margin-top: 20px">
+    <div class="col-md-9" style="margin-left: auto; margin-right: auto">
+        <div class="card" style="border-radius: 5px; box-shadow: 0px 0px 5px 0px #888888;">
+            <div class="card-body">
+                <h3 class="card-title">Delete Course Code</h3>
+
+                <!-- File Upload Form -->
+                <form action="/deleteCourseCode" method="post">
+                    <input type="text" name="courseCodeToDelete">
+                    <button type="submit" class="btn-upload">Delete</button>
+                </form>
+            </div>
+        </div>
+
+    </div>
+</div>
+<script th:if="${courseCodeNotFound}">
+    alert('Course Code Doesn\'t Exist');
+</script>
 <script>
   function myFunction() {
     var x = document.getElementById("myTopnav");
