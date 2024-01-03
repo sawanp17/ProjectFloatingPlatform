@@ -436,39 +436,40 @@ public class StudentController {
                 model.addAttribute("isCoordinator", false);
 
                 currentRole = Role.Student;
-            } else if (authority.getAuthority().equals("ROLE_PROFESSOR")) {
-                System.out.println(">> (myProjects) adding prof to model");
-                model.addAttribute("isStudent", false);
-                model.addAttribute("isProfessor", true);
-                currentRole = Role.Professor;
-
-                if (userRepo.findUserByUsername(username).get().getCoordinator()){
-                    model.addAttribute("isCoordinator",true);
-                    isCoordinator = true;
-                }
-                else {
-                    model.addAttribute("isCoordinator", false);
-
-                }
-
-
-
             }
-//            else {
-//                System.out.println(
-//                        ">> (myProjects) adding prof to model"
-//                );
+//            else if (authority.getAuthority().equals("ROLE_PROFESSOR")) {
+//                System.out.println(">> (myProjects) adding prof to model");
 //                model.addAttribute("isStudent", false);
 //                model.addAttribute("isProfessor", true);
 //                currentRole = Role.Professor;
+//
 //                if (userRepo.findUserByUsername(username).get().getCoordinator()){
-//                    model.addAttribute("isCcordinator",true);
+//                    model.addAttribute("isCoordinator",true);
+//                    isCoordinator = true;
 //                }
 //                else {
 //                    model.addAttribute("isCoordinator", false);
 //
 //                }
+//
+//
+//
 //            }
+            else {
+                System.out.println(
+                        ">> (myProjects) adding prof to model"
+                );
+                model.addAttribute("isStudent", false);
+                model.addAttribute("isProfessor", true);
+                currentRole = Role.Professor;
+                if (userRepo.findUserByUsername(username).get().getCoordinator()){
+                    model.addAttribute("isCoordinator",true);
+                }
+                else {
+                    model.addAttribute("isCoordinator", false);
+
+                }
+            }
             break;
         }
 
