@@ -73,14 +73,10 @@
     }
 
     .apply-text {
-      margin-right: 5px;
       color: #fff;
+      text-align: center;
     }
 
-    .arrow-icon {
-      font-size: 1.2em;
-      color: #fff;
-    }
     .view-btn {
       width: 90px;
       height: 40px;
@@ -253,7 +249,7 @@
   </div>
 </div>
 <br>
-  <div class="filter-panel" id="filterPanel">
+<div class="filter-panel" id="filterPanel">
     <form action="/apply" method="post">
       <label class="title-cls" for="title">Title:</label>
       <input type="text"  id="title" name="title" />
@@ -352,15 +348,17 @@
 
                   </td>
                   <td>
+
                     <form method="post" action="/your-action">
                       <input type="hidden" name="projectId" th:value="${project.id}" />
                       <button type="submit" class="btn btn-danger no-hover-effect">
-                        <div class="apply-icon-group">
-                          <span class="apply-text">Apply</span>
-                          <span class="arrow-icon">&#10148;</span>
+                        <div class="apply-icon-group" style="display: flex; align-items: center; justify-content: center;">
+                          <span class="apply-text" style="margin-right: 5px;">Apply</span>
+                          <i class="fas fa-check"></i>
                         </div>
                       </button>
                     </form>
+
 
                   </td>
                 </form>
