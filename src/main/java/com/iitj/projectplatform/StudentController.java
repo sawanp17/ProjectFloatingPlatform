@@ -1,5 +1,6 @@
 package com.iitj.projectplatform;
 
+import com.iitj.projectplatform.Exceptions.UserAlreadyExistsException;
 import com.iitj.projectplatform.Repositories.*;
 import com.nimbusds.oauth2.sdk.http.HTTPRequest;
 import jakarta.servlet.http.HttpServletRequest;
@@ -215,18 +216,24 @@ public class StudentController {
     public String showRegister(Model model){
         User user = new User();
         model.addAttribute("user",user);
+        model.addAttribute("usernameAlreadyExists", false);
         model.addAttribute("roleList",Role.values());
         return "register";
     }
 
     @PostMapping("/register/save")
-    public String saveRegister(@ModelAttribute("user") User user){
+    public String saveRegister(@ModelAttribute("user") User user
+                                , Model model) throws UserAlreadyExistsException {
         Optional<User> exisitingUser = userRepo.findUserByUsername(user.getUsername());
-        if (!exisitingUser.isEmpty()){
+        if (exisitingUser.isPresent()){
             System.out.println(
                     ">> User already exists."
             );
+//            throw new UserAlreadyExistsException("This username has been taken");
+//            model.addAttribute("usernameAlreadyExists", true);
+//            model.addAttribute("roleList",Role.values());
             return "redirect:/register";
+
         }
         else {
             User toSave = new User();
@@ -237,13 +244,14 @@ public class StudentController {
             if (user.getRole().equals(Role.Student)){
                 toSave.setRole(Role.Student);
             }
-//            else if (user.getRole().equals(Role.Coordinator)){
-//                toSave.setRole(Role.Coordinator);
-//            }
-            else {
+            else if (user.getRole().equals(Role.SuperAdmin)){
+                toSave.setRole(Role.SuperAdmin);
+            }
+            else if (user.getRole().equals(Role.Professor)) {
                 toSave.setRole(Role.Professor);
             }
             toSave.setAccountNonLocked(true);
+            toSave.setCoordinator(false);
             userRepo.save(toSave);
             return "redirect:/login";
         }

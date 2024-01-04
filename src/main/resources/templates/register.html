@@ -49,6 +49,10 @@
         <div id="success-popup" class="alert alert-success" style="display: none;">
           Registration successful!
         </div>
+          <div th:if="${usernameAlreadyExists}" style="text-align: center;">
+              <p style="color: red;">The username you entered has already been taken. Please try some other username.</p>
+          </div>
+
       </div>
       <div class="card-body ">
         <form

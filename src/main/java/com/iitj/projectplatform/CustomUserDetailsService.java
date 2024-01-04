@@ -52,7 +52,6 @@ public class CustomUserDetailsService implements UserDetailsService {
             authorities.add(new SimpleGrantedAuthority("ROLE_SUPERADMIN"));
         }
 
-
         return  org.springframework.security.core.userdetails.User
                 .withUsername(user.getUsername())
                 .password(pe.encode(user.getPassword()))
