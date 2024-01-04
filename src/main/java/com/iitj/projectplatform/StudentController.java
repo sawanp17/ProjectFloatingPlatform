@@ -437,24 +437,7 @@ public class StudentController {
 
                 currentRole = Role.Student;
             }
-//            else if (authority.getAuthority().equals("ROLE_PROFESSOR")) {
-//                System.out.println(">> (myProjects) adding prof to model");
-//                model.addAttribute("isStudent", false);
-//                model.addAttribute("isProfessor", true);
-//                currentRole = Role.Professor;
-//
-//                if (userRepo.findUserByUsername(username).get().getCoordinator()){
-//                    model.addAttribute("isCoordinator",true);
-//                    isCoordinator = true;
-//                }
-//                else {
-//                    model.addAttribute("isCoordinator", false);
-//
-//                }
-//
-//
-//
-//            }
+
             else {
                 System.out.println(
                         ">> (myProjects) adding prof to model"
@@ -572,6 +555,20 @@ public class StudentController {
         model.addAttribute("projectToTagMap", projectToTagMap);
 
         model.addAttribute("listOfProjects", projectList);
+//        model.addAttribute("projectId", projectId);
+//
+//
+//        List<TagMapping> tagMappings = tagMappingRepo.findTagMappingByProjectId(projectId);
+//        String projectTags =  "";
+//        for (TagMapping tagMapping: tagMappings){
+//            if (tagMapping == tagMappings.get(tagMappings.size()-1)){
+//                projectTags += (tagRepository.findById(tagMapping.getTagId()).get().getName());
+//
+//            }
+//            else projectTags += (tagRepository.findById(tagMapping.getTagId()).get().getName()+",");
+//        }
+//        model.addAttribute("projectTags", projectTags);
+
         return "myProjects";
     }
 
@@ -827,14 +824,24 @@ public class StudentController {
         floatedProjects.removeAll(toRemove);
 
         Map<Long,String> projectToProf = new HashMap<>();
+        Map<Long, List<Tag>> projectToTagMap = new HashMap<>(); // for tags
         for (Project project: floatedProjects){
             Long projectID = project.getId();
             String userID = projectCreateRepo.findProjectCreateByProjectId(projectID).getUserId();
             projectToProf.put(projectID, userRepo.findUserByUsername(userID).get().getName());
+
+            // Get tags for each project and add to the map
+            List<TagMapping> getTagMappings = tagMappingRepo.findTagMappingByProjectId(projectID);
+            List<Tag> projectTags = new ArrayList<>();
+            for (TagMapping tm : getTagMappings) {
+                projectTags.add(tagRepository.findById(tm.getTagId()).get());
+            }
+            projectToTagMap.put(projectID, projectTags);
         }
 
         model.addAttribute("floatedProjects", floatedProjects);
         model.addAttribute("projectToProf", projectToProf);
+        model.addAttribute("projectToTagMap", projectToTagMap);
         floatedProjects.sort(Comparator.comparing(Project::getDeadline));
 
         return "applyProject";
