@@ -17,6 +17,7 @@
       margin: 0;
       font-family: Arial, Helvetica, sans-serif;
       background-color: #f2f2f2;
+      overflow: hidden;
     }
 
     .topnav {
@@ -46,6 +47,9 @@
     .topnav a:hover {
       background-color: #D5DBDB;
       color: black;
+    }
+    .card{
+      overflow: auto;
     }
     .card-title{
       color: darkslateblue;
@@ -272,6 +276,7 @@
             <th class="hidden">Description</th>
             <th class="hidden">Prerequisite</th>
             <th class="hidden">Max People Allowed</th>
+            <th class="hidden">Tags</th>
             <th class="hidden">Stipend</th>
             <th class="hidden">Amount</th>
             <th>More detail</th>
@@ -287,6 +292,11 @@
             <td class="hidden" th:text="${project.getDescription()}"></td>
             <td class="hidden" th:text="${project.getPreReq()}"></td>
             <td class="hidden" th:text="${project.getMaxLim()}"></td>
+            <td class="hidden" >
+                    <span th:each="tag : ${projectToTagMap.get(project.getId())}">
+                        <span th:text="${tag.getName()}"></span><br>
+                    </span>
+            </td>
             <td class="hidden" th:text="${project.getStipendOption()}"></td>
             <td class="hidden" th:text="${project.getStipendAmount()}"></td>
             <td>
@@ -318,6 +328,7 @@
             <th class="hidden">Description</th>
             <th class="hidden">Prerequisite</th>
             <th class="hidden">Max People Allowed</th>
+            <th class="hidden">Tags</th>
             <th class="hidden">Stipend</th>
             <th class="hidden">Amount</th>
             <th>More detail</th>
@@ -333,6 +344,11 @@
             <td class="hidden" th:text="${project.getDescription()}"></td>
             <td class="hidden" th:text="${project.getPreReq()}"></td>
             <td class="hidden" th:text="${project.getMaxLim()}"></td>
+            <td class="hidden" >
+                    <span th:each="tag : ${projectToTagMap.get(project.getId())}">
+                        <span th:text="${tag.getName()}"></span><br>
+                    </span>
+            </td>
             <td class="hidden" th:text="${project.getStipendOption()}"></td>
             <td class="hidden" th:text="${project.getStipendAmount()}"></td>
 
@@ -365,6 +381,7 @@
             <th class="hidden">Description</th>
             <th class="hidden">Prerequisite</th>
             <th class="hidden">Max People Allowed</th>
+            <th class="hidden">Tags</th>
             <th class="hidden">Stipend</th>
             <th class="hidden">Amount</th>
             <th>More detail</th>
@@ -379,6 +396,11 @@
             <td class="hidden" th:text="${project.getDescription()}"></td>
             <td class="hidden" th:text="${project.getPreReq()}"></td>
             <td class="hidden" th:text="${project.getMaxLim()}"></td>
+            <td class="hidden" >
+                    <span th:each="tag : ${projectToTagMap.get(project.getId())}">
+                        <span th:text="${tag.getName()}"></span><br>
+                    </span>
+            </td>
             <td class="hidden" th:text="${project.getStipendOption()}"></td>
             <td class="hidden" th:text="${project.getStipendAmount()}"></td>
 

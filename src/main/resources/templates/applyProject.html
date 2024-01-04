@@ -47,12 +47,17 @@
       background-color: #D5DBDB;
       color: black;
     }
+    .card{
+      overflow: auto;
+    }
     .card-title{
       color: darkslateblue;
     }
 
     .card-table {
       width: 100%;
+      margin-left: auto;
+      margin-right: auto;
       border-collapse: collapse;
     }
     .card-table th, .card-table td {
@@ -113,9 +118,8 @@
       fill: currentColor;
     }
 
-
     .filter-panel {
-      position: relative;
+      position: absolute;
       width: 100%;
       float: left;
       background-color: white;
@@ -126,8 +130,8 @@
       padding: 10px;
       font-size: 14px;
       float: left;
-
     }
+
     .filter-panel input{
       padding: 10px;
       font-size: 14px;
@@ -137,6 +141,7 @@
       height: 2%;
       background: #f1f1f1;
     }
+
     .btn-filter{
         width: auto;
         margin-left: 20px;
@@ -158,9 +163,14 @@
       height: 2%;
       background: #f1f1f1;
     }
+
     .filter-panel button {
       margin-right:auto;
       margin-top: 0px;
+    }
+
+    .row{
+      margin-top: 130px;
     }
 
     @media only screen and (max-width: 800px) {
@@ -169,13 +179,14 @@
         float: left;
         display: block;
       }
+
       .btn-icon i {
         font-size: 22px;
         color: black;
       }
 
       .card {
-        overflow-x: auto;
+        overflow: auto;
         margin-top: auto;
       }
       .card-table {
@@ -217,7 +228,6 @@
         font-size: 22px;
         color: black;
       }
-
     }
   </style>
 </head>
@@ -243,7 +253,7 @@
   </div>
 </div>
 <br>
-  <div class="filter-panel"  id="filterPanel">
+  <div class="filter-panel" id="filterPanel">
     <form action="/apply" method="post">
       <label class="title-cls" for="title">Title:</label>
       <input type="text"  id="title" name="title" />
@@ -273,15 +283,15 @@
 <br>
 
 
-<div class="row" style="margin-top: 20px">
-      <div class="col-md-12" >
+
+<div class="row">
+      <div class="col-md-12" style="margin-right: auto; margin-left: auto" >
         <div class="card" style="border-radius: 5px; box-shadow: 0px 0px 5px 0px #888888;">
           <div class="card-body" >
             <h5 class="card-title">List of Available Projects</h5>
             <br>
-
             <table class="card-table" >
-              <thead >
+              <thead>
               <tr>
                 <th>Title</th>
                 <th>Professor</th>
@@ -291,6 +301,7 @@
                 <th class="hidden">Prerequisite</th>
                 <th>Course Code</th>
                 <th class="hidden">Max people allowed</th>
+                <th class="hidden">Tags</th>
                 <th>Stipend</th>
                 <th class="hidden">Amount</th>
                 <th>Resume Link</th>
@@ -298,6 +309,7 @@
                 <th>Actions</th>
               </tr>
               </thead>
+
               <tbody>
               <tr th:each="project : ${floatedProjects}">
                 <form method="post" th:action="@{'/apply/save'}">
@@ -305,7 +317,6 @@
                   <td th:text="${projectToProf.get(project.getId())}"></td>
                   <td th:text="${project.deadline}"></td>
                   <td th:text="${project.projectType}"></td>
-
                   <td class="hidden" th:text="${project.description}"></td>
                   <td class="hidden" th:text="${project.preReq}"></td>
                   <td>
@@ -317,6 +328,11 @@
                     </label>
                   </td>
                   <td class="hidden" th:text="${project.maxLim}"></td>
+                  <td class="hidden" >
+                    <span th:each="tag : ${projectToTagMap.get(project.getId())}">
+                        <span th:text="${tag.getName()}"></span><br>
+                    </span>
+                  </td>
                   <td th:text="${project.stipendOption}"></td>
                   <td class="hidden" th:text="${project.stipendAmount}"></td>
 
@@ -345,7 +361,6 @@
                         </div>
                       </button>
                     </form>
-
 
                   </td>
                 </form>
