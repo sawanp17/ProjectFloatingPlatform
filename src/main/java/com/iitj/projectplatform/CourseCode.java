@@ -17,6 +17,7 @@ public class CourseCode {
     @Column(name = "code")
     private String code;
 
+
     public CourseCode(String code) {
         this.code = code;
     }

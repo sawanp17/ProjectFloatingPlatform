@@ -301,7 +301,7 @@
                 <th class="hidden">Prerequisite</th>
                 <th>Course Code</th>
                 <th class="hidden">Max people allowed</th>
-                <th class="hidden">Tags</th>
+                <th>Tags</th>
                 <th>Stipend</th>
                 <th class="hidden">Amount</th>
                 <th>Resume Link</th>
@@ -328,7 +328,7 @@
                     </label>
                   </td>
                   <td class="hidden" th:text="${project.maxLim}"></td>
-                  <td class="hidden" >
+                  <td>
                     <span th:each="tag : ${projectToTagMap.get(project.getId())}">
                         <span th:text="${tag.getName()}"></span><br>
                     </span>

@@ -271,7 +271,7 @@
             <th>Title</th>
             <th>Project Deadline</th>
             <th>Project Type</th>
-
+            <th>Course Code</th>
             <th>Status</th>
             <th class="hidden">Description</th>
             <th class="hidden">Prerequisite</th>
@@ -288,6 +288,9 @@
             <td th:text="${project.getTitle()}"></td>
             <td th:text="${project.getDeadline()}"></td>
             <td th:text="${project.getProjectType()}"></td>
+            <td th:if="${approvedCourseCodes.get(project)!=null}" th:text="${approvedCourseCodes.get(project).getCode()}"></td>
+            <td th:if="${approvedCourseCodes.get(project)==null}" th:text="NA"></td>
+
             <td th:text="${project.getStatus()}"></td>
             <td class="hidden" th:text="${project.getDescription()}"></td>
             <td class="hidden" th:text="${project.getPreReq()}"></td>

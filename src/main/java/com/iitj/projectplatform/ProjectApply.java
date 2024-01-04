@@ -21,7 +21,7 @@ public class ProjectApply {
 
 //    @Column(name="coursecode")
 //    @Enumerated(EnumType.STRING)
-    @OneToOne(cascade = CascadeType.ALL)
+    @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     @JoinColumn(name = "coursecode_id", referencedColumnName = "id")
     private CourseCode courseCode;
 

@@ -18,8 +18,8 @@ public class Approved {
 
 //    @Column(name = "coursecode")
 
-//    @Enumerated(EnumType.STRING)
-    @OneToOne(cascade = CascadeType.ALL)
+//    @Enumerated(EnumType.STRI NG)
+    @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     @JoinColumn(name = "coursecode_id", referencedColumnName = "id")
     private CourseCode courseCode;
 
@@ -62,5 +62,15 @@ public class Approved {
 
     public void setCourseCode(CourseCode courseCode) {
         this.courseCode = courseCode;
+    }
+
+    @Override
+    public String toString() {
+        return "Approved{" +
+                "id=" + id +
+                ", userId='" + userId + '\'' +
+                ", projectId=" + projectId +
+                ", courseCode=" + courseCode +
+                '}';
     }
 }

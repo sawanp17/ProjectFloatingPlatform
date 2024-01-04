@@ -464,6 +464,7 @@ public class StudentController {
         List<Project> approvedProjects = new ArrayList<>();
         List<Project> rejectedProjects = new ArrayList<>();
         HashMap<Long,List<Tag>> projectToTagMap = new HashMap<>();
+        HashMap<Project,CourseCode> approvedCourseCodes = new HashMap<>();
 
         if (currentRole.equals(Role.Student)){
             applyProjects = projectApplyRepo.findProjectApplyByUserId(username);
@@ -491,21 +492,26 @@ public class StudentController {
                     projectTags.add(tagRepository.findById(tm.getTagId()).get());
                 }
                 projectToTagMap.put(projectIt.getId(), projectTags);
+                System.out.println("DEBUG>>" + approvedRepo.findApprovedByUserIdAndProjectId(username,projectIt.getId()).get().toString());
+                approvedCourseCodes.put(
+                        projectIt,
+                        approvedRepo.findApprovedByUserIdAndProjectId(username,projectIt.getId()).get().getCourseCode()
+                );
             }
-
+            System.out.println("Project to course code: " + approvedCourseCodes);
             for (Project projectIt: rejectedProjects){
                 List<TagMapping> getTagMappings = tagMappingRepo.findTagMappingByProjectId(projectIt.getId());
                 List<Tag> projectTags = new ArrayList<>();
                 for (TagMapping tm: getTagMappings){
                     projectTags.add(tagRepository.findById(tm.getTagId()).get());
                 }
-                System.out.println("Tags for htis::: " + projectTags);
+//                System.out.println("Tags for htis::: " + projectTags);
                 projectToTagMap.put(projectIt.getId(), projectTags);
             }
-            System.out.println("Project to Tags Map: " + projectToTagMap);
+//            System.out.println("Project to Tags Map: " + projectToTagMap);
 
 
-
+            model.addAttribute("approvedCourseCodes", approvedCourseCodes);
             model.addAttribute("approvedList", approvedProjects);
             model.addAttribute("rejectedList", rejectedProjects);
 
@@ -772,8 +778,27 @@ public class StudentController {
             projectToProf.put(projectID, userRepo.findUserByUsername(userID).get().getName());
         }
 
-        model.addAttribute("floatedProjects", finalListProjects );
+        Map<Long, List<Tag>> projectToTagMap = new HashMap<>(); // for tags
+        for (Project project: finalListProjects){
+            Long projectID = project.getId();
+            String userID = projectCreateRepo.findProjectCreateByProjectId(projectID).getUserId();
+            projectToProf.put(projectID, userRepo.findUserByUsername(userID).get().getName());
+
+            // Get tags for each project and add to the map
+            List<TagMapping> getTagMappings = tagMappingRepo.findTagMappingByProjectId(projectID);
+            List<Tag> projectTags = new ArrayList<>();
+            for (TagMapping tm : getTagMappings) {
+                projectTags.add(tagRepository.findById(tm.getTagId()).get());
+            }
+            projectToTagMap.put(projectID, projectTags);
+        }
+
+        Collections.reverse(finalListProjects);
+
+        System.out.println("DEBUG>> " + keywords + " " + finalListProjects);
+        model.addAttribute("floatedProjects", finalListProjects);
         model.addAttribute("projectToProf", projectToProf);
+        model.addAttribute("projectToTagMap", projectToTagMap);
 
 
         return "applyProject";
@@ -815,7 +840,7 @@ public class StudentController {
         for (Project project: floatedProjects){
             if (rejectedRepo.findRejectedByUserIdAndProjectId(username,project.getId()).isPresent()
                 || approvedRepo.findApprovedByUserIdAndProjectId(username,project.getId()).isPresent()
-                    || projectApplyRepo.findProjectByUserIdAndProjectId(username,project.getId()).isPresent()
+                    || projectApplyRepo.findProjectApplyByUserIdAndProjectId(username,project.getId()).isPresent()
                     || project.getDeleted().equals(Boolean.TRUE)  //added condition for checking isDeleted
             ){
                 toRemove.add(project);
@@ -838,11 +863,11 @@ public class StudentController {
             }
             projectToTagMap.put(projectID, projectTags);
         }
+        floatedProjects.sort(Comparator.comparing(Project::getDeadline));
 
         model.addAttribute("floatedProjects", floatedProjects);
         model.addAttribute("projectToProf", projectToProf);
         model.addAttribute("projectToTagMap", projectToTagMap);
-        floatedProjects.sort(Comparator.comparing(Project::getDeadline));
 
         return "applyProject";
     }
@@ -976,7 +1001,7 @@ public class StudentController {
         newApproved = approvedRepo.save(newApproved);
 
         //delete this approved user from applied list of that project
-        Optional<ProjectApply> projectApply = projectApplyRepo.findProjectByUserIdAndProjectId(username,projectId);
+        Optional<ProjectApply> projectApply = projectApplyRepo.findProjectApplyByUserIdAndProjectId(username,projectId);
 
         if (projectApply.isPresent()){
             projectApply.get().setDeleted(true);
@@ -1000,7 +1025,7 @@ public class StudentController {
         newRejected.setUserId(username);
         newRejected = rejectedRepo.save(newRejected);
         //delete this the approved user from applied list of that project
-        Optional<ProjectApply> projectApply = projectApplyRepo.findProjectByUserIdAndProjectId(username,projectId);
+        Optional<ProjectApply> projectApply = projectApplyRepo.findProjectApplyByUserIdAndProjectId(username,projectId);
 
         if (projectApply.isPresent()){
             projectApply.get().setDeleted(true);

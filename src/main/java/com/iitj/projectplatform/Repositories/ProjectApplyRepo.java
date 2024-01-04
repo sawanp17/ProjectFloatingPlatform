@@ -11,5 +11,5 @@ public interface ProjectApplyRepo extends JpaRepository<ProjectApply,Long> {
     List<ProjectApply> findProjectApplyByProjectId(Long projectId);
 
 //    List<Optional<ProjectApply>> findProjectApplyByProjectId(List<Long> projectId);
-    Optional<ProjectApply> findProjectByUserIdAndProjectId(String username, Long projectId);
+    Optional<ProjectApply> findProjectApplyByUserIdAndProjectId(String username, Long projectId);
 }
