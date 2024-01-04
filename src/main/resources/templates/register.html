@@ -121,7 +121,7 @@
             <div class="form-group mb-2">
                 <label for="role"></label>
                 <select class="form-control custom-label" id="role" name="role" th:field="*{role}" required style="color: gray;">
-                    <option value="" style="color: gray;">Select</option>
+                    <option value="" style="color: gray;">Select role</option>
                     <option th:each="option : ${roleList}" th:value="${option}" th:text="${option}" style="color: gray;"></option>
                 </select>
                 <p th:errors="*{role}" class="text-danger" th:if="${#fields.hasErrors('role')}"></p>
