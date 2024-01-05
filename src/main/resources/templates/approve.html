@@ -174,6 +174,7 @@
           <thead>
           <tr>
             <th>User ID</th>
+            <th>Name</th>
             <th>Resume Link</th>
             <th>Course Code</th>
             <th>Actions</th>
@@ -182,7 +183,8 @@
           <tbody>
           <tr th:each="projectApply : ${entry.value}">
             <td th:text="${projectApply.getUserId()}"></td>
-            <td th:text="${projectApply.getResumeLink()}"></td>
+            <td th:text="${MapOfUsernameToName.get(projectApply.getUserId())}"></td>
+            <td><a th:href="${projectApply.getResumeLink()}" target="_blank">Link to Resume</a></td>
             <td th:text="${projectApply.getCourseCode().getCode()}"></td>
             <td>
               <!-- Approve button -->

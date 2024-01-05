@@ -318,6 +318,10 @@ public class StudentController {
                               @ModelAttribute("isEdit") Boolean isEdit,
                               Authentication authentication){
 
+        //delete tag mappings (earlier ones)
+        List<TagMapping>tagMappings1 = tagMappingRepo.findTagMappingByProjectId(projectId);
+        tagMappingRepo.deleteAll(tagMappings1);
+
         System.out.println("alloweed pt "+ projectTypesAllowed.length);
         List<ProjectType> projectTypes = new ArrayList<>();
         if (projectTypesAllowed!=null){
@@ -330,6 +334,10 @@ public class StudentController {
         UserDetails userDetails = (UserDetails) authentication.getPrincipal();
         String username = userDetails.getUsername();
         List<String> tagList = Arrays.asList(tagsGiven.split(","));
+        for (int i=0;i<tagList.size();i++){
+            tagList.set(i, ((String) (tagList.get(i))).trim());
+
+        }
         for (String tag: tagList){
             tagList.set(tagList.indexOf(tag), tag.toLowerCase());
         }
@@ -653,6 +661,7 @@ public class StudentController {
                 else projectTags += (tagRepository.findById(tagMapping.getTagId()).get().getName()+",");
             }
             model.addAttribute("projectTags", projectTags);
+
 
         }
 
@@ -988,6 +997,16 @@ public class StudentController {
                     groupedByProjectId.get(projectId)
             );
         }
+        Map<String,String> mapOfUsernameToName = new HashMap<>();
+        for (List<ProjectApply> it: groupedByProjectName.values()){
+            for (ProjectApply projectApplyIt: it){
+                mapOfUsernameToName.put(
+                        projectApplyIt.getUserId(),
+                        userRepo.findUserByUsername(projectApplyIt.getUserId()).get().getName()
+                );
+            }
+        }
+        model.addAttribute("MapOfUsernameToName", mapOfUsernameToName);
 
         model.addAttribute("MapOfProjectApplicants", groupedByProjectName);
         return "approve";
