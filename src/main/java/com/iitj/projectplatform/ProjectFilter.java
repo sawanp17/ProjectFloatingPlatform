@@ -51,7 +51,7 @@ public class ProjectFilter {
             System.out.println("title not empty"+title);
 //            String query = "SELECT p FROM Project WHERE p.title LIKE '%" + title + "%'";
 //            System.out.println("getQuery " + query);
-            filteredByTitle = projectRepo.findByTitleIsContaining(title);
+            filteredByTitle = projectRepo.findByTitleIsContainingIgnoreCase(title);
         }
         if (! (deadline==null)){
             System.out.println(deadline);

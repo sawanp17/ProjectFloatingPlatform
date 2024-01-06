@@ -20,7 +20,7 @@ public interface ProjectRepo extends JpaRepository<Project, Long> {
     Project findProjectById(Long projectId);
     List<Project> findProjectByStatus(String status);
 
-    List<Project> findByTitleIsContaining(String title);
+    List<Project> findByTitleIsContainingIgnoreCase(String title);
 
     @Query("SELECT p FROM Project p WHERE p.deadline >= :deadline")
     List<Project> searchProjectByDeadline(@Param("deadline") Date deadline);
